@@ -27,7 +27,21 @@ import {
 export type Icon = LucideIcon
 
 export const Icons = {
-  logo: Command,
+  logo: ({ ...props }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 100"
+      fill="none"
+      {...props}
+    >
+      <image
+        href="/halal-transport-logo.svg"
+        width="100"
+        height="100"
+        className="w-full h-full"
+      />
+    </svg>
+  ),
   close: X,
   spinner: Loader2,
   chevronLeft: ChevronLeft,

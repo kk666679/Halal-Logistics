@@ -45,7 +45,7 @@ export function SiteHeader() {
       <div className="container px-4 md:px-6 flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center space-x-2 z-10">
           <Icons.logo className="h-6 w-6" />
-          <span className="font-heading text-xl tracking-tight">ComponentCraft</span>
+          <span className="font-heading text-xl tracking-tight">HLSC</span>
         </Link>
 
         {/* Desktop Navigation - Hidden on mobile */}
