@@ -1,0 +1,34 @@
+{
+  "name": "sprocket",
+  "version": "1.0.0",
+  "description": "This document outlines a comprehensive framework for implementing a Halal-compliant logistics and supply chain system, adhering to Islamic principles and international standards such as MS2400 (Malaysia), GSO (Gulf Standards Organization), and OIC/SMIIC (Organization of Islamic Cooperation/Standards and Metrology Institute for Islamic Countries).",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.16",
+    "lucide-react": "^0.544.0",
+    "next": "^15.5.3",
+    "next-themes": "^0.4.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "reveal.js": "^5.2.1",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.13"
+  }
+}
