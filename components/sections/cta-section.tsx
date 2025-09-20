@@ -1,4 +1,4 @@
-"use client"
+nt""use client"
 import { ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { ScrollReveal } from "@/components/scroll-reveal"
