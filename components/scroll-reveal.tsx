@@ -1,51 +1,53 @@
 "use client"
 
-import type React from "react"
-
-import { useRef, useEffect, useState } from "react"
-import { motion, useInView, useAnimation } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
 
 interface ScrollRevealProps {
   children: React.ReactNode
+  className?: string
   delay?: number
-  duration?: number
-  once?: boolean
 }
 
-export function ScrollReveal({ children, delay = 0, duration = 0.5, once = true }: ScrollRevealProps) {
-  const controls = useAnimation()
+export function ScrollReveal({ children, className = "", delay = 0 }: ScrollRevealProps) {
+  const [isVisible, setIsVisible] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once })
-  const [hasAnimated, setHasAnimated] = useState(false)
 
   useEffect(() => {
-    if (isInView && !hasAnimated) {
-      controls.start("visible")
-      if (once) {
-        setHasAnimated(true)
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            setIsVisible(true)
+          }, delay)
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
       }
-    } else if (!isInView && !once && hasAnimated) {
-      controls.start("hidden")
-      setHasAnimated(false)
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
     }
-  }, [isInView, controls, once, hasAnimated])
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+    }
+  }, [delay])
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial="hidden"
-      animate={controls}
-      variants={{
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 },
-      }}
-      transition={{
-        duration,
-        delay,
-        ease: "easeOut",
-      }}
+      className={`transition-all duration-1000 ease-out ${
+        isVisible
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 translate-y-8"
+      } ${className}`}
     >
       {children}
-    </motion.div>
+    </div>
   )
 }
