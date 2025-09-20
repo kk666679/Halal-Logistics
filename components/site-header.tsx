@@ -14,9 +14,10 @@ import { useScrollPosition } from "@/hooks/use-scroll-position"
 
 const navItems = [
   { name: "Home", href: "#home" },
-  { name: "Features", href: "#features" },
-  { name: "Components", href: "#components" },
-  { name: "Testimonials", href: "#testimonials" },
+  { name: "Ai Agent", href: "#ai-agent" },
+  { name: "Services", href: "#services" },
+  { name: "Technology", href: "#technology" },
+  { name: "Case Studies", href: "#case-studies" }, 
   { name: "Pricing", href: "#pricing" },
   { name: "Blog", href: "#blog" },
   { name: "FAQ", href: "#faq" },
@@ -45,7 +46,7 @@ export function SiteHeader() {
       <div className="container px-4 md:px-6 flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center space-x-2 z-10">
           <Icons.logo className="h-6 w-6" />
-          <span className="font-heading text-xl tracking-tight">HLSC</span>
+          <span className="font-heading text-xl tracking-tight">HalalChain</span>
         </Link>
 
         {/* Desktop Navigation - Hidden on mobile */}
@@ -121,7 +122,7 @@ export function SiteHeader() {
               <div className="flex items-center justify-between p-4 border-b border-border">
                 <Link href="/" className="flex items-center space-x-2" onClick={closeMobileMenu}>
                   <Icons.logo className="h-6 w-6" />
-                  <span className="font-heading text-lg">ComponentCraft</span>
+                  <span className="font-heading text-lg">HalalChain</span>
                 </Link>
                 <button
                   onClick={closeMobileMenu}

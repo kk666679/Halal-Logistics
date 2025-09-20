@@ -51,14 +51,27 @@ export function HeroSection() {
             >
               <motion.div className="space-y-4" variants={itemVariants}>
                 <h1 className="text-4xl font-heading font-bold tracking-tighter sm:text-5xl xl:text-7xl/none">
-                  <span className="gradient-text">Halal Supply Chain</span>
+                  <span className="gradient-text">Government-Certified Halal</span>
                   <br />
-                  <span className="text-foreground">Transparency with Blockchain</span>
+                  <span className="text-foreground">Supply Chain Platform</span>
                 </h1>
                 <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400 opacity-70">
-                  Ensure complete Halal compliance from farm to table with our blockchain-powered logistics platform.
-                  Track certifications, monitor shipments, and maintain audit trails with Oracle Cloud Infrastructure.
+                  Ensure complete Halal compliance from farm to table with our blockchain-powered logistics platform, trusted by government agencies worldwide. Our multi-AI agent system enhances verification, predictive logistics, and real-time compliance monitoring.
                 </p>
+              </motion.div>
+
+              <motion.div className="space-y-4" variants={itemVariants}>
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-800 dark:bg-amber-900 dark:text-amber-200">
+                    Blockchain-Verified
+                  </span>
+                  <span className="inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
+                    AI-Enhanced
+                  </span>
+                  <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+                    Government-Certified
+                  </span>
+                </div>
               </motion.div>
 
               <motion.div className="flex flex-col gap-6 sm:flex-row sm:items-center" variants={itemVariants}>
@@ -69,8 +82,8 @@ export function HeroSection() {
                   gradientTo="to-indigo-600"
                   asChild
                 >
-                  <Link href="#certification" className="flex items-center">
-                    Start Tracking
+                  <Link href="#contact" className="flex items-center">
+                    Request Government Demo
                     <motion.span
                       className="ml-2 inline-block"
                       animate={{ x: [0, 4, 0] }}
@@ -82,17 +95,36 @@ export function HeroSection() {
                 </GradientButton>
 
                 <MagneticButton className="neumorphic-button">
-                  <Link href="#features" className="px-6 py-2.5 block">
-                    View Features
+                  <Link href="#compliance" className="px-6 py-2.5 block">
+                    View Compliance Features
                   </Link>
                 </MagneticButton>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="pt-4">
+              <motion.div variants={itemVariants} className="pt-4 space-y-4">
                 <p className="text-sm text-muted-foreground flex items-center">
                   <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                  Trusted by 500+ Halal businesses worldwide
+                  Trusted by 12+ government agencies and 500+ Halal businesses worldwide
                 </p>
+
+                <motion.div
+                  variants={itemVariants}
+                  className="flex items-center gap-4 p-4 rounded-lg bg-gradient-to-r from-amber-50 to-indigo-50 dark:from-amber-950/20 dark:to-indigo-950/20 border border-amber-200 dark:border-amber-800"
+                >
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 rounded-full bg-amber-600 flex items-center justify-center">
+                      <Shield className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-amber-900 dark:text-amber-100">
+                      Fully Certified by Malaysia International Halal Authority
+                    </p>
+                    <p className="text-xs text-amber-700 dark:text-amber-300">
+                      Government-accredited halal certification and compliance
+                    </p>
+                  </div>
+                </motion.div>
               </motion.div>
             </motion.div>
           </ScrollReveal>

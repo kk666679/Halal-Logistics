@@ -10,11 +10,10 @@ export function SiteFooter() {
           <div className="flex flex-1 flex-col gap-4">
             <Link href="/" className="flex items-center gap-2">
               <Icons.logo className="h-6 w-6" />
-              <span className="font-heading text-xl tracking-tight">HLSC</span>
+              <span className="font-heading text-xl tracking-tight">HalalChain</span>
             </Link>
             <p className="text-muted-foreground max-w-sm opacity-70">
-              Modern UI component library built with shadcn/ui and Aceternity UI for web developers and designers in the
-              AI software niche.
+              End-to-end halal logistics and supply chain management platform designed for integrity, transparency, and compliance with global halal standards.
             </p>
             <div className="flex gap-4">
               <Link href="https://twitter.com" target="_blank" rel="noreferrer" className="glassmorphic-icon">
@@ -33,38 +32,38 @@ export function SiteFooter() {
           </div>
           <div className="grid flex-1 grid-cols-2 gap-10 sm:grid-cols-3">
             <div className="flex flex-col gap-2">
-              <h3 className="text-sm font-medium tracking-tight">Product</h3>
+              <h3 className="text-sm font-medium tracking-tight">Services</h3>
               <ul className="flex flex-col gap-2">
                 <li>
                   <Link
-                    href="#features"
+                    href="#certification"
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
                   >
-                    Features
+                    Halal Certification Tracking
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="#pricing"
+                    href="#cold-chain"
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
                   >
-                    Pricing
+                    Cold Chain Logistics
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="#components"
+                    href="#visibility"
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
                   >
-                    Components
+                    Supply Chain Visibility
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="#changelog"
+                    href="#compliance"
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
                   >
-                    Changelog
+                    Compliance Reporting
                   </Link>
                 </li>
               </ul>
@@ -77,7 +76,7 @@ export function SiteFooter() {
                     href="#about"
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
                   >
-                    About
+                    About Us
                   </Link>
                 </li>
                 <li>
@@ -85,7 +84,7 @@ export function SiteFooter() {
                     href="#blog"
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
                   >
-                    Blog
+                    Our Blog
                   </Link>
                 </li>
                 <li>
@@ -114,7 +113,7 @@ export function SiteFooter() {
                     href="#privacy"
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
                   >
-                    Privacy
+                    Privacy Policy
                   </Link>
                 </li>
                 <li>
@@ -122,7 +121,7 @@ export function SiteFooter() {
                     href="#terms"
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
                   >
-                    Terms
+                    Terms of Service
                   </Link>
                 </li>
                 <li>
@@ -130,7 +129,7 @@ export function SiteFooter() {
                     href="#cookies"
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
                   >
-                    Cookies
+                    Cookie Policy
                   </Link>
                 </li>
                 <li>
@@ -138,7 +137,7 @@ export function SiteFooter() {
                     href="#licenses"
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
                   >
-                    Licenses
+                    Compliance Licenses
                   </Link>
                 </li>
               </ul>
@@ -147,20 +146,32 @@ export function SiteFooter() {
         </div>
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <p className="text-sm text-muted-foreground opacity-70">
-            &copy; {new Date().getFullYear()} Halal Transport Solutions. All rights reserved.
+            © 2025 Halal Logistics & Supply Chain. All rights reserved.
           </p>
           <div className="flex gap-4">
-            <Link
-              href="#terms"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
-            >
-              Terms
-            </Link>
             <Link
               href="#privacy"
               className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
             >
-              Privacy
+              Privacy Policy
+            </Link>
+            <Link
+              href="#terms"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
+            >
+              Terms of Service
+            </Link>
+            <Link
+              href="#cookies"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
+            >
+              Cookie Policy
+            </Link>
+            <Link
+              href="#licenses"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground opacity-70"
+            >
+              Compliance Licenses
             </Link>
           </div>
         </div>

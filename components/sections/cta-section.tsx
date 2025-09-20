@@ -16,13 +16,13 @@ export function CtaSection() {
           <div className="flex flex-col items-center justify-center space-y-6 text-center">
             <div className="space-y-4">
               <AnimatedText
-                text="Ready to Build Amazing UIs?"
+                text="End-to-end Halal Logistics Platform"
                 variant="heading"
                 className="text-3xl font-heading font-bold tracking-tighter sm:text-5xl gradient-text"
                 animation="wave"
               />
               <AnimatedText
-                text="Get started with our component library today and transform your web development workflow."
+                text="Designed for integrity, transparency, and compliance with global halal standards."
                 variant="paragraph"
                 className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 opacity-70"
                 animation="fade"
@@ -39,12 +39,12 @@ export function CtaSection() {
                 glowAmount={5}
                 size="lg"
                 className="px-8 py-3"
-                gradientFrom="from-red-500"
-                gradientTo="to-red-700"
+                gradientFrom="from-amber-600"
+                gradientTo="to-indigo-600"
                 asChild
               >
-                <Link href="#pricing" className="flex items-center">
-                  Get Started
+                <Link href="#contact" className="flex items-center">
+                  Request Demo
                   <motion.span
                     className="ml-2 inline-block"
                     animate={{ x: [0, 5, 0] }}
@@ -56,12 +56,12 @@ export function CtaSection() {
               </GradientButton>
 
               <AnimatedGradientBorder
-                colors={["#dc2626", "#4b5563", "#dc2626", "#4b5563"]}
+                colors={["#d97706", "#6366f1", "#d97706", "#6366f1"]}
                 borderWidth={1}
                 duration={6}
               >
                 <OutlineButton size="lg" className="bg-background w-full h-full border-0 px-8 py-3" asChild>
-                  <Link href="#components">View Components</Link>
+                  <Link href="#services">Explore Solutions</Link>
                 </OutlineButton>
               </AnimatedGradientBorder>
             </motion.div>
