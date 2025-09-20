@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
 import { Package } from "lucide-react"
 
 const productSchema = z.object({
@@ -75,6 +76,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
     setIsLoading(true)
     try {
       await onSubmit?.(data)
+      form.reset()
     } catch (error) {
       console.error("Failed to add product:", error)
     } finally {
@@ -94,13 +96,13 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
   const units = ["kg", "g", "lbs", "oz", "pieces", "packs", "boxes", "liters", "ml", "gallons"]
 
   return (
-    <Card className="w-full max-w-4xl glassmorphic-card">
+    <Card className="w-full max-w-4xl">
       <CardHeader>
-        <CardTitle className="text-2xl font-heading tracking-tight flex items-center">
+        <CardTitle className="text-2xl font-bold tracking-tight flex items-center">
           <Package className="h-6 w-6 mr-2 text-primary" />
           Add New Product
         </CardTitle>
-        <CardDescription>Add a new product to your Halal inventory management system</CardDescription>
+        <CardDescription>Add a new product to your inventory management system</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -117,7 +119,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     <FormItem>
                       <FormLabel>Product Name</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter product name" className="glassmorphic-inner-card" />
+                        <Input {...field} placeholder="Enter product name" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -131,7 +133,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     <FormItem>
                       <FormLabel>SKU</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter SKU" className="glassmorphic-inner-card" />
+                        <Input {...field} placeholder="Enter SKU" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -180,11 +182,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                   <FormItem>
                     <FormLabel>Description (Optional)</FormLabel>
                     <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Enter product description"
-                        className="glassmorphic-inner-card"
-                      />
+                      <Textarea {...field} placeholder="Enter product description" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -209,7 +207,6 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                           type="number"
                           min="0"
                           onChange={(e) => field.onChange(Number(e.target.value))}
-                          className="glassmorphic-inner-card"
                         />
                       </FormControl>
                       <FormMessage />
@@ -229,7 +226,6 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                           type="number"
                           min="0"
                           onChange={(e) => field.onChange(Number(e.target.value))}
-                          className="glassmorphic-inner-card"
                         />
                       </FormControl>
                       <FormMessage />
@@ -249,7 +245,6 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                           type="number"
                           min="1"
                           onChange={(e) => field.onChange(Number(e.target.value))}
-                          className="glassmorphic-inner-card"
                         />
                       </FormControl>
                       <FormMessage />
@@ -264,7 +259,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     <FormItem>
                       <FormLabel>Unit</FormLabel>
                       <FormControl>
-                        <select {...field} className="w-full px-3 py-2 rounded-md border border-input bg-background glassmorphic-inner-card">
+                        <select {...field} className="w-full px-3 py-2 rounded-md border border-input bg-background">
                           {units.map((unit) => (
                             <option key={unit} value={unit}>
                               {unit}
@@ -297,7 +292,6 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                           step="0.01"
                           min="0.01"
                           onChange={(e) => field.onChange(Number(e.target.value))}
-                          className="glassmorphic-inner-card"
                         />
                       </FormControl>
                       <FormMessage />
@@ -318,7 +312,6 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                           step="0.01"
                           min="0.01"
                           onChange={(e) => field.onChange(Number(e.target.value))}
-                          className="glassmorphic-inner-card"
                         />
                       </FormControl>
                       <FormMessage />
@@ -340,7 +333,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     <FormItem>
                       <FormLabel>Supplier</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter supplier name" className="glassmorphic-inner-card" />
+                        <Input {...field} placeholder="Enter supplier name" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -354,7 +347,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     <FormItem>
                       <FormLabel>Storage Location</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter storage location" className="glassmorphic-inner-card" />
+                        <Input {...field} placeholder="Enter storage location" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -375,7 +368,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     <FormItem>
                       <FormLabel>Batch Number</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter batch number" className="glassmorphic-inner-card" />
+                        <Input {...field} placeholder="Enter batch number" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -389,7 +382,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     <FormItem>
                       <FormLabel>Expiry Date</FormLabel>
                       <FormControl>
-                        <Input {...field} type="date" className="glassmorphic-inner-card" />
+                        <Input {...field} type="date" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -426,4 +419,93 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                   <FormField
                     control={form.control}
                     name="certificationNumber"
-                    render={({ field }) => (\
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Certification Number</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Enter certification number" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="certificationExpiry"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Certification Expiry</FormLabel>
+                        <FormControl>
+                          <Input {...field} type="date" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Storage Conditions */}
+            <div className="space-y-6">
+              <h3 className="text-lg font-semibold text-primary">Storage Conditions (Optional)</h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="temperature"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Temperature (°C)</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          step="0.1"
+                          onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                          placeholder="Enter temperature"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="humidity"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Humidity (%)</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          min="0"
+                          max="100"
+                          onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                          placeholder="Enter humidity"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-4">
+              <Button type="button" variant="outline" onClick={() => form.reset()} disabled={isLoading}>
+                Reset
+              </Button>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? "Adding Product..." : "Add Product"}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
+  )
+}
