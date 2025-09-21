@@ -4,11 +4,7 @@ import { CertificationService } from './certification.service';
 import { Certification, CertificationSchema } from './certification.schema';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: Certification.name, schema: CertificationSchema },
-    ]),
-  ],
+  imports: [],
   controllers: [CertificationController],
   providers: [CertificationService],
   exports: [CertificationService],

@@ -29,3 +29,5 @@ next-env.d.tsdist/
 node_modules/
 dist/
 node_modules/
+
+/generated/prisma

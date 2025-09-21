@@ -3,15 +3,18 @@ import {
   NotFoundException,
   BadRequestException,
 } from "@nestjs/common";
-import { User, UserDocument, UserRole } from "./user.schema";
 import { UpdateProfileDto } from "../auth/dto/auth.dto";
+import { PrismaService } from "../prisma/prisma.service";
+import { UserRole, User } from "@prisma/client";
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(private prisma: PrismaService) {}
 
   async findById(id: string): Promise<User> {
-    const user = await this.userModel.findById(id).select("-password");
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
     if (!user) {
       throw new NotFoundException("User not found");
     }
@@ -19,52 +22,57 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.userModel.findOne({ email }).select("-password");
+    return this.prisma.user.findUnique({
+      where: { email },
+    });
   }
 
   async findByRole(role: UserRole): Promise<User[]> {
-    return this.userModel.find({ role, isActive: true }).select("-password");
+    return this.prisma.user.findMany({
+      where: { role, isActive: true },
+    });
   }
 
   async updateUser(id: string, updateData: UpdateProfileDto): Promise<User> {
-    const user = await this.userModel
-      .findByIdAndUpdate(id, updateData, { new: true })
-      .select("-password");
-
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: updateData,
+    });
     if (!user) {
       throw new NotFoundException("User not found");
     }
-
     return user;
   }
 
   async deactivateUser(id: string): Promise<User> {
-    const user = await this.userModel
-      .findByIdAndUpdate(id, { isActive: false }, { new: true })
-      .select("-password");
-
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: { isActive: false },
+    });
     if (!user) {
       throw new NotFoundException("User not found");
     }
-
     return user;
   }
 
   async getAllUsers(): Promise<User[]> {
-    return this.userModel.find({ isActive: true }).select("-password");
+    return this.prisma.user.findMany({
+      where: { isActive: true },
+    });
   }
 
   async getUserStats(): Promise<{
     total: number;
     byRole: Record<UserRole, number>;
   }> {
-    const total = await this.userModel.countDocuments({ isActive: true });
+    const total = await this.prisma.user.count({
+      where: { isActive: true },
+    });
 
     const byRole = {} as Record<UserRole, number>;
     for (const role of Object.values(UserRole)) {
-      byRole[role] = await this.userModel.countDocuments({
-        role,
-        isActive: true,
+      byRole[role] = await this.prisma.user.count({
+        where: { role, isActive: true },
       });
     }
 
@@ -72,7 +80,9 @@ export class UsersService {
   }
 
   async getProfile(userId: string): Promise<User> {
-    const user = await this.userModel.findById(userId).select("-password");
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
     if (!user) {
       throw new NotFoundException("User not found");
     }
@@ -80,14 +90,13 @@ export class UsersService {
   }
 
   async updateProfile(userId: string, updateData: UpdateProfileDto): Promise<User> {
-    const user = await this.userModel
-      .findByIdAndUpdate(userId, updateData, { new: true })
-      .select("-password");
-
+    const user = await this.prisma.user.update({
+      where: { id: userId },
+      data: updateData,
+    });
     if (!user) {
       throw new NotFoundException("User not found");
     }
-
     return user;
   }
 }

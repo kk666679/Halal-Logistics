@@ -12,14 +12,14 @@ import { Icons } from "@/components/icons";
 import { useScrollPosition } from "@/hooks/use-scroll-position";
 
 const navItems = [
-  { name: "Home", href: "#home" },
-  { name: "Ai Agent", href: "#ai-agent" },
-  { name: "Services", href: "#services" },
-  { name: "Technology", href: "#technology" },
-  { name: "Case Studies", href: "#case-studies" },
-  { name: "Pricing", href: "#pricing" },
-  { name: "Blog", href: "#blog" },
-  { name: "FAQ", href: "#faq" },
+  { name: "Home", href: "/" },
+  { name: "Ai Agent", href: "/ai-agent" },
+  { name: "Services", href: "/services" },
+  { name: "Technology", href: "/technology" },
+  { name: "Case Studies", href: "/case-studies" },
+  { name: "Pricing", href: "/pricing" },
+  { name: "Blog", href: "/blog" },
+  { name: "FAQ", href: "/faq" },
 ];
 
 export function SiteHeader() {
@@ -82,10 +82,10 @@ export function SiteHeader() {
               className="neumorphic-button"
               asChild
             >
-              <Link href="#login">Sign in</Link>
+              <Link href="/sign-in">Sign in</Link>
             </Button>
             <Button size="sm" className="neumorphic-button-primary" asChild>
-              <Link href="#register">
+              <Link href="/get-started">
                 Get Started
                 <motion.div
                   className="ml-1"

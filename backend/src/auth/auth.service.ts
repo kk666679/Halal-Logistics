@@ -5,13 +5,14 @@ import {
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
-import { User, UserDocument, UserRole } from "../users/user.schema";
+import { PrismaService } from "../prisma/prisma.service";
+import { User } from "@prisma/client";
 import { LoginDto, RegisterDto } from "./dto/auth.dto";
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private prisma: PrismaService,
     private jwtService: JwtService,
   ) {}
 
@@ -29,7 +30,7 @@ export class AuthService {
     } = registerDto;
 
     // Check if user already exists
-    const existingUser = await this.userModel.findOne({ email });
+    const existingUser = await this.prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       throw new BadRequestException("User already exists");
     }
@@ -39,17 +40,18 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Create user
-    const user = new this.userModel({
-      email,
-      password: hashedPassword,
-      firstName,
-      lastName,
-      role,
-      companyName,
-      phoneNumber,
+    const user = await this.prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        firstName,
+        lastName,
+        role: role as any,
+        companyName,
+        phoneNumber,
+        isActive: true,
+      },
     });
-
-    await user.save();
 
     // Generate JWT token
     const token = this.generateJwtToken(user);
@@ -60,7 +62,7 @@ export class AuthService {
   async login(loginDto: LoginDto): Promise<{ user: User; token: string }> {
     const { email, password } = loginDto;
 
-    const user = await this.userModel.findOne({ email });
+    const user = await this.prisma.user.findUnique({ where: { email } });
     if (!user) {
       throw new UnauthorizedException("Invalid credentials");
     }
@@ -80,7 +82,7 @@ export class AuthService {
   }
 
   async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.userModel.findOne({ email });
+    const user = await this.prisma.user.findUnique({ where: { email } });
     if (!user) {
       return null;
     }
@@ -96,7 +98,7 @@ export class AuthService {
   generateJwtToken(user: User): string {
     const payload = {
       email: user.email,
-      sub: user._id,
+      sub: user.id,
       role: user.role,
     };
 
@@ -108,7 +110,12 @@ export class AuthService {
   }
 
   async getProfile(userId: string): Promise<User> {
-    const user = await this.userModel.findById(userId).select("-password");
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        password: false,
+      },
+    });
     if (!user) {
       throw new UnauthorizedException("User not found");
     }
@@ -119,9 +126,13 @@ export class AuthService {
     userId: string,
     updateData: Partial<User>,
   ): Promise<User> {
-    const user = await this.userModel
-      .findByIdAndUpdate(userId, updateData, { new: true })
-      .select("-password");
+    const user = await this.prisma.user.update({
+      where: { id: userId },
+      data: updateData,
+      select: {
+        password: false,
+      },
+    });
 
     if (!user) {
       throw new UnauthorizedException("User not found");
