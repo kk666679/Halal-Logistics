@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Building2, Users, Globe, Award, Target, Heart } from "lucide-react"
+import { Users, Globe, Award, Heart } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { AnimatedText } from "@/components/ui/animated-text"
@@ -170,7 +170,7 @@ export default function AboutPage() {
                 <div className="space-y-4">
                   <h2 className="text-3xl font-heading font-bold tracking-tighter sm:text-4xl">Leadership Team</h2>
                   <p className="max-w-[600px] text-gray-500 md:text-lg/relaxed lg:text-base/relaxed xl:text-lg/relaxed dark:text-gray-400 opacity-70">
-                    Meet the experts behind HalalChain's success
+                    Meet the experts behind HalalChain&rsquo;s success
                   </p>
                 </div>
               </div>

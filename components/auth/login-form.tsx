@@ -74,8 +74,8 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
         default:
           router.push("/")
       }
-    } catch (error: any) {
-      setError(error.message || "Login failed. Please try again.")
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : "Login failed. Please try again.")
     } finally {
       setIsLoading(false)
     }
@@ -203,7 +203,7 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
 
         <div className="mt-6 text-center">
           <p className="text-sm text-muted-foreground">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Button variant="link" className="p-0 h-auto text-primary hover:underline" onClick={onSwitchToSignup}>
               Sign up here
             </Button>

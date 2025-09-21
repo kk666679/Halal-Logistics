@@ -222,7 +222,7 @@ export function CaseStudiesSection() {
                           ))}
                         </div>
                         <blockquote className="text-sm opacity-70 mb-4">
-                          "{testimonial.quote}"
+                          &ldquo;{testimonial.quote}&rdquo;
                         </blockquote>
                         <div>
                           <div className="font-medium text-sm">{testimonial.author}</div>

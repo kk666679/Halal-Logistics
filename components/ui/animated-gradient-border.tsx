@@ -22,7 +22,6 @@ export function AnimatedGradientBorder({
   duration = 8,
   borderWidth = 2,
   colors = ["#ff0080", "#7928ca", "#ff4d4d", "#0070f3"],
-  hoverEffect = true,
   rounded = true,
 }: AnimatedGradientBorderProps) {
   return (

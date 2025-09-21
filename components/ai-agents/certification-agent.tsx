@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { ScrollReveal } from "@/components/scroll-reveal"
-import { FileText, CheckCircle, AlertTriangle, Clock, Shield, Activity } from "lucide-react"
+import { FileText, CheckCircle, AlertTriangle, Clock, Shield } from "lucide-react"
 
 interface Certification {
   id: string
@@ -19,7 +19,7 @@ interface Certification {
 }
 
 export function CertificationAgent() {
-  const [certifications, setCertifications] = useState<Certification[]>([
+  const [certifications] = useState<Certification[]>([
     {
       id: "cert-001",
       productName: "Premium Halal Beef",
@@ -49,7 +49,7 @@ export function CertificationAgent() {
     }
   ])
 
-  const [isActive, setIsActive] = useState(true)
+  const [isActive] = useState(true)
   const [scanProgress, setScanProgress] = useState(0)
 
   useEffect(() => {

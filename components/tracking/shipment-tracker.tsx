@@ -58,10 +58,9 @@ interface ShipmentData {
 
 interface ShipmentTrackerProps {
   shipmentId: string
-  onUpdateLocation?: (shipmentId: string, location: string) => void
 }
 
-export function ShipmentTracker({ shipmentId, onUpdateLocation }: ShipmentTrackerProps) {
+export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
   const [shipmentData, setShipmentData] = useState<ShipmentData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState("timeline")

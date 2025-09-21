@@ -69,12 +69,12 @@ export function MouseGlow({
 
     return () => {
       window.removeEventListener("mousemove", updateMousePosition)
-      document.documentElement.addEventListener("mouseleave", handleMouseLeave)
+      document.documentElement.removeEventListener("mouseleave", handleMouseLeave)
       if (animationFrameId.current) {
         cancelAnimationFrame(animationFrameId.current)
       }
     }
-  }, [isVisible, followSpeed, disabled])
+  }, [isVisible, followSpeed, disabled, mousePosition.x, mousePosition.y])
 
   useEffect(() => {
     if (pulseEffect && isVisible) {
@@ -88,7 +88,7 @@ export function MouseGlow({
         },
       })
     }
-  }, [controls, pulseEffect, pulseScale, pulseSpeed, isVisible])
+  }, [controls, pulseEffect, pulseScale, pulseSpeed, isVisible, setMousePosition])
 
   return (
     <AnimatePresence>

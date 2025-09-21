@@ -2,7 +2,8 @@
 const config = {
   plugins: {
     '@tailwindcss/postcss': {},
-    autoprefixer: {},
+    // Note: autoprefixer is no longer needed in TailwindCSS v4
+    // as it handles autoprefixing internally
   },
 }
 

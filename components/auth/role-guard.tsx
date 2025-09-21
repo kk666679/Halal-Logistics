@@ -15,7 +15,7 @@ export function RoleGuard({ children, allowedRoles, userRole, fallback }: RoleGu
   // Mock user role for demo - in real app this would come from auth context
   const currentUserRole = userRole || "supplier"
 
-  const hasAccess = allowedRoles.includes(currentUserRole as any)
+  const hasAccess = allowedRoles.includes(currentUserRole as "supplier" | "certifier" | "auditor" | "consumer" | "admin")
 
   if (!hasAccess) {
     if (fallback) {
@@ -31,7 +31,7 @@ export function RoleGuard({ children, allowedRoles, userRole, fallback }: RoleGu
             </div>
           </div>
           <CardTitle className="text-xl tracking-tight">Access Restricted</CardTitle>
-          <CardDescription>You don't have permission to access this feature.</CardDescription>
+          <CardDescription>You don&apos;t have permission to access this feature.</CardDescription>
         </CardHeader>
         <CardContent className="text-center">
           <p className="text-sm text-muted-foreground mb-4">

@@ -91,7 +91,13 @@ export function CertificationDashboard() {
     console.log("Download certificate:", id)
   }
 
-  const handleSubmitApplication = async (data: any) => {
+  const handleSubmitApplication = async (data: {
+    companyName: string
+    productName: string
+    productDescription: string
+    ingredients: string[]
+    manufacturingProcess: string
+  }) => {
     console.log("New certification application:", data)
     setShowApplicationForm(false)
   }

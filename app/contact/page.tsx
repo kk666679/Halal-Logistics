@@ -10,7 +10,7 @@ import { AnimatedBackground } from "@/components/ui/animated-background"
 import { GradientButton } from "@/components/ui-library/buttons/gradient-button"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { Button } from "@/components/ui/button"
+
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
@@ -131,7 +131,7 @@ export default function ContactPage() {
                   <CardHeader>
                     <CardTitle className="text-2xl tracking-tight">Send us a Message</CardTitle>
                     <CardDescription>
-                      Fill out the form below and we'll get back to you as soon as possible
+                      Fill out the form below and we&apos;ll get back to you as soon as possible
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -229,7 +229,7 @@ export default function ContactPage() {
                         <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
                         <h3 className="text-xl font-semibold mb-2">Message Sent Successfully!</h3>
                         <p className="text-muted-foreground opacity-70">
-                          Thank you for contacting us. We'll get back to you within 24 hours.
+                          Thank you for contacting us. We&apos;ll get back to you within 24 hours.
                         </p>
                       </motion.div>
                     )}
@@ -303,7 +303,7 @@ export default function ContactPage() {
                   Visit Our Office
                 </h2>
                 <p className="text-muted-foreground opacity-70 max-w-2xl mx-auto">
-                  Located in the heart of Dubai's business district, our headquarters serves as the
+                  Located in the heart of Dubai&apos;s business district, our headquarters serves as the
                   global hub for HalalChain operations and innovation.
                 </p>
               </div>

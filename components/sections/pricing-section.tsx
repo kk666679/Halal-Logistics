@@ -71,7 +71,7 @@ export function PricingSection() {
                 Simple, Transparent Pricing
               </h2>
               <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 opacity-70">
-                Choose the plan that's right for you and start building amazing user interfaces.
+                Choose the plan that&apos;s right for you and start building amazing user interfaces.
               </p>
             </div>
           </div>

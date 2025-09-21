@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Shield, Truck, FileCheck, Database, Users, BarChart3, Globe, Zap } from "lucide-react"
+import { Shield, Truck, FileCheck, Database, Users, Globe } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { AnimatedText } from "@/components/ui/animated-text"

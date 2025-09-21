@@ -41,7 +41,6 @@ interface CertificationApplicationFormProps {
 
 export function CertificationApplicationForm({ onSubmit }: CertificationApplicationFormProps) {
   const [isLoading, setIsLoading] = useState(false)
-  const [uploadedFiles, setUploadedFiles] = useState<string[]>([])
   const [newIngredient, setNewIngredient] = useState("")
 
   const form = useForm<CertificationFormData>({

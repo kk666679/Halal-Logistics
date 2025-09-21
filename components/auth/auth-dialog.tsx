@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { LoginForm } from "./login-form"
 import { SignupForm } from "./signup-form"
 
+
 interface AuthDialogProps {
   children: React.ReactNode
   defaultMode?: "login" | "signup"
@@ -16,13 +17,17 @@ export function AuthDialog({ children, defaultMode = "login" }: AuthDialogProps)
   const [isOpen, setIsOpen] = useState(false)
   const [mode, setMode] = useState<"login" | "signup">(defaultMode)
 
-  const handleLogin = async (data: any) => {
-    console.log("Login data:", data)
-    // TODO: Implement actual login logic
-    setIsOpen(false)
-  }
-
-  const handleSignup = async (data: any) => {
+  const handleSignup = async (data: {
+    firstName: string
+    lastName: string
+    email: string
+    password: string
+    confirmPassword: string
+    role: "supplier" | "certifier" | "auditor" | "consumer"
+    companyName?: string
+    companyDescription?: string
+    halalCertificationNumber?: string
+  }) => {
     console.log("Signup data:", data)
     // TODO: Implement actual signup logic
     setIsOpen(false)
@@ -33,7 +38,7 @@ export function AuthDialog({ children, defaultMode = "login" }: AuthDialogProps)
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-fit border-none bg-transparent shadow-none p-0">
         {mode === "login" ? (
-          <LoginForm onSubmit={handleLogin} onSwitchToSignup={() => setMode("signup")} />
+          <LoginForm onSwitchToSignup={() => setMode("signup")} />
         ) : (
           <SignupForm onSubmit={handleSignup} onSwitchToLogin={() => setMode("login")} />
         )}

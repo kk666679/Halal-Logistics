@@ -10,7 +10,7 @@ import { Progress } from "@/components/ui/progress"
 import { ProductCard } from "./product-card"
 import { AddProductForm } from "./add-product-form"
 import { productsService } from "@/services"
-import { Product, ProductStats } from "@/lib/types"
+import { Product, ProductStats, CreateProductData } from "@/lib/types"
 import {
   Package,
   Plus,
@@ -54,8 +54,8 @@ export function InventoryDashboard() {
 
       setProducts(productsData)
       setStats(statsData)
-    } catch (error: any) {
-      setError(error.message || 'Failed to fetch inventory data')
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'Failed to fetch inventory data')
       console.error('Error fetching inventory data:', error)
     } finally {
       setIsLoading(false)
@@ -89,12 +89,12 @@ export function InventoryDashboard() {
 
   const categories = ["all", ...Array.from(new Set(products.map((item) => item.category)))]
 
-  const handleAddProduct = async (data: any) => {
+  const handleAddProduct = async (data: CreateProductData) => {
     try {
       await productsService.create(data)
       setShowAddForm(false)
       await fetchData() // Refresh data after adding product
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Failed to add product:", error)
       throw error // Re-throw to let the form handle the error
     }

@@ -1,5 +1,4 @@
 import {
-  Command,
   AlertTriangle,
   ArrowRight,
   Check,

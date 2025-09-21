@@ -21,7 +21,7 @@ interface Shipment {
 }
 
 export function LogisticsAgent() {
-  const [shipments, setShipments] = useState<Shipment[]>([
+  const [shipments] = useState<Shipment[]>([
     {
       id: "ship-001",
       shipmentId: "HL-2024-001",
@@ -57,7 +57,7 @@ export function LogisticsAgent() {
     }
   ])
 
-  const [isActive, setIsActive] = useState(true)
+  const [isActive] = useState(true)
   const [optimizationProgress, setOptimizationProgress] = useState(0)
 
   useEffect(() => {
