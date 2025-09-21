@@ -6,7 +6,7 @@ import { ArrowRight, Shield, Truck, FileCheck } from "lucide-react"
 import { useEffect, useRef } from "react"
 
 import { SpotlightCard } from "@/components/ui/spotlight-card"
-import { ScrollReveal } from "@/components/scroll-reveal"
+
 import { MagneticButton } from "@/components/ui/magnetic-button"
 import { AnimatedBackground } from "@/components/ui/animated-background"
 import { GradientButton } from "@/components/ui-library/buttons/gradient-button"
@@ -72,15 +72,36 @@ export function HeroSection() {
         secondaryColor="rgba(99, 102, 241, 0.08)"
       />
 
-      <div className="container px-6 md:px-8">
+      {/* Full-width video background */}
+      <div className="absolute inset-0 z-0">
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ filter: "brightness(0.7) contrast(1.1)" }}
+          preload="metadata"
+          muted
+          loop
+          playsInline
+          autoPlay
+        >
+          <source
+            src="https://tdqwbwhr1jotkcsm.public.blob.vercel-storage.com/1758417682088.mp4"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
+        {/* Video overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-950/40 via-transparent to-indigo-950/40"></div>
+      </div>
+
+      <div className="container px-6 md:px-8 relative z-10">
         <div className="grid gap-8 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-          <ScrollReveal>
-            <motion.div
-              className="flex flex-col justify-center space-y-6"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
+          <motion.div
+            className="flex flex-col justify-center space-y-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
               <motion.div className="space-y-4" variants={itemVariants}>
                 <h1 className="text-4xl font-heading font-bold tracking-tighter sm:text-5xl xl:text-7xl/none">
                   <span className="gradient-text">Government-Certified Halal</span>
@@ -158,33 +179,18 @@ export function HeroSection() {
                   </div>
                 </motion.div>
               </motion.div>
-            </motion.div>
-          </ScrollReveal>
+          </motion.div>
 
-          <ScrollReveal delay={0.3}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <SpotlightCard className="relative h-[450px] w-full overflow-hidden rounded-xl border glassmorphic-card p-1 blockchain-glow">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-900/20 via-transparent to-indigo-900/20 z-10"></div>
 
-              {/* Video inside SpotlightCard */}
+              {/* Content inside SpotlightCard */}
               <div className="relative z-20 h-full w-full rounded-xl overflow-hidden">
-                <video
-                  ref={videoRef}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  style={{ filter: "brightness(0.7) contrast(1.1)" }}
-                  preload="metadata"
-                  muted
-                  loop
-                  playsInline
-                >
-                  <source
-                    src="/video/government-presentation.mp4"
-                    type="video/mp4"
-                  />
-                  Your browser does not support the video tag.
-                </video>
-
-                {/* Overlay content on top of video */}
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-950/40 via-transparent to-indigo-950/40 z-10"></div>
                 <div className="relative z-20 h-full w-full p-6 flex items-center justify-center">
                   <div className="grid grid-cols-2 gap-6 w-full max-w-md">
                     <motion.div
@@ -227,7 +233,7 @@ export function HeroSection() {
                 </div>
               </div>
             </SpotlightCard>
-          </ScrollReveal>
+          </motion.div>
         </div>
       </div>
     </section>
