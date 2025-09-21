@@ -177,7 +177,7 @@ export function HeroSection() {
                   playsInline
                 >
                   <source
-                    src="https://tdqwbwhr1jotkcsm.public.blob.vercel-storage.com/Presentation%20-%20Government-Certified%20Supply%20Chain_20250921_055838_0001.mp4"
+                    src="/video/government-presentation.mp4"
                     type="video/mp4"
                   />
                   Your browser does not support the video tag.
