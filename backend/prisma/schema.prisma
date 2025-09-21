@@ -1,0 +1,188 @@
+// Prisma schema file for HalalChain backend
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  SUPPLIER
+  CERTIFIER
+  AUDITOR
+  CONSUMER
+}
+
+enum ProductCategory {
+  MEAT_POULTRY
+  DAIRY_PRODUCTS
+  PROCESSED_FOODS
+  BEVERAGES
+  COSMETICS
+  PHARMACEUTICALS
+}
+
+enum CertificationStatus {
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  EXPIRED
+}
+
+enum CertificationType {
+  STANDARD
+  ORGANIC
+  PREMIUM
+}
+
+enum TrackingStatus {
+  PENDING
+  IN_TRANSIT
+  DELIVERED
+  DELAYED
+}
+
+model User {
+  id                  String   @id @default(cuid())
+  email               String   @unique
+  password            String
+  firstName           String
+  lastName            String
+  role                UserRole
+  companyName         String?
+  phoneNumber         String?
+  address             String?
+  isActive            Boolean  @default(true)
+  profileImage        String?
+  certificationNumber String?
+  licenseNumber       String?
+  refreshToken        String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Relations
+  products         Product[]
+  submittedCertifications Certification[] @relation("CertificationSubmitter")
+  assignedCertifications Certification[] @relation("CertificationAssignee")
+  tracking         Tracking[]
+  trackingEvents   TrackingEvent[]
+
+  @@map("users")
+}
+
+model Product {
+  id                    String         @id @default(cuid())
+  name                  String
+  category              ProductCategory
+  sku                   String
+  description           String?
+  currentStock          Int
+  minStock              Int
+  maxStock              Int
+  unit                  String
+  costPerUnit           Float
+  sellingPrice          Float
+  supplier              String
+  location              String
+  expiryDate            DateTime
+  batchNumber           String
+  halalCertified        Boolean        @default(true)
+  certificationNumber   String?
+  certificationExpiry   DateTime?
+  temperature           Float?
+  humidity              Float?
+  isActive              Boolean        @default(true)
+  createdBy             String
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+
+  // Relations
+  user User @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
+  @@map("products")
+}
+
+model Certification {
+  id                        String            @id @default(cuid())
+  productName               String
+  productCategory           String
+  companyName               String
+  companyAddress            String
+  contactPerson             String
+  contactEmail              String
+  contactPhone              String
+  productDescription        String
+  ingredients               String[]
+  manufacturingProcess      String
+  supplierDetails           String
+  requestedCertificationType CertificationType
+  expectedCompletionDate    DateTime
+  supportingDocuments       String[]          @default([])
+  status                    CertificationStatus @default(PENDING)
+  reviewComments            String?
+  approvedBy                String?
+  approvedAt                DateTime?
+  certificationNumber       String?
+  validUntil                DateTime?
+  submittedBy               String
+  assignedTo                String?
+  createdAt                 DateTime          @default(now())
+  updatedAt                 DateTime          @updatedAt
+
+  // Relations
+  submitter User @relation(fields: [submittedBy], references: [id], onDelete: Cascade, name: "CertificationSubmitter")
+  assignee  User? @relation(fields: [assignedTo], references: [id], onDelete: SetNull, name: "CertificationAssignee")
+
+  @@map("certifications")
+}
+
+model Tracking {
+  id                  String   @id @default(cuid())
+  productName         String
+  quantity            String
+  origin              String
+  destination         String
+  estimatedDelivery   DateTime
+  currentLocation     String?
+  status              TrackingStatus @default(PENDING)
+  progress            Int
+  halalCertified      Boolean  @default(true)
+  temperature         Json     @default("{\"current\": 0, \"min\": 0, \"max\": 0, \"unit\": \"C\"}")
+  carrier             String
+  blockchainVerified  Boolean  @default(true)
+  createdBy           String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Relations
+  creator TrackingEvent[]
+  user    User           @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
+  @@map("tracking")
+}
+
+model TrackingEvent {
+  id            String   @id @default(cuid())
+  location      String
+  timestamp     DateTime
+  status        TrackingStatus
+  temperature   Float?
+  humidity      Float?
+  description   String
+  blockchainHash String?
+  verifiedBy    String?
+  coordinates   Json?
+  trackingId    String
+  userId        String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  tracking Tracking @relation(fields: [trackingId], references: [id], onDelete: Cascade)
+  user     User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("tracking_events")
+}

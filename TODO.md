@@ -1,40 +1,55 @@
-# API Integration Implementation
+# Dependency Cleanup and Stack Alignment TODO
 
-## Phase 1: Setup and Configuration
+## 📋 Analysis Complete ✅
+- Frontend: Next.js 14.2.32 → 15, React 18 → 19, Missing TensorFlow.js
+- Backend: Mongoose → Prisma, Missing Redis/Kafka/Storage/Blockchain clients
+- All shadcn/ui components properly configured
 
-- [x] Install axios HTTP client library
-- [x] Create API configuration and base service
-- [x] Define TypeScript types for API responses
-- [x] Create authentication context and provider
+## 🚀 Implementation Steps
 
-## Phase 2: API Services Implementation
+### 1. Update Frontend Dependencies
+- [ ] Upgrade Next.js from 14.2.32 to 15
+- [ ] Upgrade React from 18 to 19
+- [ ] Add TensorFlow.js for AI/ML
+- [ ] Update React types to match React 19
 
-- [x] Implement authentication service (login, register, profile)
-- [x] Implement products service (CRUD operations, stats, low-stock)
-- [x] Implement certification service (applications, status management)
-- [x] Implement tracking service (shipments, events)
-- [x] Implement users service (profile, role-based access)
+### 2. Replace Backend Database Layer
+- [ ] Remove Mongoose and @nestjs/mongoose from backend/package.json
+- [ ] Install Prisma ORM and @prisma/client
+- [ ] Install PostgreSQL client (@types/pg)
+- [ ] Create Prisma schema file
+- [ ] Migrate existing schemas to Prisma format
 
-## Phase 3: Component Integration
+### 3. Add Missing Backend Dependencies
+- [ ] Install Redis client (ioredis)
+- [ ] Install Kafka client (@kafka/client)
+- [ ] Install AWS SDK for S3 storage
+- [ ] Install Web3.js for blockchain integration
 
-- [x] Update login/signup forms to use API services
-- [x] Update inventory dashboard to fetch real data
-- [ ] Update product forms to submit to API
-- [ ] Update certification components
-- [ ] Update tracking components
+### 4. Update Schema Files
+- [ ] Convert user.schema.ts to Prisma schema
+- [ ] Convert product.schema.ts to Prisma schema
+- [ ] Convert certification.schema.ts to Prisma schema
+- [ ] Convert tracking.schema.ts to Prisma schema
 
-## Phase 4: Error Handling and UX
+### 5. Update Service Implementations
+- [ ] Update users.service.ts to use Prisma
+- [ ] Update products.service.ts to use Prisma
+- [ ] Update certification.service.ts to use Prisma
+- [ ] Update tracking.service.ts to use Prisma
 
-- [ ] Add loading states to all API calls
-- [ ] Implement proper error handling
-- [ ] Add success/error notifications
-- [ ] Add authentication guards and redirects
+### 6. Clean Up and Reinstall
+- [ ] Remove package-lock.json files
+- [ ] Run npm install in both frontend and backend
+- [ ] Check for any dependency conflicts
 
-## API Endpoints Available
+### 7. Update Configuration
+- [ ] Update environment variables for new services
+- [ ] Update TypeScript configurations if needed
+- [ ] Update package.json scripts if needed
 
-- Base URL: http://localhost:3001/api
-- Auth: /auth/\* (register, login, profile)
-- Products: /products/\* (CRUD, stats, low-stock)
-- Certifications: /certifications/\* (CRUD, status, applications)
-- Tracking: /tracking/\* (CRUD, events, shipments)
-- Users: /users/\* (profile, role-based)
+### 8. Testing and Verification
+- [ ] Test frontend build and dev server
+- [ ] Test backend build and dev server
+- [ ] Verify database connections
+- [ ] Test API endpoints functionality

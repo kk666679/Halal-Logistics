@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { AnimatedText } from "@/components/ui/animated-text";
-import { motion } from "framer-motion";
+import { MotionDiv, MotionSpan } from "@/components/ui/motion-components";
 import { AnimatedGradientBorder } from "@/components/ui/animated-gradient-border";
 import { GradientButton } from "@/components/ui-library/buttons/gradient-button";
 import { OutlineButton } from "@/components/ui-library/buttons/button-variants";
@@ -32,7 +32,7 @@ export function CtaSection() {
                 delay={0.3}
               />
             </div>
-            <motion.div
+            <MotionDiv
               className="flex flex-col gap-6 sm:flex-row sm:gap-6 mt-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -48,7 +48,7 @@ export function CtaSection() {
               >
                 <Link href="#contact" className="flex items-center">
                   Request Demo
-                  <motion.span
+                  <MotionSpan
                     className="ml-2 inline-block"
                     animate={{ x: [0, 5, 0] }}
                     transition={{
@@ -58,7 +58,7 @@ export function CtaSection() {
                     }}
                   >
                     <ArrowRight className="h-4 w-4" />
-                  </motion.span>
+                  </MotionSpan>
                 </Link>
               </GradientButton>
 
@@ -75,7 +75,7 @@ export function CtaSection() {
                   <Link href="#services">Explore Solutions</Link>
                 </OutlineButton>
               </AnimatedGradientBorder>
-            </motion.div>
+            </MotionDiv>
           </div>
         </ScrollReveal>
       </div>
