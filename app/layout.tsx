@@ -62,7 +62,7 @@ export default function RootLayout({
             <SiteHeader />
             <Suspense>
               <PageTransition>
-                <div className="flex-1">{children}</div>
+                <main className="flex-1">{children}</main>
               </PageTransition>
             </Suspense>
             <SiteFooter />
