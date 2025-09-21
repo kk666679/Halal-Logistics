@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { ProductCard } from "./product-card"
 import { AddProductForm } from "./add-product-form"
+import { productsService } from "@/services"
+import { Product, ProductStats } from "@/lib/types"
 import {
   Package,
   Plus,
@@ -22,152 +24,61 @@ import {
   BarChart3,
   Archive,
   RefreshCw,
+  Loader2,
 } from "lucide-react"
-
-// Mock inventory data
-const mockInventory = [
-  {
-    id: "INV-001",
-    name: "Premium Halal Beef - Grade A",
-    category: "Meat & Poultry",
-    sku: "HB-001-A",
-    currentStock: 150,
-    minStock: 50,
-    maxStock: 500,
-    unit: "kg",
-    costPerUnit: 25.5,
-    sellingPrice: 35.0,
-    supplier: "Al-Barakah Farms",
-    location: "Warehouse A - Cold Storage",
-    expiryDate: "2024-02-15",
-    batchNumber: "BT-2024-001",
-    halalCertified: true,
-    certificationExpiry: "2024-12-31",
-    lastUpdated: "2024-01-16T10:30:00Z",
-    status: "in-stock",
-    temperature: 2,
-    humidity: 65,
-  },
-  {
-    id: "INV-002",
-    name: "Organic Halal Chicken Breast",
-    category: "Meat & Poultry",
-    sku: "HC-002-O",
-    currentStock: 25,
-    minStock: 30,
-    maxStock: 200,
-    unit: "kg",
-    costPerUnit: 18.75,
-    sellingPrice: 28.0,
-    supplier: "Green Crescent Poultry",
-    location: "Warehouse A - Cold Storage",
-    expiryDate: "2024-01-25",
-    batchNumber: "BT-2024-002",
-    halalCertified: true,
-    certificationExpiry: "2024-11-30",
-    lastUpdated: "2024-01-16T09:15:00Z",
-    status: "low-stock",
-    temperature: 1,
-    humidity: 62,
-  },
-  {
-    id: "INV-003",
-    name: "Halal Lamb Shoulder",
-    category: "Meat & Poultry",
-    sku: "HL-003-P",
-    currentStock: 0,
-    minStock: 20,
-    maxStock: 150,
-    unit: "kg",
-    costPerUnit: 32.0,
-    sellingPrice: 45.0,
-    supplier: "Heritage Halal Meats",
-    location: "Warehouse B - Cold Storage",
-    expiryDate: "2024-01-20",
-    batchNumber: "BT-2024-003",
-    halalCertified: true,
-    certificationExpiry: "2024-10-15",
-    lastUpdated: "2024-01-15T16:45:00Z",
-    status: "out-of-stock",
-    temperature: 0,
-    humidity: 58,
-  },
-  {
-    id: "INV-004",
-    name: "Halal Processed Sausages",
-    category: "Processed Foods",
-    sku: "HP-004-S",
-    currentStock: 200,
-    minStock: 100,
-    maxStock: 800,
-    unit: "packs",
-    costPerUnit: 8.5,
-    sellingPrice: 12.99,
-    supplier: "Crescent Foods Ltd",
-    location: "Warehouse C - Dry Storage",
-    expiryDate: "2024-03-10",
-    batchNumber: "BT-2024-004",
-    halalCertified: true,
-    certificationExpiry: "2024-09-30",
-    lastUpdated: "2024-01-16T14:20:00Z",
-    status: "in-stock",
-    temperature: 18,
-    humidity: 45,
-  },
-  {
-    id: "INV-005",
-    name: "Halal Dairy Cheese",
-    category: "Dairy Products",
-    sku: "HD-005-C",
-    currentStock: 75,
-    minStock: 40,
-    maxStock: 300,
-    unit: "wheels",
-    costPerUnit: 15.25,
-    sellingPrice: 22.5,
-    supplier: "Pure Dairy Co",
-    location: "Warehouse A - Refrigerated",
-    expiryDate: "2024-01-22",
-    batchNumber: "BT-2024-005",
-    halalCertified: true,
-    certificationExpiry: "2024-08-15",
-    lastUpdated: "2024-01-16T11:10:00Z",
-    status: "expiring-soon",
-    temperature: 4,
-    humidity: 70,
-  },
-]
 
 export function InventoryDashboard() {
   const [activeTab, setActiveTab] = useState("overview")
   const [searchQuery, setSearchQuery] = useState("")
   const [showAddForm, setShowAddForm] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState("all")
+  const [products, setProducts] = useState<Product[]>([])
+  const [stats, setStats] = useState<ProductStats | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const getInventoryStats = () => {
-    const totalProducts = mockInventory.length
-    const totalValue = mockInventory.reduce((sum, item) => sum + item.currentStock * item.costPerUnit, 0)
-    const lowStockItems = mockInventory.filter((item) => item.currentStock <= item.minStock).length
-    const outOfStockItems = mockInventory.filter((item) => item.currentStock === 0).length
-    const expiringSoonItems = mockInventory.filter((item) => {
-      const expiryDate = new Date(item.expiryDate)
-      const today = new Date()
-      const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
-      return daysUntilExpiry <= 7 && daysUntilExpiry > 0
-    }).length
+  // Fetch products and stats on component mount
+  useEffect(() => {
+    fetchData()
+  }, [])
 
-    return {
-      totalProducts,
-      totalValue,
-      lowStockItems,
-      outOfStockItems,
-      expiringSoonItems,
+  const fetchData = async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+
+      const [productsData, statsData] = await Promise.all([
+        productsService.getAll(),
+        productsService.getStats()
+      ])
+
+      setProducts(productsData)
+      setStats(statsData)
+    } catch (error: any) {
+      setError(error.message || 'Failed to fetch inventory data')
+      console.error('Error fetching inventory data:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  const stats = getInventoryStats()
+  const getInventoryStats = () => {
+    if (!stats) {
+      return {
+        totalProducts: 0,
+        totalValue: 0,
+        lowStockItems: 0,
+        outOfStockItems: 0,
+        expiringSoonItems: 0,
+      }
+    }
 
-  const filteredInventory = mockInventory.filter((item) => {
+    return stats
+  }
+
+  const inventoryStats = getInventoryStats()
+
+  const filteredInventory = products.filter((item) => {
     const matchesSearch =
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -176,11 +87,17 @@ export function InventoryDashboard() {
     return matchesSearch && matchesCategory
   })
 
-  const categories = ["all", ...Array.from(new Set(mockInventory.map((item) => item.category)))]
+  const categories = ["all", ...Array.from(new Set(products.map((item) => item.category)))]
 
   const handleAddProduct = async (data: any) => {
-    console.log("Adding new product:", data)
-    setShowAddForm(false)
+    try {
+      await productsService.create(data)
+      setShowAddForm(false)
+      await fetchData() // Refresh data after adding product
+    } catch (error: any) {
+      console.error("Failed to add product:", error)
+      throw error // Re-throw to let the form handle the error
+    }
   }
 
   if (showAddForm) {
@@ -193,6 +110,33 @@ export function InventoryDashboard() {
           </Button>
         </div>
         <AddProductForm onSubmit={handleAddProduct} />
+      </div>
+    )
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading inventory data...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold mb-2">Error Loading Data</h3>
+          <p className="text-muted-foreground mb-4">{error}</p>
+          <Button onClick={fetchData} variant="outline">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Try Again
+          </Button>
+        </div>
       </div>
     )
   }
@@ -225,7 +169,7 @@ export function InventoryDashboard() {
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <Package className="h-5 w-5 text-primary" />
-                  <span className="text-2xl font-bold">{stats.totalProducts}</span>
+                  <span className="text-2xl font-bold">{inventoryStats.totalProducts}</span>
                 </div>
               </CardContent>
             </Card>
@@ -237,7 +181,7 @@ export function InventoryDashboard() {
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <TrendingUp className="h-5 w-5 text-green-500" />
-                  <span className="text-2xl font-bold text-green-500">${stats.totalValue.toLocaleString()}</span>
+                  <span className="text-2xl font-bold text-green-500">${inventoryStats.totalValue.toLocaleString()}</span>
                 </div>
               </CardContent>
             </Card>
@@ -249,7 +193,7 @@ export function InventoryDashboard() {
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <TrendingDown className="h-5 w-5 text-yellow-500" />
-                  <span className="text-2xl font-bold text-yellow-500">{stats.lowStockItems}</span>
+                  <span className="text-2xl font-bold text-yellow-500">{inventoryStats.lowStockItems}</span>
                 </div>
               </CardContent>
             </Card>
@@ -261,7 +205,7 @@ export function InventoryDashboard() {
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <AlertTriangle className="h-5 w-5 text-red-500" />
-                  <span className="text-2xl font-bold text-red-500">{stats.outOfStockItems}</span>
+                  <span className="text-2xl font-bold text-red-500">{inventoryStats.outOfStockItems}</span>
                 </div>
               </CardContent>
             </Card>
@@ -273,7 +217,7 @@ export function InventoryDashboard() {
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <Calendar className="h-5 w-5 text-orange-500" />
-                  <span className="text-2xl font-bold text-orange-500">{stats.expiringSoonItems}</span>
+                  <span className="text-2xl font-bold text-orange-500">{inventoryStats.expiringSoonItems}</span>
                 </div>
               </CardContent>
             </Card>
@@ -287,8 +231,8 @@ export function InventoryDashboard() {
                 <CardDescription>Items requiring immediate attention</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                {mockInventory
-                  .filter((item) => item.status === "out-of-stock" || item.status === "low-stock")
+                {products
+                  .filter((item) => item.currentStock <= item.minStock)
                   .slice(0, 3)
                   .map((item) => (
                     <div key={item.id} className="flex items-center justify-between p-2 rounded bg-muted/20">
@@ -301,12 +245,12 @@ export function InventoryDashboard() {
                       <Badge
                         variant="outline"
                         className={
-                          item.status === "out-of-stock"
+                          item.currentStock === 0
                             ? "bg-red-500/20 text-red-400 border-red-500/30"
                             : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
                         }
                       >
-                        {item.status === "out-of-stock" ? "Out" : "Low"}
+                        {item.currentStock === 0 ? "Out" : "Low"}
                       </Badge>
                     </div>
                   ))}
@@ -319,8 +263,13 @@ export function InventoryDashboard() {
                 <CardDescription>Items expiring within 7 days</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                {mockInventory
-                  .filter((item) => item.status === "expiring-soon")
+                {products
+                  .filter((item) => {
+                    const expiryDate = new Date(item.expiryDate)
+                    const today = new Date()
+                    const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+                    return daysUntilExpiry <= 7 && daysUntilExpiry > 0
+                  })
                   .slice(0, 3)
                   .map((item) => (
                     <div key={item.id} className="flex items-center justify-between p-2 rounded bg-muted/20">
@@ -349,17 +298,19 @@ export function InventoryDashboard() {
                   <span className="text-sm">Certified Products</span>
                   <Badge variant="outline" className="bg-green-500/20 text-green-400 border-green-500/30">
                     <Shield className="h-3 w-3 mr-1" />
-                    {mockInventory.filter((item) => item.halalCertified).length}
+                    {products.filter((item) => item.halalCertified).length}
                   </Badge>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>Compliance Rate</span>
-                    <span>100%</span>
+                    <span>{products.length > 0 ? Math.round((products.filter((item) => item.halalCertified).length / products.length) * 100) : 0}%</span>
                   </div>
-                  <Progress value={100} className="h-2" />
+                  <Progress value={products.length > 0 ? (products.filter((item) => item.halalCertified).length / products.length) * 100 : 0} className="h-2" />
                 </div>
-                <div className="text-xs text-muted-foreground">All products maintain valid Halal certification</div>
+                <div className="text-xs text-muted-foreground">
+                  {products.filter((item) => item.halalCertified).length} of {products.length} products maintain valid Halal certification
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -425,8 +376,8 @@ export function InventoryDashboard() {
                 <CardDescription>Products with low or no stock</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {mockInventory
-                  .filter((item) => item.status === "out-of-stock" || item.status === "low-stock")
+                {products
+                  .filter((item) => item.currentStock <= item.minStock)
                   .map((item) => (
                     <div key={item.id} className="p-4 rounded-lg bg-muted/20 border border-muted/40">
                       <div className="flex items-start justify-between mb-2">
@@ -437,12 +388,12 @@ export function InventoryDashboard() {
                         <Badge
                           variant="outline"
                           className={
-                            item.status === "out-of-stock"
+                            item.currentStock === 0
                               ? "bg-red-500/20 text-red-400 border-red-500/30"
                               : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
                           }
                         >
-                          {item.status === "out-of-stock" ? "Out of Stock" : "Low Stock"}
+                          {item.currentStock === 0 ? "Out of Stock" : "Low Stock"}
                         </Badge>
                       </div>
                       <div className="grid grid-cols-3 gap-4 text-sm">
@@ -487,8 +438,13 @@ export function InventoryDashboard() {
                 <CardDescription>Products expiring soon</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {mockInventory
-                  .filter((item) => item.status === "expiring-soon")
+                {products
+                  .filter((item) => {
+                    const expiryDate = new Date(item.expiryDate)
+                    const today = new Date()
+                    const daysUntilExpiry = Math.ceil((expiryDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
+                    return daysUntilExpiry <= 7 && daysUntilExpiry > 0
+                  })
                   .map((item) => (
                     <div key={item.id} className="p-4 rounded-lg bg-muted/20 border border-muted/40">
                       <div className="flex items-start justify-between mb-2">

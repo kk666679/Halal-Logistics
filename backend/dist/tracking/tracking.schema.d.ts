@@ -43,21 +43,13 @@ export declare class Tracking {
     trackingEvents: TrackingEvent[];
     createdBy: string;
 }
-export declare const TrackingSchema: import("mongoose").Schema<Tracking, import("mongoose").Model<Tracking, any, any, any, Document<unknown, any, Tracking, any, {}> & Tracking & Required<{
+export declare const TrackingSchema: import("mongoose").Schema<Tracking, import("mongoose").Model<Tracking, any, any, any, Document<unknown, any, Tracking> & Tracking & Required<{
     _id: string;
-}> & {
-    __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Tracking, Document<unknown, {}, import("mongoose").FlatRecord<Tracking>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<Tracking> & Required<{
+}>, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Tracking, Document<unknown, {}, import("mongoose").FlatRecord<Tracking>> & import("mongoose").FlatRecord<Tracking> & Required<{
     _id: string;
-}> & {
-    __v: number;
-}>;
-export declare const TrackingEventSchema: import("mongoose").Schema<TrackingEvent, import("mongoose").Model<TrackingEvent, any, any, any, Document<unknown, any, TrackingEvent, any, {}> & TrackingEvent & Required<{
+}>>;
+export declare const TrackingEventSchema: import("mongoose").Schema<TrackingEvent, import("mongoose").Model<TrackingEvent, any, any, any, Document<unknown, any, TrackingEvent> & TrackingEvent & Required<{
     _id: string;
-}> & {
-    __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, TrackingEvent, Document<unknown, {}, import("mongoose").FlatRecord<TrackingEvent>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<TrackingEvent> & Required<{
+}>, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, TrackingEvent, Document<unknown, {}, import("mongoose").FlatRecord<TrackingEvent>> & import("mongoose").FlatRecord<TrackingEvent> & Required<{
     _id: string;
-}> & {
-    __v: number;
-}>;
+}>>;

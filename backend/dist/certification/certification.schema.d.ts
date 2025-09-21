@@ -37,12 +37,8 @@ export declare class Certification {
     submittedBy: string;
     assignedTo?: string;
 }
-export declare const CertificationSchema: import("mongoose").Schema<Certification, import("mongoose").Model<Certification, any, any, any, Document<unknown, any, Certification, any, {}> & Certification & Required<{
+export declare const CertificationSchema: import("mongoose").Schema<Certification, import("mongoose").Model<Certification, any, any, any, Document<unknown, any, Certification> & Certification & Required<{
     _id: string;
-}> & {
-    __v: number;
-}, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Certification, Document<unknown, {}, import("mongoose").FlatRecord<Certification>, {}, import("mongoose").ResolveSchemaOptions<import("mongoose").DefaultSchemaOptions>> & import("mongoose").FlatRecord<Certification> & Required<{
+}>, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Certification, Document<unknown, {}, import("mongoose").FlatRecord<Certification>> & import("mongoose").FlatRecord<Certification> & Required<{
     _id: string;
-}> & {
-    __v: number;
-}>;
+}>>;

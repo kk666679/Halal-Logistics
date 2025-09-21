@@ -5,11 +5,14 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Eye, EyeOff, Shield, Loader2 } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { useAuth } from "@/contexts/auth-context"
+import { LoginCredentials } from "@/lib/types"
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -22,13 +25,15 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>
 
 interface LoginFormProps {
-  onSubmit?: (data: LoginFormData) => Promise<void>
   onSwitchToSignup?: () => void
 }
 
-export function LoginForm({ onSubmit, onSwitchToSignup }: LoginFormProps) {
+export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const { login } = useAuth()
+  const router = useRouter()
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -41,10 +46,36 @@ export function LoginForm({ onSubmit, onSwitchToSignup }: LoginFormProps) {
 
   const handleSubmit = async (data: LoginFormData) => {
     setIsLoading(true)
+    setError(null)
+
     try {
-      await onSubmit?.(data)
-    } catch (error) {
-      console.error("Login failed:", error)
+      const credentials: LoginCredentials = {
+        email: data.email,
+        password: data.password,
+        role: data.role,
+      }
+
+      await login(credentials)
+
+      // Redirect based on user role
+      switch (data.role) {
+        case "supplier":
+          router.push("/inventory")
+          break
+        case "certifier":
+          router.push("/certification")
+          break
+        case "auditor":
+          router.push("/tracking")
+          break
+        case "consumer":
+          router.push("/tracking")
+          break
+        default:
+          router.push("/")
+      }
+    } catch (error: any) {
+      setError(error.message || "Login failed. Please try again.")
     } finally {
       setIsLoading(false)
     }
@@ -71,6 +102,12 @@ export function LoginForm({ onSubmit, onSwitchToSignup }: LoginFormProps) {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+            {error && (
+              <div className="p-3 rounded-md bg-red-500/20 border border-red-500/30 text-red-400 text-sm">
+                {error}
+              </div>
+            )}
+
             <FormField
               control={form.control}
               name="email"
