@@ -1,12 +1,18 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Truck, MapPin, Thermometer, Package } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ScrollReveal } from "@/components/scroll-reveal"
-import { AnimatedText } from "@/components/ui/animated-text"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
+import { motion } from "framer-motion";
+import { Truck, MapPin, Thermometer, Package } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 
 export function TrackingSection() {
   const trackingData = [
@@ -42,10 +48,13 @@ export function TrackingSection() {
       compliance: "Awaiting Delivery",
       progress: 25,
     },
-  ]
+  ];
 
   return (
-    <section id="tracking" className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/30 overflow-hidden">
+    <section
+      id="tracking"
+      className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/30 overflow-hidden"
+    >
       <div className="container px-6 md:px-8">
         <ScrollReveal>
           <div className="flex flex-col items-center justify-center space-y-6 text-center mb-12">
@@ -73,19 +82,29 @@ export function TrackingSection() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-xl tracking-tight">Shipment #HL-2024-001</CardTitle>
-                    <CardDescription>Premium Halal Beef - 500kg</CardDescription>
+                    <CardTitle className="text-xl tracking-tight">
+                      Shipment #HL-2024-001
+                    </CardTitle>
+                    <CardDescription>
+                      Premium Halal Beef - 500kg
+                    </CardDescription>
                   </div>
-                  <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Halal Certified</Badge>
+                  <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                    Halal Certified
+                  </Badge>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-4 mb-4">
                   <Package className="h-5 w-5 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Overall Progress</span>
+                  <span className="text-sm text-muted-foreground">
+                    Overall Progress
+                  </span>
                 </div>
                 <Progress value={75} className="h-2 mb-2" />
-                <p className="text-sm text-muted-foreground">75% Complete - In Transit to Dubai</p>
+                <p className="text-sm text-muted-foreground">
+                  75% Complete - In Transit to Dubai
+                </p>
               </CardContent>
             </Card>
           </ScrollReveal>
@@ -122,13 +141,19 @@ export function TrackingSection() {
                             )}
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-medium tracking-tight">{item.location}</h3>
-                            <p className="text-sm text-muted-foreground mt-1">{item.timestamp}</p>
+                            <h3 className="font-medium tracking-tight">
+                              {item.location}
+                            </h3>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              {item.timestamp}
+                            </p>
                             <div className="flex items-center space-x-4 mt-2">
                               {item.temperature !== "N/A" && (
                                 <div className="flex items-center space-x-1">
                                   <Thermometer className="h-4 w-4 text-blue-400" />
-                                  <span className="text-sm">{item.temperature}</span>
+                                  <span className="text-sm">
+                                    {item.temperature}
+                                  </span>
                                 </div>
                               )}
                               <Badge
@@ -167,5 +192,5 @@ export function TrackingSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

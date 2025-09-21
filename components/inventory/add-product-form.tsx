@@ -1,20 +1,40 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Button } from "@/components/ui/button"
-import { Package } from "lucide-react"
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Package } from "lucide-react";
 
 const productSchema = z.object({
   name: z.string().min(2, "Product name must be at least 2 characters"),
   category: z.enum(
-    ["Meat & Poultry", "Dairy Products", "Processed Foods", "Beverages", "Cosmetics", "Pharmaceuticals"],
+    [
+      "Meat & Poultry",
+      "Dairy Products",
+      "Processed Foods",
+      "Beverages",
+      "Cosmetics",
+      "Pharmaceuticals",
+    ],
     {
       required_error: "Please select a category",
     },
@@ -36,16 +56,16 @@ const productSchema = z.object({
   certificationExpiry: z.string().optional(),
   temperature: z.number().optional(),
   humidity: z.number().optional(),
-})
+});
 
-type ProductFormData = z.infer<typeof productSchema>
+type ProductFormData = z.infer<typeof productSchema>;
 
 interface AddProductFormProps {
-  onSubmit?: (data: ProductFormData) => Promise<void>
+  onSubmit?: (data: ProductFormData) => Promise<void>;
 }
 
 export function AddProductForm({ onSubmit }: AddProductFormProps) {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -70,30 +90,65 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
       temperature: undefined,
       humidity: undefined,
     },
-  })
+  });
 
   const handleSubmit = async (data: ProductFormData) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      await onSubmit?.(data)
-      form.reset()
+      await onSubmit?.(data);
+      form.reset();
     } catch (error) {
-      console.error("Failed to add product:", error)
+      console.error("Failed to add product:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const categories = [
-    { value: "Meat & Poultry", label: "Meat & Poultry", color: "bg-red-500/20 text-red-400" },
-    { value: "Dairy Products", label: "Dairy Products", color: "bg-blue-500/20 text-blue-400" },
-    { value: "Processed Foods", label: "Processed Foods", color: "bg-amber-500/20 text-amber-400" },
-    { value: "Beverages", label: "Beverages", color: "bg-cyan-500/20 text-cyan-400" },
-    { value: "Cosmetics", label: "Cosmetics", color: "bg-pink-500/20 text-pink-400" },
-    { value: "Pharmaceuticals", label: "Pharmaceuticals", color: "bg-purple-500/20 text-purple-400" },
-  ]
+    {
+      value: "Meat & Poultry",
+      label: "Meat & Poultry",
+      color: "bg-red-500/20 text-red-400",
+    },
+    {
+      value: "Dairy Products",
+      label: "Dairy Products",
+      color: "bg-blue-500/20 text-blue-400",
+    },
+    {
+      value: "Processed Foods",
+      label: "Processed Foods",
+      color: "bg-amber-500/20 text-amber-400",
+    },
+    {
+      value: "Beverages",
+      label: "Beverages",
+      color: "bg-cyan-500/20 text-cyan-400",
+    },
+    {
+      value: "Cosmetics",
+      label: "Cosmetics",
+      color: "bg-pink-500/20 text-pink-400",
+    },
+    {
+      value: "Pharmaceuticals",
+      label: "Pharmaceuticals",
+      color: "bg-purple-500/20 text-purple-400",
+    },
+  ];
 
-  const units = ["kg", "g", "lbs", "oz", "pieces", "packs", "boxes", "liters", "ml", "gallons"]
+  const units = [
+    "kg",
+    "g",
+    "lbs",
+    "oz",
+    "pieces",
+    "packs",
+    "boxes",
+    "liters",
+    "ml",
+    "gallons",
+  ];
 
   return (
     <Card className="w-full max-w-4xl">
@@ -102,14 +157,21 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
           <Package className="h-6 w-6 mr-2 text-primary" />
           Add New Product
         </CardTitle>
-        <CardDescription>Add a new product to your inventory management system</CardDescription>
+        <CardDescription>
+          Add a new product to your inventory management system
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-8"
+          >
             {/* Basic Information */}
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-primary">Basic Information</h3>
+              <h3 className="text-lg font-semibold text-primary">
+                Basic Information
+              </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
@@ -165,7 +227,9 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                               onChange={field.onChange}
                               className="sr-only"
                             />
-                            <div className="text-sm font-medium">{category.label}</div>
+                            <div className="text-sm font-medium">
+                              {category.label}
+                            </div>
                           </label>
                         ))}
                       </div>
@@ -182,7 +246,10 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                   <FormItem>
                     <FormLabel>Description (Optional)</FormLabel>
                     <FormControl>
-                      <Textarea {...field} placeholder="Enter product description" />
+                      <Textarea
+                        {...field}
+                        placeholder="Enter product description"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -192,7 +259,9 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
 
             {/* Stock Information */}
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-primary">Stock Information</h3>
+              <h3 className="text-lg font-semibold text-primary">
+                Stock Information
+              </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <FormField
@@ -206,7 +275,9 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                           {...field}
                           type="number"
                           min="0"
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -225,7 +296,9 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                           {...field}
                           type="number"
                           min="0"
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -244,7 +317,9 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                           {...field}
                           type="number"
                           min="1"
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -259,7 +334,10 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     <FormItem>
                       <FormLabel>Unit</FormLabel>
                       <FormControl>
-                        <select {...field} className="w-full px-3 py-2 rounded-md border border-input bg-background">
+                        <select
+                          {...field}
+                          className="w-full px-3 py-2 rounded-md border border-input bg-background"
+                        >
                           {units.map((unit) => (
                             <option key={unit} value={unit}>
                               {unit}
@@ -291,7 +369,9 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                           type="number"
                           step="0.01"
                           min="0.01"
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -311,7 +391,9 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                           type="number"
                           step="0.01"
                           min="0.01"
-                          onChange={(e) => field.onChange(Number(e.target.value))}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -323,7 +405,9 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
 
             {/* Supplier and Location */}
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-primary">Supplier & Storage</h3>
+              <h3 className="text-lg font-semibold text-primary">
+                Supplier & Storage
+              </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
@@ -347,7 +431,10 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                     <FormItem>
                       <FormLabel>Storage Location</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter storage location" />
+                        <Input
+                          {...field}
+                          placeholder="Enter storage location"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -358,7 +445,9 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
 
             {/* Batch and Expiry */}
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-primary">Batch & Expiry</h3>
+              <h3 className="text-lg font-semibold text-primary">
+                Batch & Expiry
+              </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
@@ -393,7 +482,9 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
 
             {/* Halal Certification */}
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-primary">Halal Certification</h3>
+              <h3 className="text-lg font-semibold text-primary">
+                Halal Certification
+              </h3>
 
               <FormField
                 control={form.control}
@@ -423,7 +514,10 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                       <FormItem>
                         <FormLabel>Certification Number</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Enter certification number" />
+                          <Input
+                            {...field}
+                            placeholder="Enter certification number"
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -449,7 +543,9 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
 
             {/* Storage Conditions */}
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-primary">Storage Conditions (Optional)</h3>
+              <h3 className="text-lg font-semibold text-primary">
+                Storage Conditions (Optional)
+              </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
@@ -463,7 +559,13 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                           {...field}
                           type="number"
                           step="0.1"
-                          onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                          onChange={(e) =>
+                            field.onChange(
+                              e.target.value
+                                ? Number(e.target.value)
+                                : undefined,
+                            )
+                          }
                           placeholder="Enter temperature"
                         />
                       </FormControl>
@@ -484,7 +586,13 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                           type="number"
                           min="0"
                           max="100"
-                          onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                          onChange={(e) =>
+                            field.onChange(
+                              e.target.value
+                                ? Number(e.target.value)
+                                : undefined,
+                            )
+                          }
                           placeholder="Enter humidity"
                         />
                       </FormControl>
@@ -496,7 +604,12 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
             </div>
 
             <div className="flex justify-end space-x-4">
-              <Button type="button" variant="outline" onClick={() => form.reset()} disabled={isLoading}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => form.reset()}
+                disabled={isLoading}
+              >
                 Reset
               </Button>
               <Button type="submit" disabled={isLoading}>
@@ -507,5 +620,5 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
         </Form>
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import { apiClient } from '@/lib/api';
-import { User, UserRole } from '@/lib/types';
+import { apiClient } from "@/lib/api";
+import { User, UserRole } from "@/lib/types";
 
 export class UsersService {
   /**
@@ -7,34 +7,43 @@ export class UsersService {
    */
   async getProfile(): Promise<User> {
     try {
-      const response = await apiClient.get<User>('/users/profile');
+      const response = await apiClient.get<User>("/users/profile");
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch profile');
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch profile",
+      );
     }
   }
 
   /**
    * Update user profile
    */
-  async updateProfile(updateData: Partial<{
-    name: string;
-    email: string;
-    phone: string;
-    address: string;
-    company: string;
-  }>): Promise<User> {
+  async updateProfile(
+    updateData: Partial<{
+      name: string;
+      email: string;
+      phone: string;
+      address: string;
+      company: string;
+    }>,
+  ): Promise<User> {
     try {
-      const response = await apiClient.patch<User>('/users/profile', updateData);
+      const response = await apiClient.patch<User>(
+        "/users/profile",
+        updateData,
+      );
 
       if (response.success) {
         // Update stored user data
-        localStorage.setItem('user', JSON.stringify(response.data));
+        localStorage.setItem("user", JSON.stringify(response.data));
       }
 
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to update profile');
+      throw new Error(
+        error.response?.data?.message || "Failed to update profile",
+      );
     }
   }
 
@@ -46,7 +55,9 @@ export class UsersService {
       const response = await apiClient.get<User[]>(`/users/role/${role}`);
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch users by role');
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch users by role",
+      );
     }
   }
 
@@ -63,10 +74,12 @@ export class UsersService {
         totalUsers: number;
         byRole: Record<UserRole, number>;
         recentRegistrations: number;
-      }>('/users/stats');
+      }>("/users/stats");
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch user stats');
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch user stats",
+      );
     }
   }
 
@@ -75,10 +88,10 @@ export class UsersService {
    */
   async getAll(): Promise<User[]> {
     try {
-      const response = await apiClient.get<User[]>('/users');
+      const response = await apiClient.get<User[]>("/users");
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch users');
+      throw new Error(error.response?.data?.message || "Failed to fetch users");
     }
   }
 }

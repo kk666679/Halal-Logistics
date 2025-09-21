@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useRef, useState } from "react"
-import { motion } from "framer-motion"
-import { cn } from "@/lib/utils"
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface GlowingTiltCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  tiltAmount?: number
-  glareOpacity?: number
-  perspective?: number
+  tiltAmount?: number;
+  glareOpacity?: number;
+  perspective?: number;
 }
 
 export function GlowingTiltCard({
@@ -20,31 +20,31 @@ export function GlowingTiltCard({
   perspective = 1000,
   ...props
 }: GlowingTiltCardProps) {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 })
-  const [glarePosition, setGlarePosition] = useState({ x: 0, y: 0 })
-  const [isHovered, setIsHovered] = useState(false)
-  const cardRef = useRef<HTMLDivElement>(null)
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [glarePosition, setGlarePosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return
+    if (!cardRef.current) return;
 
-    const rect = cardRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
-    const tiltX = ((y - centerY) / centerY) * tiltAmount
-    const tiltY = ((centerX - x) / centerX) * tiltAmount
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const tiltX = ((y - centerY) / centerY) * tiltAmount;
+    const tiltY = ((centerX - x) / centerX) * tiltAmount;
 
-    setTilt({ x: tiltX, y: tiltY })
-    setGlarePosition({ x, y })
-    setIsHovered(true)
-  }
+    setTilt({ x: tiltX, y: tiltY });
+    setGlarePosition({ x, y });
+    setIsHovered(true);
+  };
 
   const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 })
-    setIsHovered(false)
-  }
+    setTilt({ x: 0, y: 0 });
+    setIsHovered(false);
+  };
 
   return (
     <motion.div
@@ -60,7 +60,9 @@ export function GlowingTiltCard({
         rotateX: tilt.x,
         rotateY: tilt.y,
         scale: isHovered ? 1.03 : 1,
-        boxShadow: isHovered ? "0 20px 30px rgba(0, 0, 0, 0.2)" : "0 10px 20px rgba(0, 0, 0, 0.1)",
+        boxShadow: isHovered
+          ? "0 20px 30px rgba(0, 0, 0, 0.2)"
+          : "0 10px 20px rgba(0, 0, 0, 0.1)",
       }}
       transition={{
         type: "spring",
@@ -79,5 +81,5 @@ export function GlowingTiltCard({
       />
       {children}
     </motion.div>
-  )
+  );
 }

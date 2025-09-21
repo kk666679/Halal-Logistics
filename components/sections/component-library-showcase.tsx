@@ -1,24 +1,45 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ScrollReveal } from "@/components/scroll-reveal"
-import { AnimatedText } from "@/components/ui/animated-text"
-import { AnimatedGradientBorder } from "@/components/ui/animated-gradient-border"
-import { ImageCard } from "@/components/ui-library/cards/image-card"
-import { CtaCard } from "@/components/ui-library/cards/cta-card"
-import { ProgressCard } from "@/components/ui-library/cards/progress-card"
-import { GradientButton } from "@/components/ui-library/buttons/gradient-button"
-import { PrimaryButton, SecondaryButton, OutlineButton } from "@/components/ui-library/buttons/button-variants"
-import { MagneticButton } from "@/components/ui/magnetic-button"
-import { ScrollAnimation, StaggerContainer, StaggerItem } from "@/components/ui-library/animations/scroll-animations"
-import { Sparkles, Zap, Layers, Palette, ArrowRight, CheckCircle, BookOpen, Lightbulb, Rocket } from "lucide-react"
+import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { AnimatedGradientBorder } from "@/components/ui/animated-gradient-border";
+import { ImageCard } from "@/components/ui-library/cards/image-card";
+import { CtaCard } from "@/components/ui-library/cards/cta-card";
+import { ProgressCard } from "@/components/ui-library/cards/progress-card";
+import { GradientButton } from "@/components/ui-library/buttons/gradient-button";
+import {
+  PrimaryButton,
+  SecondaryButton,
+  OutlineButton,
+} from "@/components/ui-library/buttons/button-variants";
+import { MagneticButton } from "@/components/ui/magnetic-button";
+import {
+  ScrollAnimation,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/ui-library/animations/scroll-animations";
+import {
+  Sparkles,
+  Zap,
+  Layers,
+  Palette,
+  ArrowRight,
+  CheckCircle,
+  BookOpen,
+  Lightbulb,
+  Rocket,
+} from "lucide-react";
 
 export function ComponentLibraryShowcase() {
-  const [activeTab, setActiveTab] = useState("cards")
+  const [activeTab, setActiveTab] = useState("cards");
 
   return (
-    <section id="components" className="w-full py-12 md:py-24 lg:py-32 overflow-hidden">
+    <section
+      id="components"
+      className="w-full py-12 md:py-24 lg:py-32 overflow-hidden"
+    >
       <div className="container px-6 md:px-8">
         <ScrollReveal>
           <div className="flex flex-col items-center justify-center space-y-6 text-center mb-12">
@@ -42,7 +63,11 @@ export function ComponentLibraryShowcase() {
 
         <ScrollReveal delay={0.2}>
           <div className="mt-8">
-            <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs
+              defaultValue={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full"
+            >
               <div className="flex justify-center mb-12">
                 <AnimatedGradientBorder
                   colors={["#dc2626", "#4b5563", "#dc2626", "#4b5563"]}
@@ -61,9 +86,12 @@ export function ComponentLibraryShowcase() {
               {/* Cards Tab */}
               <TabsContent value="cards" className="space-y-12">
                 <div className="space-y-4">
-                  <h3 className="text-2xl font-medium tracking-tight text-center">Image Cards</h3>
+                  <h3 className="text-2xl font-medium tracking-tight text-center">
+                    Image Cards
+                  </h3>
                   <p className="text-muted-foreground text-center max-w-3xl mx-auto mb-8">
-                    Versatile cards with images and text, perfect for showcasing content, products, or features
+                    Versatile cards with images and text, perfect for showcasing
+                    content, products, or features
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -106,9 +134,12 @@ export function ComponentLibraryShowcase() {
                 </div>
 
                 <div className="space-y-4 pt-8">
-                  <h3 className="text-2xl font-medium tracking-tight text-center">CTA Cards</h3>
+                  <h3 className="text-2xl font-medium tracking-tight text-center">
+                    CTA Cards
+                  </h3>
                   <p className="text-muted-foreground text-center max-w-3xl mx-auto mb-8">
-                    Attention-grabbing call-to-action cards designed to convert visitors into customers
+                    Attention-grabbing call-to-action cards designed to convert
+                    visitors into customers
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -156,28 +187,39 @@ export function ComponentLibraryShowcase() {
               {/* Buttons Tab */}
               <TabsContent value="buttons" className="space-y-12">
                 <div className="space-y-4">
-                  <h3 className="text-2xl font-medium tracking-tight text-center">Button Styles</h3>
+                  <h3 className="text-2xl font-medium tracking-tight text-center">
+                    Button Styles
+                  </h3>
                   <p className="text-muted-foreground text-center max-w-3xl mx-auto mb-8">
-                    A comprehensive collection of button styles for every use case
+                    A comprehensive collection of button styles for every use
+                    case
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <ScrollAnimation type="slide" direction="left" delay={0.1}>
                       <div className="p-6 rounded-xl border glassmorphic-card border-glow-red">
-                        <h4 className="text-lg font-medium mb-6">Primary & Secondary</h4>
+                        <h4 className="text-lg font-medium mb-6">
+                          Primary & Secondary
+                        </h4>
                         <div className="flex flex-wrap gap-6">
                           <StaggerContainer>
                             <StaggerItem>
                               <PrimaryButton>Primary Button</PrimaryButton>
                             </StaggerItem>
                             <StaggerItem>
-                              <PrimaryButton leftIcon={<Zap className="h-4 w-4" />}>With Icon</PrimaryButton>
+                              <PrimaryButton
+                                leftIcon={<Zap className="h-4 w-4" />}
+                              >
+                                With Icon
+                              </PrimaryButton>
                             </StaggerItem>
                             <StaggerItem>
                               <SecondaryButton>Secondary</SecondaryButton>
                             </StaggerItem>
                             <StaggerItem>
-                              <SecondaryButton rightIcon={<ArrowRight className="h-4 w-4" />}>
+                              <SecondaryButton
+                                rightIcon={<ArrowRight className="h-4 w-4" />}
+                              >
                                 Learn More
                               </SecondaryButton>
                             </StaggerItem>
@@ -188,20 +230,30 @@ export function ComponentLibraryShowcase() {
 
                     <ScrollAnimation type="slide" direction="right" delay={0.1}>
                       <div className="p-6 rounded-xl border glassmorphic-card border-glow-blue">
-                        <h4 className="text-lg font-medium mb-6">Outline & Gradient</h4>
+                        <h4 className="text-lg font-medium mb-6">
+                          Outline & Gradient
+                        </h4>
                         <div className="flex flex-wrap gap-6">
                           <StaggerContainer>
                             <StaggerItem>
                               <OutlineButton>Outline Button</OutlineButton>
                             </StaggerItem>
                             <StaggerItem>
-                              <OutlineButton leftIcon={<BookOpen className="h-4 w-4" />}>Documentation</OutlineButton>
+                              <OutlineButton
+                                leftIcon={<BookOpen className="h-4 w-4" />}
+                              >
+                                Documentation
+                              </OutlineButton>
                             </StaggerItem>
                             <StaggerItem>
                               <GradientButton>Gradient</GradientButton>
                             </StaggerItem>
                             <StaggerItem>
-                              <GradientButton gradientFrom="from-blue-500" gradientTo="to-purple-600" glowAmount={4}>
+                              <GradientButton
+                                gradientFrom="from-blue-500"
+                                gradientTo="to-purple-600"
+                                glowAmount={4}
+                              >
                                 With Glow
                               </GradientButton>
                             </StaggerItem>
@@ -212,16 +264,22 @@ export function ComponentLibraryShowcase() {
 
                     <ScrollAnimation type="slide" direction="up" delay={0.3}>
                       <div className="p-6 rounded-xl border glassmorphic-card border-glow-purple">
-                        <h4 className="text-lg font-medium mb-6">Interactive Buttons</h4>
+                        <h4 className="text-lg font-medium mb-6">
+                          Interactive Buttons
+                        </h4>
                         <div className="flex flex-wrap gap-6">
                           <StaggerContainer>
                             <StaggerItem>
                               <MagneticButton className="neumorphic-button-primary">
-                                <span className="px-6 py-2.5">Magnetic Button</span>
+                                <span className="px-6 py-2.5">
+                                  Magnetic Button
+                                </span>
                               </MagneticButton>
                             </StaggerItem>
                             <StaggerItem>
-                              <GradientButton borderWidth={2}>Outline Gradient</GradientButton>
+                              <GradientButton borderWidth={2}>
+                                Outline Gradient
+                              </GradientButton>
                             </StaggerItem>
                           </StaggerContainer>
                         </div>
@@ -230,7 +288,9 @@ export function ComponentLibraryShowcase() {
 
                     <ScrollAnimation type="slide" direction="up" delay={0.4}>
                       <div className="p-6 rounded-xl border glassmorphic-card border-glow-green">
-                        <h4 className="text-lg font-medium mb-6">States & Variations</h4>
+                        <h4 className="text-lg font-medium mb-6">
+                          States & Variations
+                        </h4>
                         <div className="flex flex-wrap gap-6">
                           <StaggerContainer>
                             <StaggerItem>
@@ -239,7 +299,9 @@ export function ComponentLibraryShowcase() {
                               </PrimaryButton>
                             </StaggerItem>
                             <StaggerItem>
-                              <SecondaryButton disabled>Disabled</SecondaryButton>
+                              <SecondaryButton disabled>
+                                Disabled
+                              </SecondaryButton>
                             </StaggerItem>
                             <StaggerItem>
                               <OutlineButton size="sm">Small</OutlineButton>
@@ -258,9 +320,12 @@ export function ComponentLibraryShowcase() {
               {/* Progress Tab */}
               <TabsContent value="progress" className="space-y-12">
                 <div className="space-y-4">
-                  <h3 className="text-2xl font-medium tracking-tight text-center">Progress Cards</h3>
+                  <h3 className="text-2xl font-medium tracking-tight text-center">
+                    Progress Cards
+                  </h3>
                   <p className="text-muted-foreground text-center max-w-3xl mx-auto mb-8">
-                    Visualize progress, completion status, and metrics with these interactive cards
+                    Visualize progress, completion status, and metrics with
+                    these interactive cards
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -349,5 +414,5 @@ export function ComponentLibraryShowcase() {
         </ScrollReveal>
       </div>
     </section>
-  )
+  );
 }

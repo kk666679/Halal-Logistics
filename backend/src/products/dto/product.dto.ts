@@ -1,5 +1,14 @@
-import { IsString, IsEnum, IsOptional, IsNumber, IsBoolean, IsDateString, Min, Max } from 'class-validator';
-import { ProductCategory } from '../product.schema';
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsNumber,
+  IsBoolean,
+  IsDateString,
+  Min,
+  Max,
+} from "class-validator";
+import { ProductCategory } from "../product.schema";
 
 export class CreateProductDto {
   @IsString()

@@ -11,7 +11,7 @@ export interface User {
   updatedAt: Date;
 }
 
-export type UserRole = 'supplier' | 'certifier' | 'auditor' | 'consumer';
+export type UserRole = "supplier" | "certifier" | "auditor" | "consumer";
 
 export interface LoginCredentials {
   email: string;
@@ -37,12 +37,12 @@ export interface AuthResponse {
 
 // Product Types
 export type ProductCategory =
-  | 'Meat & Poultry'
-  | 'Dairy Products'
-  | 'Processed Foods'
-  | 'Beverages'
-  | 'Cosmetics'
-  | 'Pharmaceuticals';
+  | "Meat & Poultry"
+  | "Dairy Products"
+  | "Processed Foods"
+  | "Beverages"
+  | "Cosmetics"
+  | "Pharmaceuticals";
 
 export interface Product {
   id: string;
@@ -106,8 +106,17 @@ export interface ProductStats {
 }
 
 // Certification Types
-export type CertificationStatus = 'pending' | 'under_review' | 'approved' | 'rejected' | 'expired';
-export type CertificationType = 'halal' | 'organic' | 'gmo_free' | 'sustainability';
+export type CertificationStatus =
+  | "pending"
+  | "under_review"
+  | "approved"
+  | "rejected"
+  | "expired";
+export type CertificationType =
+  | "halal"
+  | "organic"
+  | "gmo_free"
+  | "sustainability";
 
 export interface Certification {
   id: string;
@@ -139,7 +148,8 @@ export interface CreateCertificationData {
   manufacturingProcess: string;
 }
 
-export interface UpdateCertificationData extends Partial<CreateCertificationData> {
+export interface UpdateCertificationData
+  extends Partial<CreateCertificationData> {
   id: string;
 }
 
@@ -151,11 +161,23 @@ export interface CertificationStats {
 }
 
 // Tracking Types
-export type TrackingStatus = 'pending' | 'in_transit' | 'delivered' | 'delayed' | 'cancelled';
+export type TrackingStatus =
+  | "pending"
+  | "in_transit"
+  | "delivered"
+  | "delayed"
+  | "cancelled";
 
 export interface TrackingEvent {
   id: string;
-  type: 'pickup' | 'departure' | 'arrival' | 'customs' | 'delivery' | 'delay' | 'issue';
+  type:
+    | "pickup"
+    | "departure"
+    | "arrival"
+    | "customs"
+    | "delivery"
+    | "delay"
+    | "issue";
   description: string;
   location: string;
   timestamp: Date;
@@ -195,7 +217,7 @@ export interface CreateTrackingData {
 }
 
 export interface AddTrackingEventData {
-  type: TrackingEvent['type'];
+  type: TrackingEvent["type"];
   description: string;
   location: string;
   notes?: string;

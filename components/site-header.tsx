@@ -1,50 +1,54 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
-import { List, X } from "lucide-react"
+import * as React from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { List, X } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ModeToggle } from "@/components/mode-toggle"
-import { Icons } from "@/components/icons"
-import { useScrollPosition } from "@/hooks/use-scroll-position"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/mode-toggle";
+import { Icons } from "@/components/icons";
+import { useScrollPosition } from "@/hooks/use-scroll-position";
 
 const navItems = [
   { name: "Home", href: "#home" },
   { name: "Ai Agent", href: "#ai-agent" },
   { name: "Services", href: "#services" },
   { name: "Technology", href: "#technology" },
-  { name: "Case Studies", href: "#case-studies" }, 
+  { name: "Case Studies", href: "#case-studies" },
   { name: "Pricing", href: "#pricing" },
   { name: "Blog", href: "#blog" },
   { name: "FAQ", href: "#faq" },
-]
+];
 
 export function SiteHeader() {
-  const scrollPosition = useScrollPosition()
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
+  const scrollPosition = useScrollPosition();
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen)
-  }
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   const closeMobileMenu = () => {
-    setMobileMenuOpen(false)
-  }
+    setMobileMenuOpen(false);
+  };
 
   return (
     <header
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-300",
-        scrollPosition > 10 ? "bg-background/80 backdrop-blur-lg border-b border-border/40" : "bg-transparent",
+        scrollPosition > 10
+          ? "bg-background/80 backdrop-blur-lg border-b border-border/40"
+          : "bg-transparent",
       )}
     >
       <div className="container px-4 md:px-6 flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center space-x-2 z-10">
           <Icons.logo className="h-6 w-6" />
-          <span className="font-heading text-xl tracking-tight">HalalChain</span>
+          <span className="font-heading text-xl tracking-tight">
+            HalalChain
+          </span>
         </Link>
 
         {/* Desktop Navigation - Hidden on mobile */}
@@ -55,10 +59,10 @@ export function SiteHeader() {
               href={item.href}
               className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
               onClick={(e) => {
-                e.preventDefault()
+                e.preventDefault();
                 document.querySelector(item.href)?.scrollIntoView({
                   behavior: "smooth",
-                })
+                });
               }}
             >
               {item.name}
@@ -72,7 +76,12 @@ export function SiteHeader() {
 
           {/* Desktop CTA Buttons - Hidden on mobile */}
           <div className="hidden md:flex items-center space-x-2">
-            <Button variant="ghost" size="sm" className="neumorphic-button" asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="neumorphic-button"
+              asChild
+            >
               <Link href="#login">Sign in</Link>
             </Button>
             <Button size="sm" className="neumorphic-button-primary" asChild>
@@ -81,7 +90,11 @@ export function SiteHeader() {
                 <motion.div
                   className="ml-1"
                   animate={{ x: [0, 3, 0] }}
-                  transition={{ repeat: Number.POSITIVE_INFINITY, repeatDelay: 3, duration: 0.8 }}
+                  transition={{
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatDelay: 3,
+                    duration: 0.8,
+                  }}
                 >
                   →
                 </motion.div>
@@ -95,7 +108,11 @@ export function SiteHeader() {
             onClick={toggleMobileMenu}
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X className="text-foreground h-5 w-5" /> : <List className="text-foreground h-5 w-5" />}
+            {mobileMenuOpen ? (
+              <X className="text-foreground h-5 w-5" />
+            ) : (
+              <List className="text-foreground h-5 w-5" />
+            )}
           </button>
         </div>
       </div>
@@ -118,7 +135,11 @@ export function SiteHeader() {
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
             >
               <div className="flex items-center justify-between p-4 border-b border-border">
-                <Link href="/" className="flex items-center space-x-2" onClick={closeMobileMenu}>
+                <Link
+                  href="/"
+                  className="flex items-center space-x-2"
+                  onClick={closeMobileMenu}
+                >
                   <Icons.logo className="h-6 w-6" />
                   <span className="font-heading text-lg">HalalChain</span>
                 </Link>
@@ -139,11 +160,11 @@ export function SiteHeader() {
                       href={item.href}
                       className="px-4 py-3 text-base font-medium text-foreground hover:bg-muted rounded-md transition-colors"
                       onClick={(e) => {
-                        e.preventDefault()
+                        e.preventDefault();
                         document.querySelector(item.href)?.scrollIntoView({
                           behavior: "smooth",
-                        })
-                        closeMobileMenu()
+                        });
+                        closeMobileMenu();
                       }}
                     >
                       {item.name}
@@ -171,5 +192,5 @@ export function SiteHeader() {
         )}
       </AnimatePresence>
     </header>
-  )
+  );
 }

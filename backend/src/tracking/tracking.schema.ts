@@ -1,13 +1,13 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from "mongoose";
 
 export type TrackingDocument = Tracking & Document;
 
 export enum TrackingStatus {
-  PENDING = 'pending',
-  IN_TRANSIT = 'in-transit',
-  DELIVERED = 'delivered',
-  DELAYED = 'delayed',
+  PENDING = "pending",
+  IN_TRANSIT = "in-transit",
+  DELIVERED = "delivered",
+  DELAYED = "delayed",
 }
 
 @Schema({ timestamps: true })
@@ -67,7 +67,11 @@ export class Tracking {
   @Prop()
   currentLocation: string;
 
-  @Prop({ required: true, enum: TrackingStatus, default: TrackingStatus.PENDING })
+  @Prop({
+    required: true,
+    enum: TrackingStatus,
+    default: TrackingStatus.PENDING,
+  })
   status: TrackingStatus;
 
   @Prop({ required: true, min: 0, max: 100 })
@@ -81,15 +85,15 @@ export class Tracking {
       current: { type: Number, required: true },
       min: { type: Number, required: true },
       max: { type: Number, required: true },
-      unit: { type: String, enum: ['C', 'F'], default: 'C' }
+      unit: { type: String, enum: ["C", "F"], default: "C" },
     },
-    required: true
+    required: true,
   })
   temperature: {
     current: number;
     min: number;
     max: number;
-    unit: 'C' | 'F';
+    unit: "C" | "F";
   };
 
   @Prop({ required: true })
@@ -101,7 +105,7 @@ export class Tracking {
   @Prop({ type: [TrackingEvent], default: [] })
   trackingEvents: TrackingEvent[];
 
-  @Prop({ type: String, ref: 'User' })
+  @Prop({ type: String, ref: "User" })
   createdBy: string;
 }
 

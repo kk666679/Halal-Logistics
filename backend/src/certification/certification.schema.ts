@@ -1,20 +1,20 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from "mongoose";
 
 export type CertificationDocument = Certification & Document;
 
 export enum CertificationStatus {
-  PENDING = 'pending',
-  UNDER_REVIEW = 'under_review',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
-  EXPIRED = 'expired',
+  PENDING = "pending",
+  UNDER_REVIEW = "under_review",
+  APPROVED = "approved",
+  REJECTED = "rejected",
+  EXPIRED = "expired",
 }
 
 export enum CertificationType {
-  STANDARD = 'standard',
-  ORGANIC = 'organic',
-  PREMIUM = 'premium',
+  STANDARD = "standard",
+  ORGANIC = "organic",
+  PREMIUM = "premium",
 }
 
 @Schema({ timestamps: true })
@@ -63,7 +63,11 @@ export class Certification {
   @Prop({ type: [String], default: [] })
   supportingDocuments: string[];
 
-  @Prop({ required: true, enum: CertificationStatus, default: CertificationStatus.PENDING })
+  @Prop({
+    required: true,
+    enum: CertificationStatus,
+    default: CertificationStatus.PENDING,
+  })
   status: CertificationStatus;
 
   @Prop()
@@ -81,10 +85,10 @@ export class Certification {
   @Prop()
   validUntil?: Date;
 
-  @Prop({ type: String, ref: 'User' })
+  @Prop({ type: String, ref: "User" })
   submittedBy: string;
 
-  @Prop({ type: String, ref: 'User' })
+  @Prop({ type: String, ref: "User" })
   assignedTo?: string;
 }
 

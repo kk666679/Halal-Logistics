@@ -1,10 +1,10 @@
-"use client"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { ScrollReveal } from "@/components/scroll-reveal"
-import { AnimatedText } from "@/components/ui/animated-text"
-import { motion } from "framer-motion"
-import { AnimatedBackground } from "@/components/ui/animated-background"
+"use client";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { motion } from "framer-motion";
+import { AnimatedBackground } from "@/components/ui/animated-background";
 
 export function TestimonialsSection() {
   const testimonials = [
@@ -29,10 +29,13 @@ export function TestimonialsSection() {
         "Our team's productivity has increased significantly since we started using this library. The documentation is excellent and the components are robust.",
       avatar: "MR",
     },
-  ]
+  ];
 
   return (
-    <section id="testimonials" className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/30 overflow-hidden">
+    <section
+      id="testimonials"
+      className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/30 overflow-hidden"
+    >
       <AnimatedBackground variant="waves" color="rgba(220, 38, 38, 0.05)" />
 
       <div className="container px-4 md:px-6">
@@ -59,7 +62,10 @@ export function TestimonialsSection() {
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((testimonial, index) => (
             <ScrollReveal key={index} delay={index * 0.1}>
-              <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
+              <motion.div
+                whileHover={{ y: -5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <Card className="h-full glassmorphic-card group">
                   <CardHeader>
                     <div className="flex items-center gap-4">
@@ -79,7 +85,9 @@ export function TestimonialsSection() {
                         <h3 className="text-lg font-medium tracking-tight group-hover:text-red-500 transition-colors">
                           {testimonial.name}
                         </h3>
-                        <p className="text-sm text-muted-foreground opacity-70">{testimonial.role}</p>
+                        <p className="text-sm text-muted-foreground opacity-70">
+                          {testimonial.role}
+                        </p>
                       </div>
                     </div>
                   </CardHeader>
@@ -95,5 +103,5 @@ export function TestimonialsSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

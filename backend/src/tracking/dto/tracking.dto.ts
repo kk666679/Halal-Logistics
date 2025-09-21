@@ -1,5 +1,15 @@
-import { IsString, IsEnum, IsOptional, IsNumber, IsBoolean, IsDateString, IsObject, Min, Max } from 'class-validator';
-import { TrackingStatus } from '../tracking.schema';
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsNumber,
+  IsBoolean,
+  IsDateString,
+  IsObject,
+  Min,
+  Max,
+} from "class-validator";
+import { TrackingStatus } from "../tracking.schema";
 
 export class CreateTrackingDto {
   @IsString()
@@ -37,7 +47,7 @@ export class CreateTrackingDto {
     current: number;
     min: number;
     max: number;
-    unit: 'C' | 'F';
+    unit: "C" | "F";
   };
 
   @IsString()
@@ -92,7 +102,7 @@ export class UpdateTrackingDto {
     current: number;
     min: number;
     max: number;
-    unit: 'C' | 'F';
+    unit: "C" | "F";
   };
 
   @IsOptional()

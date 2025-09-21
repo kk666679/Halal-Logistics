@@ -1,38 +1,40 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { User, UserDocument, UserRole } from './user.schema';
-import { UpdateProfileDto } from '../auth/dto/auth.dto';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { User, UserDocument, UserRole } from "./user.schema";
+import { UpdateProfileDto } from "../auth/dto/auth.dto";
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
-  ) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async findById(id: string): Promise<User> {
-    const user = await this.userModel.findById(id).select('-password');
+    const user = await this.userModel.findById(id).select("-password");
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
     return user;
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.userModel.findOne({ email }).select('-password');
+    return this.userModel.findOne({ email }).select("-password");
   }
 
   async findByRole(role: UserRole): Promise<User[]> {
-    return this.userModel.find({ role, isActive: true }).select('-password');
+    return this.userModel.find({ role, isActive: true }).select("-password");
   }
 
   async updateUser(id: string, updateData: UpdateProfileDto): Promise<User> {
     const user = await this.userModel
       .findByIdAndUpdate(id, updateData, { new: true })
-      .select('-password');
+      .select("-password");
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
 
     return user;
@@ -41,17 +43,17 @@ export class UsersService {
   async deactivateUser(id: string): Promise<User> {
     const user = await this.userModel
       .findByIdAndUpdate(id, { isActive: false }, { new: true })
-      .select('-password');
+      .select("-password");
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException("User not found");
     }
 
     return user;
   }
 
   async getAllUsers(): Promise<User[]> {
-    return this.userModel.find({ isActive: true }).select('-password');
+    return this.userModel.find({ isActive: true }).select("-password");
   }
 
   async getUserStats(): Promise<{
@@ -62,7 +64,10 @@ export class UsersService {
 
     const byRole = {} as Record<UserRole, number>;
     for (const role of Object.values(UserRole)) {
-      byRole[role] = await this.userModel.countDocuments({ role, isActive: true });
+      byRole[role] = await this.userModel.countDocuments({
+        role,
+        isActive: true,
+      });
     }
 
     return { total, byRole };

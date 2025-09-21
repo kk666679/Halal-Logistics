@@ -1,19 +1,25 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ScrollReveal } from "@/components/scroll-reveal"
-import { AnimatedText } from "@/components/ui/animated-text"
-import { AnimatedBackground } from "@/components/ui/animated-background"
-import { GradientButton } from "@/components/ui-library/buttons/gradient-button"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { AnimatedBackground } from "@/components/ui/animated-background";
+import { GradientButton } from "@/components/ui-library/buttons/gradient-button";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -21,74 +27,85 @@ export default function ContactPage() {
     email: "",
     company: "",
     subject: "",
-    message: ""
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+    e.preventDefault();
+    setIsSubmitting(true);
 
     // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+    setIsSubmitting(false);
+    setIsSubmitted(true);
 
     // Reset form after 3 seconds
     setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({ name: "", email: "", company: "", subject: "", message: "" })
-    }, 3000)
-  }
+      setIsSubmitted(false);
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        subject: "",
+        message: "",
+      });
+    }, 3000);
+  };
 
   const contactInfo = [
     {
       icon: <Mail className="h-6 w-6" />,
       title: "Email",
       details: ["hello@halalchain.com", "support@halalchain.com"],
-      description: "Send us an email anytime"
+      description: "Send us an email anytime",
     },
     {
       icon: <Phone className="h-6 w-6" />,
       title: "Phone",
       details: ["+1 (555) 123-4567", "+1 (555) 765-4321"],
-      description: "Mon-Fri from 8am to 6pm"
+      description: "Mon-Fri from 8am to 6pm",
     },
     {
       icon: <MapPin className="h-6 w-6" />,
       title: "Office",
       details: ["123 Business Ave", "Dubai, UAE 12345"],
-      description: "Visit our headquarters"
+      description: "Visit our headquarters",
     },
     {
       icon: <Clock className="h-6 w-6" />,
       title: "Business Hours",
       details: ["Monday - Friday", "8:00 AM - 6:00 PM GST"],
-      description: "24/7 support available"
-    }
-  ]
+      description: "24/7 support available",
+    },
+  ];
 
   const faqs = [
     {
       question: "How quickly do you respond to inquiries?",
-      answer: "We typically respond to all inquiries within 24 hours during business days."
+      answer:
+        "We typically respond to all inquiries within 24 hours during business days.",
     },
     {
       question: "Do you offer custom implementations?",
-      answer: "Yes, we provide custom solutions tailored to your specific business needs."
+      answer:
+        "Yes, we provide custom solutions tailored to your specific business needs.",
     },
     {
       question: "What regions do you serve?",
-      answer: "We serve clients globally with local support in major markets including Middle East, Asia Pacific, Europe, and North America."
-    }
-  ]
+      answer:
+        "We serve clients globally with local support in major markets including Middle East, Asia Pacific, Europe, and North America.",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -97,7 +114,10 @@ export default function ContactPage() {
       <main className="pt-16">
         {/* Hero Section */}
         <section className="relative w-full py-12 md:py-24 lg:py-32 overflow-hidden">
-          <AnimatedBackground variant="waves" color="rgba(99, 102, 241, 0.05)" />
+          <AnimatedBackground
+            variant="waves"
+            color="rgba(99, 102, 241, 0.05)"
+          />
 
           <div className="container px-6 md:px-8">
             <ScrollReveal>
@@ -129,9 +149,12 @@ export default function ContactPage() {
               <ScrollReveal>
                 <Card className="glassmorphic-card">
                   <CardHeader>
-                    <CardTitle className="text-2xl tracking-tight">Send us a Message</CardTitle>
+                    <CardTitle className="text-2xl tracking-tight">
+                      Send us a Message
+                    </CardTitle>
                     <CardDescription>
-                      Fill out the form below and we&apos;ll get back to you as soon as possible
+                      Fill out the form below and we&apos;ll get back to you as
+                      soon as possible
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -227,9 +250,12 @@ export default function ContactPage() {
                         className="text-center py-8"
                       >
                         <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-                        <h3 className="text-xl font-semibold mb-2">Message Sent Successfully!</h3>
+                        <h3 className="text-xl font-semibold mb-2">
+                          Message Sent Successfully!
+                        </h3>
                         <p className="text-muted-foreground opacity-70">
-                          Thank you for contacting us. We&apos;ll get back to you within 24 hours.
+                          Thank you for contacting us. We&apos;ll get back to
+                          you within 24 hours.
                         </p>
                       </motion.div>
                     )}
@@ -243,7 +269,9 @@ export default function ContactPage() {
               <ScrollReveal>
                 <Card className="glassmorphic-card">
                   <CardHeader>
-                    <CardTitle className="text-xl tracking-tight">Get in Touch</CardTitle>
+                    <CardTitle className="text-xl tracking-tight">
+                      Get in Touch
+                    </CardTitle>
                     <CardDescription>
                       Multiple ways to reach our team
                     </CardDescription>
@@ -257,7 +285,10 @@ export default function ContactPage() {
                         <div className="flex-1">
                           <h4 className="font-medium text-sm">{info.title}</h4>
                           {info.details.map((detail, i) => (
-                            <p key={i} className="text-sm text-muted-foreground opacity-70">
+                            <p
+                              key={i}
+                              className="text-sm text-muted-foreground opacity-70"
+                            >
                               {detail}
                             </p>
                           ))}
@@ -275,16 +306,18 @@ export default function ContactPage() {
               <ScrollReveal>
                 <Card className="glassmorphic-card">
                   <CardHeader>
-                    <CardTitle className="text-xl tracking-tight">Quick Questions</CardTitle>
-                    <CardDescription>
-                      Common inquiries answered
-                    </CardDescription>
+                    <CardTitle className="text-xl tracking-tight">
+                      Quick Questions
+                    </CardTitle>
+                    <CardDescription>Common inquiries answered</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {faqs.map((faq, index) => (
                       <div key={index} className="space-y-2">
                         <h4 className="font-medium text-sm">{faq.question}</h4>
-                        <p className="text-xs text-muted-foreground opacity-70">{faq.answer}</p>
+                        <p className="text-xs text-muted-foreground opacity-70">
+                          {faq.answer}
+                        </p>
                       </div>
                     ))}
                   </CardContent>
@@ -303,8 +336,9 @@ export default function ContactPage() {
                   Visit Our Office
                 </h2>
                 <p className="text-muted-foreground opacity-70 max-w-2xl mx-auto">
-                  Located in the heart of Dubai&apos;s business district, our headquarters serves as the
-                  global hub for HalalChain operations and innovation.
+                  Located in the heart of Dubai&apos;s business district, our
+                  headquarters serves as the global hub for HalalChain
+                  operations and innovation.
                 </p>
               </div>
             </ScrollReveal>
@@ -317,7 +351,9 @@ export default function ContactPage() {
                       <MapPin className="h-12 w-12 text-muted-foreground mx-auto" />
                       <div>
                         <h3 className="font-medium">Dubai Headquarters</h3>
-                        <p className="text-sm text-muted-foreground">123 Business Avenue, Dubai, UAE</p>
+                        <p className="text-sm text-muted-foreground">
+                          123 Business Avenue, Dubai, UAE
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -330,5 +366,5 @@ export default function ContactPage() {
 
       <SiteFooter />
     </div>
-  )
+  );
 }

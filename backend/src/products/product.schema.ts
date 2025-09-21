@@ -1,15 +1,15 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from "mongoose";
 
 export type ProductDocument = Product & Document;
 
 export enum ProductCategory {
-  MEAT_POULTRY = 'Meat & Poultry',
-  DAIRY_PRODUCTS = 'Dairy Products',
-  PROCESSED_FOODS = 'Processed Foods',
-  BEVERAGES = 'Beverages',
-  COSMETICS = 'Cosmetics',
-  PHARMACEUTICALS = 'Pharmaceuticals',
+  MEAT_POULTRY = "Meat & Poultry",
+  DAIRY_PRODUCTS = "Dairy Products",
+  PROCESSED_FOODS = "Processed Foods",
+  BEVERAGES = "Beverages",
+  COSMETICS = "Cosmetics",
+  PHARMACEUTICALS = "Pharmaceuticals",
 }
 
 @Schema({ timestamps: true })
@@ -76,7 +76,7 @@ export class Product {
   @Prop({ default: true })
   isActive: boolean;
 
-  @Prop({ type: String, ref: 'User' })
+  @Prop({ type: String, ref: "User" })
   createdBy: string;
 }
 

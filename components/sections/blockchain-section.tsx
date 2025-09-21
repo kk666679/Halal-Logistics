@@ -1,11 +1,17 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Link2, Shield, Database, Zap } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ScrollReveal } from "@/components/scroll-reveal"
-import { AnimatedText } from "@/components/ui/animated-text"
-import { AnimatedBackground } from "@/components/ui/animated-background"
+import { motion } from "framer-motion";
+import { Link2, Shield, Database, Zap } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { AnimatedBackground } from "@/components/ui/animated-background";
 
 export function BlockchainSection() {
   const blockchainFeatures = [
@@ -26,19 +32,24 @@ export function BlockchainSection() {
     {
       icon: <Database className="h-8 w-8 text-green-500" />,
       title: "Decentralized Storage",
-      description: "Distributed ledger technology ensures data availability and prevents single points of failure.",
+      description:
+        "Distributed ledger technology ensures data availability and prevents single points of failure.",
       highlight: "Enterprise Grade",
     },
     {
       icon: <Zap className="h-8 w-8 text-purple-500" />,
       title: "Real-time Verification",
-      description: "Instant verification of Halal status and supply chain integrity through blockchain queries.",
+      description:
+        "Instant verification of Halal status and supply chain integrity through blockchain queries.",
       highlight: "Sub-second Response",
     },
-  ]
+  ];
 
   return (
-    <section id="blockchain" className="relative w-full py-12 md:py-24 lg:py-32 overflow-hidden">
+    <section
+      id="blockchain"
+      className="relative w-full py-12 md:py-24 lg:py-32 overflow-hidden"
+    >
       <AnimatedBackground variant="waves" color="rgba(99, 102, 241, 0.05)" />
 
       <div className="container px-6 md:px-8">
@@ -66,7 +77,10 @@ export function BlockchainSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {blockchainFeatures.map((feature, index) => (
               <ScrollReveal key={index} delay={index * 0.1}>
-                <motion.div whileHover={{ y: -5, scale: 1.02 }} transition={{ type: "spring", stiffness: 300 }}>
+                <motion.div
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
                   <Card className="h-full glassmorphic-card group blockchain-glow">
                     <CardHeader>
                       <div className="flex items-start justify-between">
@@ -100,24 +114,39 @@ export function BlockchainSection() {
             <div className="mt-12 text-center">
               <Card className="glassmorphic-card max-w-2xl mx-auto">
                 <CardHeader>
-                  <CardTitle className="text-2xl tracking-tight">Oracle Cloud Infrastructure</CardTitle>
+                  <CardTitle className="text-2xl tracking-tight">
+                    Oracle Cloud Infrastructure
+                  </CardTitle>
                   <CardDescription className="text-base">
-                    Built on enterprise-grade Oracle Cloud Infrastructure for maximum scalability and security
+                    Built on enterprise-grade Oracle Cloud Infrastructure for
+                    maximum scalability and security
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-3 gap-6 text-center">
                     <div>
-                      <div className="text-2xl font-bold text-primary">99.95%</div>
-                      <div className="text-sm text-muted-foreground">SLA Uptime</div>
+                      <div className="text-2xl font-bold text-primary">
+                        99.95%
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        SLA Uptime
+                      </div>
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-primary">256-bit</div>
-                      <div className="text-sm text-muted-foreground">Encryption</div>
+                      <div className="text-2xl font-bold text-primary">
+                        256-bit
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Encryption
+                      </div>
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-primary">24/7</div>
-                      <div className="text-sm text-muted-foreground">Monitoring</div>
+                      <div className="text-2xl font-bold text-primary">
+                        24/7
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Monitoring
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -127,5 +156,5 @@ export function BlockchainSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

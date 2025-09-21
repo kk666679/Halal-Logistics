@@ -1,5 +1,10 @@
-import { apiClient } from '@/lib/api';
-import { LoginCredentials, RegisterData, AuthResponse, User } from '@/lib/types';
+import { apiClient } from "@/lib/api";
+import {
+  LoginCredentials,
+  RegisterData,
+  AuthResponse,
+  User,
+} from "@/lib/types";
 
 export class AuthService {
   /**
@@ -7,17 +12,20 @@ export class AuthService {
    */
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
-      const response = await apiClient.post<AuthResponse>('/auth/login', credentials);
+      const response = await apiClient.post<AuthResponse>(
+        "/auth/login",
+        credentials,
+      );
 
       if (response.success && response.data.token) {
         // Store auth token and user data
         apiClient.setAuthToken(response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.setItem("user", JSON.stringify(response.data.user));
       }
 
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Login failed');
+      throw new Error(error.response?.data?.message || "Login failed");
     }
   }
 
@@ -26,17 +34,20 @@ export class AuthService {
    */
   async register(userData: RegisterData): Promise<AuthResponse> {
     try {
-      const response = await apiClient.post<AuthResponse>('/auth/register', userData);
+      const response = await apiClient.post<AuthResponse>(
+        "/auth/register",
+        userData,
+      );
 
       if (response.success && response.data.token) {
         // Store auth token and user data
         apiClient.setAuthToken(response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.setItem("user", JSON.stringify(response.data.user));
       }
 
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Registration failed');
+      throw new Error(error.response?.data?.message || "Registration failed");
     }
   }
 
@@ -45,10 +56,12 @@ export class AuthService {
    */
   async getProfile(): Promise<User> {
     try {
-      const response = await apiClient.get<User>('/auth/profile');
+      const response = await apiClient.get<User>("/auth/profile");
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch profile');
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch profile",
+      );
     }
   }
 
@@ -57,16 +70,18 @@ export class AuthService {
    */
   async updateProfile(updateData: Partial<RegisterData>): Promise<User> {
     try {
-      const response = await apiClient.patch<User>('/auth/profile', updateData);
+      const response = await apiClient.patch<User>("/auth/profile", updateData);
 
       if (response.success) {
         // Update stored user data
-        localStorage.setItem('user', JSON.stringify(response.data));
+        localStorage.setItem("user", JSON.stringify(response.data));
       }
 
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to update profile');
+      throw new Error(
+        error.response?.data?.message || "Failed to update profile",
+      );
     }
   }
 
@@ -76,10 +91,10 @@ export class AuthService {
   async logout(): Promise<void> {
     try {
       // Call logout endpoint if available
-      await apiClient.post('/auth/logout');
+      await apiClient.post("/auth/logout");
     } catch (error) {
       // Continue with local logout even if API call fails
-      console.warn('Logout API call failed:', error);
+      console.warn("Logout API call failed:", error);
     } finally {
       // Clear local storage
       apiClient.removeAuthToken();
@@ -98,10 +113,10 @@ export class AuthService {
    */
   getCurrentUser(): User | null {
     try {
-      const userStr = localStorage.getItem('user');
+      const userStr = localStorage.getItem("user");
       return userStr ? JSON.parse(userStr) : null;
     } catch (error) {
-      console.error('Failed to parse user data:', error);
+      console.error("Failed to parse user data:", error);
       return null;
     }
   }

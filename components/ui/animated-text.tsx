@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
-import { motion, useAnimation } from "framer-motion"
-import { useInView } from "react-intersection-observer"
-import { cn } from "@/lib/utils"
+import { useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { cn } from "@/lib/utils";
 
 type AnimatedTextProps = {
-  text: string
-  variant?: "heading" | "paragraph"
-  className?: string
-  once?: boolean
-  delay?: number
-  duration?: number
-  staggerChildren?: number
-  animation?: "fade" | "slide" | "bounce" | "typewriter" | "wave"
-  color?: string
-}
+  text: string;
+  variant?: "heading" | "paragraph";
+  className?: string;
+  once?: boolean;
+  delay?: number;
+  duration?: number;
+  staggerChildren?: number;
+  animation?: "fade" | "slide" | "bounce" | "typewriter" | "wave";
+  color?: string;
+};
 
 const defaultAnimations = {
   fade: {
@@ -45,7 +45,7 @@ const defaultAnimations = {
       },
     }),
   },
-}
+};
 
 export function AnimatedText({
   text,
@@ -58,19 +58,19 @@ export function AnimatedText({
   animation = "slide",
   color,
 }: AnimatedTextProps) {
-  const controls = useAnimation()
+  const controls = useAnimation();
   const [ref, inView] = useInView({
     triggerOnce: once,
     threshold: 0.1,
-  })
+  });
 
   useEffect(() => {
     if (inView) {
-      controls.start("visible")
+      controls.start("visible");
     } else if (!once) {
-      controls.start("hidden")
+      controls.start("hidden");
     }
-  }, [controls, inView, once])
+  }, [controls, inView, once]);
 
   if (animation === "wave") {
     return (
@@ -82,12 +82,17 @@ export function AnimatedText({
         transition={{ staggerChildren, delayChildren: delay }}
       >
         {text.split("").map((char, i) => (
-          <motion.span key={`${char}-${i}`} className="inline-block" custom={i} variants={defaultAnimations.wave}>
+          <motion.span
+            key={`${char}-${i}`}
+            className="inline-block"
+            custom={i}
+            variants={defaultAnimations.wave}
+          >
             {char === " " ? "\u00A0" : char}
           </motion.span>
         ))}
       </motion.div>
-    )
+    );
   }
 
   if (animation === "typewriter") {
@@ -104,13 +109,18 @@ export function AnimatedText({
           {text}
         </motion.div>
       </div>
-    )
+    );
   }
 
   return (
     <motion.div
       ref={ref}
-      className={cn(variant === "heading" ? "font-heading" : "text-muted-foreground opacity-70", className)}
+      className={cn(
+        variant === "heading"
+          ? "font-heading"
+          : "text-muted-foreground opacity-70",
+        className,
+      )}
       initial="hidden"
       animate={controls}
       variants={defaultAnimations[animation]}
@@ -119,5 +129,5 @@ export function AnimatedText({
     >
       {text}
     </motion.div>
-  )
+  );
 }

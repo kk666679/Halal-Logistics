@@ -1,9 +1,11 @@
 # HalalChain API Integration Guide
 
 ## Overview
+
 This document provides instructions for setting up and testing the API integration between the Next.js frontend and NestJS backend.
 
 ## Prerequisites
+
 - Node.js 18+ installed
 - MongoDB running locally or connection string configured
 - npm or yarn package manager
@@ -11,13 +13,16 @@ This document provides instructions for setting up and testing the API integrati
 ## Backend Setup
 
 ### 1. Install Dependencies
+
 ```bash
 cd backend
 npm install
 ```
 
 ### 2. Environment Configuration
+
 Create a `.env` file in the backend directory:
+
 ```env
 # Database
 MONGODB_URI=mongodb://localhost:27017/halalchain
@@ -35,6 +40,7 @@ FRONTEND_URL=http://localhost:3000
 ```
 
 ### 3. Start the Backend Server
+
 ```bash
 cd backend
 npm run start:dev
@@ -45,12 +51,15 @@ The backend will be available at: http://localhost:3001/api
 ## Frontend Setup
 
 ### 1. Install Dependencies
+
 ```bash
 npm install
 ```
 
 ### 2. Environment Configuration
+
 The `.env.local` file is already configured with:
+
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:3001/api
 NEXT_PUBLIC_APP_NAME=HalalChain
@@ -58,6 +67,7 @@ NEXT_PUBLIC_APP_VERSION=1.0.0
 ```
 
 ### 3. Start the Frontend Server
+
 ```bash
 npm run dev
 ```
@@ -67,12 +77,14 @@ The frontend will be available at: http://localhost:3000
 ## API Integration Features
 
 ### Authentication System
+
 - **Login**: POST `/api/auth/login`
 - **Register**: POST `/api/auth/register`
 - **Profile**: GET `/api/auth/profile`
 - **Update Profile**: PATCH `/api/auth/profile`
 
 ### Product Management
+
 - **Get All Products**: GET `/api/products`
 - **Get Product by ID**: GET `/api/products/:id`
 - **Create Product**: POST `/api/products`
@@ -82,6 +94,7 @@ The frontend will be available at: http://localhost:3000
 - **Get Low Stock Products**: GET `/api/products/low-stock`
 
 ### Certification Management
+
 - **Get All Certifications**: GET `/api/certifications`
 - **Get My Applications**: GET `/api/certifications/my-applications`
 - **Create Certification**: POST `/api/certifications`
@@ -90,6 +103,7 @@ The frontend will be available at: http://localhost:3000
 - **Get Certification Stats**: GET `/api/certifications/stats`
 
 ### Tracking System
+
 - **Get All Shipments**: GET `/api/tracking`
 - **Get My Shipments**: GET `/api/tracking/my-shipments`
 - **Create Shipment**: POST `/api/tracking`
@@ -98,6 +112,7 @@ The frontend will be available at: http://localhost:3000
 - **Get Tracking Stats**: GET `/api/tracking/stats`
 
 ### User Management
+
 - **Get User Profile**: GET `/api/users/profile`
 - **Update User Profile**: PATCH `/api/users/profile`
 - **Get Users by Role**: GET `/api/users/role/:role`
@@ -106,15 +121,18 @@ The frontend will be available at: http://localhost:3000
 ## Testing the Integration
 
 ### 1. Start Both Servers
+
 1. Backend: `cd backend && npm run start:dev`
 2. Frontend: `npm run dev`
 
 ### 2. Test Authentication
+
 1. Open http://localhost:3000
 2. Try logging in with different roles (supplier, certifier, auditor, consumer)
 3. Check that you're redirected to the appropriate dashboard
 
 ### 3. Test Product Management
+
 1. Login as a supplier
 2. Navigate to the inventory dashboard
 3. Check that products load from the API
@@ -122,6 +140,7 @@ The frontend will be available at: http://localhost:3000
 5. Verify the product appears in the list
 
 ### 4. Test Real-time Data
+
 1. Add some products via the frontend
 2. Check that the stats update automatically
 3. Try the search and filter functionality
@@ -150,7 +169,9 @@ The frontend will be available at: http://localhost:3000
    - Ensure the API client baseURL matches the backend URL
 
 ### Debug Mode
+
 Enable debug logging by setting:
+
 ```env
 NODE_ENV=development
 DEBUG=api:*
@@ -176,6 +197,7 @@ DEBUG=api:*
 ## Production Deployment
 
 For production deployment:
+
 1. Set `NODE_ENV=production`
 2. Use environment variables for sensitive data
 3. Configure proper CORS origins

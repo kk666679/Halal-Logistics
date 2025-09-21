@@ -1,27 +1,27 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter, Manrope } from "next/font/google"
+import type React from "react";
+import type { Metadata } from "next";
+import { Inter, Manrope } from "next/font/google";
 
-import { cn } from "@/lib/utils"
-import { ThemeProvider } from "@/components/theme-provider"
-import { SiteHeader } from "@/components/site-header"
-import { SiteFooter } from "@/components/site-footer"
-import { PageTransition } from "@/components/page-transition"
+import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { PageTransition } from "@/components/page-transition";
 
-import "@/app/globals.css"
-import { Suspense } from "react"
+import "@/app/globals.css";
+import { Suspense } from "react";
 
 const fontSans = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   weight: ["300", "400", "500", "600"],
-})
+});
 
 const fontHeading = Manrope({
   subsets: ["latin"],
   variable: "--font-heading",
   weight: ["600", "700"],
-})
+});
 
 export const metadata: Metadata = {
   title: "HalalChain | Blockchain-Powered Halal Logistics Platform",
@@ -35,13 +35,13 @@ export const metadata: Metadata = {
     "halal compliance",
     "Oracle Cloud",
   ],
-    generator: 'v0.app'
-}
+  generator: "v0.app",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -52,7 +52,12 @@ export default function RootLayout({
           fontHeading.variable,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
           <div className="relative flex min-h-screen flex-col">
             <SiteHeader />
             <Suspense>
@@ -65,5 +70,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

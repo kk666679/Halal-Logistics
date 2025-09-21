@@ -1,13 +1,28 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { CertificationStatusCard } from "./certification-status-card"
-import { CertificationApplicationForm } from "./certification-application-form"
-import { Plus, Search, Filter, FileText, Clock, CheckCircle, AlertTriangle, BarChart3 } from "lucide-react"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { CertificationStatusCard } from "./certification-status-card";
+import { CertificationApplicationForm } from "./certification-application-form";
+import {
+  Plus,
+  Search,
+  Filter,
+  FileText,
+  Clock,
+  CheckCircle,
+  AlertTriangle,
+  BarChart3,
+} from "lucide-react";
 
 // Mock data for demonstration
 const mockCertifications = [
@@ -58,75 +73,92 @@ const mockCertifications = [
     rejectionReason:
       "Insufficient documentation regarding supplier Halal certification status. Please provide complete supplier audit reports.",
   },
-]
+];
 
 export function CertificationDashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [showApplicationForm, setShowApplicationForm] = useState(false)
+  const [activeTab, setActiveTab] = useState("overview");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
 
   const getStatusCounts = () => {
     return {
       total: mockCertifications.length,
       pending: mockCertifications.filter((c) => c.status === "pending").length,
-      underReview: mockCertifications.filter((c) => c.status === "under-review").length,
-      approved: mockCertifications.filter((c) => c.status === "approved").length,
-      rejected: mockCertifications.filter((c) => c.status === "rejected").length,
-    }
-  }
+      underReview: mockCertifications.filter((c) => c.status === "under-review")
+        .length,
+      approved: mockCertifications.filter((c) => c.status === "approved")
+        .length,
+      rejected: mockCertifications.filter((c) => c.status === "rejected")
+        .length,
+    };
+  };
 
-  const statusCounts = getStatusCounts()
+  const statusCounts = getStatusCounts();
 
   const filteredCertifications = mockCertifications.filter(
     (cert) =>
       cert.productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       cert.companyName.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+  );
 
   const handleViewDetails = (id: string) => {
-    console.log("View details for certification:", id)
-  }
+    console.log("View details for certification:", id);
+  };
 
   const handleDownloadCertificate = (id: string) => {
-    console.log("Download certificate:", id)
-  }
+    console.log("Download certificate:", id);
+  };
 
   const handleSubmitApplication = async (data: {
-    companyName: string
-    productName: string
-    productDescription: string
-    ingredients: string[]
-    manufacturingProcess: string
+    companyName: string;
+    productName: string;
+    productDescription: string;
+    ingredients: string[];
+    manufacturingProcess: string;
   }) => {
-    console.log("New certification application:", data)
-    setShowApplicationForm(false)
-  }
+    console.log("New certification application:", data);
+    setShowApplicationForm(false);
+  };
 
   if (showApplicationForm) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-heading font-bold tracking-tight">New Certification Application</h2>
-          <Button variant="outline" onClick={() => setShowApplicationForm(false)}>
+          <h2 className="text-2xl font-heading font-bold tracking-tight">
+            New Certification Application
+          </h2>
+          <Button
+            variant="outline"
+            onClick={() => setShowApplicationForm(false)}
+          >
             Back to Dashboard
           </Button>
         </div>
         <CertificationApplicationForm onSubmit={handleSubmitApplication} />
       </div>
-    )
+    );
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-heading font-bold tracking-tight">Certification Dashboard</h2>
-        <Button onClick={() => setShowApplicationForm(true)} className="halal-gradient">
+        <h2 className="text-2xl font-heading font-bold tracking-tight">
+          Certification Dashboard
+        </h2>
+        <Button
+          onClick={() => setShowApplicationForm(true)}
+          className="halal-gradient"
+        >
           <Plus className="h-4 w-4 mr-2" />
           New Application
         </Button>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
         <TabsList className="glassmorphic-tabs">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="applications">Applications</TabsTrigger>
@@ -139,60 +171,80 @@ export function CertificationDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <Card className="glassmorphic-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total Applications</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Total Applications
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <FileText className="h-5 w-5 text-primary" />
-                  <span className="text-2xl font-bold">{statusCounts.total}</span>
+                  <span className="text-2xl font-bold">
+                    {statusCounts.total}
+                  </span>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="glassmorphic-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Pending
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <Clock className="h-5 w-5 text-yellow-500" />
-                  <span className="text-2xl font-bold text-yellow-500">{statusCounts.pending}</span>
+                  <span className="text-2xl font-bold text-yellow-500">
+                    {statusCounts.pending}
+                  </span>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="glassmorphic-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Under Review</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Under Review
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <BarChart3 className="h-5 w-5 text-blue-500" />
-                  <span className="text-2xl font-bold text-blue-500">{statusCounts.underReview}</span>
+                  <span className="text-2xl font-bold text-blue-500">
+                    {statusCounts.underReview}
+                  </span>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="glassmorphic-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Approved</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Approved
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="h-5 w-5 text-green-500" />
-                  <span className="text-2xl font-bold text-green-500">{statusCounts.approved}</span>
+                  <span className="text-2xl font-bold text-green-500">
+                    {statusCounts.approved}
+                  </span>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="glassmorphic-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Rejected</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Rejected
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <AlertTriangle className="h-5 w-5 text-red-500" />
-                  <span className="text-2xl font-bold text-red-500">{statusCounts.rejected}</span>
+                  <span className="text-2xl font-bold text-red-500">
+                    {statusCounts.rejected}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -202,7 +254,9 @@ export function CertificationDashboard() {
           <Card className="glassmorphic-card">
             <CardHeader>
               <CardTitle>Recent Applications</CardTitle>
-              <CardDescription>Your latest certification applications and their status</CardDescription>
+              <CardDescription>
+                Your latest certification applications and their status
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -254,7 +308,9 @@ export function CertificationDashboard() {
           <Card className="glassmorphic-card">
             <CardHeader>
               <CardTitle>Approved Certificates</CardTitle>
-              <CardDescription>Download and manage your approved Halal certificates</CardDescription>
+              <CardDescription>
+                Download and manage your approved Halal certificates
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -277,17 +333,21 @@ export function CertificationDashboard() {
           <Card className="glassmorphic-card">
             <CardHeader>
               <CardTitle>Certification Analytics</CardTitle>
-              <CardDescription>Insights and trends for your certification applications</CardDescription>
+              <CardDescription>
+                Insights and trends for your certification applications
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-center py-12">
                 <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">Analytics dashboard coming soon</p>
+                <p className="text-muted-foreground">
+                  Analytics dashboard coming soon
+                </p>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

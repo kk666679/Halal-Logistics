@@ -1,6 +1,11 @@
-"use client"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { ScrollReveal } from "@/components/scroll-reveal"
+"use client";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 export function FaqSection() {
   const faqs = [
@@ -29,7 +34,7 @@ export function FaqSection() {
       answer:
         "Yes, we offer support based on your license tier. The Pro and Enterprise plans include priority support to help you with any issues or questions you may have.",
     },
-  ]
+  ];
 
   return (
     <section id="faq" className="w-full py-12 md:py-24 lg:py-32 bg-muted/30">
@@ -51,9 +56,17 @@ export function FaqSection() {
           <ScrollReveal>
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`} className="glassmorphic-accordion-item">
-                  <AccordionTrigger className="text-left font-medium tracking-tight">{faq.question}</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground opacity-70">{faq.answer}</AccordionContent>
+                <AccordionItem
+                  key={index}
+                  value={`item-${index}`}
+                  className="glassmorphic-accordion-item"
+                >
+                  <AccordionTrigger className="text-left font-medium tracking-tight">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground opacity-70">
+                    {faq.answer}
+                  </AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
@@ -61,5 +74,5 @@ export function FaqSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

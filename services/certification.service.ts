@@ -1,11 +1,11 @@
-import { apiClient } from '@/lib/api';
+import { apiClient } from "@/lib/api";
 import {
   Certification,
   CreateCertificationData,
   UpdateCertificationData,
   CertificationStats,
-  CertificationStatus
-} from '@/lib/types';
+  CertificationStatus,
+} from "@/lib/types";
 
 export class CertificationService {
   /**
@@ -14,10 +14,15 @@ export class CertificationService {
   async getAll(status?: CertificationStatus): Promise<Certification[]> {
     try {
       const params = status ? { status } : undefined;
-      const response = await apiClient.get<Certification[]>('/certifications', params);
+      const response = await apiClient.get<Certification[]>(
+        "/certifications",
+        params,
+      );
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch certifications');
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch certifications",
+      );
     }
   }
 
@@ -26,10 +31,14 @@ export class CertificationService {
    */
   async getById(id: string): Promise<Certification> {
     try {
-      const response = await apiClient.get<Certification>(`/certifications/${id}`);
+      const response = await apiClient.get<Certification>(
+        `/certifications/${id}`,
+      );
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch certification');
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch certification",
+      );
     }
   }
 
@@ -38,34 +47,53 @@ export class CertificationService {
    */
   async getMyApplications(): Promise<Certification[]> {
     try {
-      const response = await apiClient.get<Certification[]>('/certifications/my-applications');
+      const response = await apiClient.get<Certification[]>(
+        "/certifications/my-applications",
+      );
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch applications');
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch applications",
+      );
     }
   }
 
   /**
    * Create new certification application
    */
-  async create(applicationData: CreateCertificationData): Promise<Certification> {
+  async create(
+    applicationData: CreateCertificationData,
+  ): Promise<Certification> {
     try {
-      const response = await apiClient.post<Certification>('/certifications', applicationData);
+      const response = await apiClient.post<Certification>(
+        "/certifications",
+        applicationData,
+      );
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to create application');
+      throw new Error(
+        error.response?.data?.message || "Failed to create application",
+      );
     }
   }
 
   /**
    * Update existing certification
    */
-  async update(id: string, updateData: UpdateCertificationData): Promise<Certification> {
+  async update(
+    id: string,
+    updateData: UpdateCertificationData,
+  ): Promise<Certification> {
     try {
-      const response = await apiClient.patch<Certification>(`/certifications/${id}`, updateData);
+      const response = await apiClient.patch<Certification>(
+        `/certifications/${id}`,
+        updateData,
+      );
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to update certification');
+      throw new Error(
+        error.response?.data?.message || "Failed to update certification",
+      );
     }
   }
 
@@ -77,7 +105,7 @@ export class CertificationService {
     status: CertificationStatus,
     reviewComments?: string,
     certificationNumber?: string,
-    validUntil?: Date
+    validUntil?: Date,
   ): Promise<Certification> {
     try {
       const updateData = {
@@ -86,24 +114,37 @@ export class CertificationService {
         certificationNumber,
         validUntil: validUntil?.toISOString(),
       };
-      const response = await apiClient.patch<Certification>(`/certifications/${id}/status`, updateData);
+      const response = await apiClient.patch<Certification>(
+        `/certifications/${id}/status`,
+        updateData,
+      );
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to update status');
+      throw new Error(
+        error.response?.data?.message || "Failed to update status",
+      );
     }
   }
 
   /**
    * Assign certification to reviewer
    */
-  async assignToReviewer(id: string, reviewerId: string): Promise<Certification> {
+  async assignToReviewer(
+    id: string,
+    reviewerId: string,
+  ): Promise<Certification> {
     try {
-      const response = await apiClient.patch<Certification>(`/certifications/${id}/assign`, {
-        reviewerId
-      });
+      const response = await apiClient.patch<Certification>(
+        `/certifications/${id}/assign`,
+        {
+          reviewerId,
+        },
+      );
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to assign reviewer');
+      throw new Error(
+        error.response?.data?.message || "Failed to assign reviewer",
+      );
     }
   }
 
@@ -112,10 +153,14 @@ export class CertificationService {
    */
   async getStats(): Promise<CertificationStats> {
     try {
-      const response = await apiClient.get<CertificationStats>('/certifications/stats');
+      const response = await apiClient.get<CertificationStats>(
+        "/certifications/stats",
+      );
       return response.data;
     } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch certification stats');
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch certification stats",
+      );
     }
   }
 }

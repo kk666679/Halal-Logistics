@@ -1,13 +1,26 @@
-"use client"
-import { Shield, Truck, FileCheck, Database, Users, BarChart3 } from "lucide-react"
+"use client";
+import {
+  Shield,
+  Truck,
+  FileCheck,
+  Database,
+  Users,
+  BarChart3,
+} from "lucide-react";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ScrollReveal } from "@/components/scroll-reveal"
-import { GlowingTiltCard } from "@/components/ui/glowing-tilt-card"
-import { ParallaxScroll } from "@/components/ui/parallax-scroll"
-import { AnimatedText } from "@/components/ui/animated-text"
-import { AnimatedBackground } from "@/components/ui/animated-background"
-import { ProgressCard } from "@/components/ui-library/cards/progress-card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { GlowingTiltCard } from "@/components/ui/glowing-tilt-card";
+import { ParallaxScroll } from "@/components/ui/parallax-scroll";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { AnimatedBackground } from "@/components/ui/animated-background";
+import { ProgressCard } from "@/components/ui-library/cards/progress-card";
 
 export function FeaturesSection() {
   const features = [
@@ -22,14 +35,16 @@ export function FeaturesSection() {
     {
       icon: <Truck className="h-10 w-10 text-indigo-500" />,
       title: "Supply Chain Transparency",
-      description: "End-to-end visibility of your products from source to consumer with blockchain-verified tracking.",
+      description:
+        "End-to-end visibility of your products from source to consumer with blockchain-verified tracking.",
       progress: 95,
       borderClass: "border-glow-blue",
     },
     {
       icon: <FileCheck className="h-10 w-10 text-green-500" />,
       title: "Smart Contract Automation",
-      description: "Automated compliance checks and certification renewals through Oracle Blockchain smart contracts.",
+      description:
+        "Automated compliance checks and certification renewals through Oracle Blockchain smart contracts.",
       progress: 90,
       borderClass: "border-glow-green",
     },
@@ -44,21 +59,26 @@ export function FeaturesSection() {
     {
       icon: <Users className="h-10 w-10 text-red-500" />,
       title: "Multi-Stakeholder Access",
-      description: "Role-based access for suppliers, certifiers, auditors, and consumers with secure authentication.",
+      description:
+        "Role-based access for suppliers, certifiers, auditors, and consumers with secure authentication.",
       progress: 85,
       borderClass: "border-glow-red",
     },
     {
       icon: <BarChart3 className="h-10 w-10 text-yellow-500" />,
       title: "Compliance Analytics",
-      description: "Real-time dashboards and reports for regulatory compliance and audit trail management.",
+      description:
+        "Real-time dashboards and reports for regulatory compliance and audit trail management.",
       progress: 92,
       borderClass: "border-glow-yellow",
     },
-  ]
+  ];
 
   return (
-    <section id="features" className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/30 overflow-hidden">
+    <section
+      id="features"
+      className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/30 overflow-hidden"
+    >
       <AnimatedBackground variant="dots" color="rgba(217, 119, 6, 0.05)" />
 
       <div className="container px-6 md:px-8">
@@ -108,10 +128,16 @@ export function FeaturesSection() {
                         title=""
                         progress={feature.progress}
                         total={100}
-                        status={feature.progress === 100 ? "success" : "default"}
+                        status={
+                          feature.progress === 100 ? "success" : "default"
+                        }
                         showPercentage
                         variant="minimal"
-                        progressColor={feature.progress === 100 ? "bg-green-500" : "bg-primary"}
+                        progressColor={
+                          feature.progress === 100
+                            ? "bg-green-500"
+                            : "bg-primary"
+                        }
                       />
                     </CardContent>
                   </Card>
@@ -122,5 +148,5 @@ export function FeaturesSection() {
         </ParallaxScroll>
       </div>
     </section>
-  )
+  );
 }

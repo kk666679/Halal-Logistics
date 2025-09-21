@@ -1,6 +1,6 @@
-import Link from "next/link"
-import { Icons } from "@/components/icons"
-import { ScrollToTopButton } from "@/components/scroll-to-top-button"
+import Link from "next/link";
+import { Icons } from "@/components/icons";
+import { ScrollToTopButton } from "@/components/scroll-to-top-button";
 
 export function SiteFooter() {
   return (
@@ -10,21 +10,40 @@ export function SiteFooter() {
           <div className="flex flex-1 flex-col gap-4">
             <Link href="/" className="flex items-center gap-2">
               <Icons.logo className="h-6 w-6" />
-              <span className="font-heading text-xl tracking-tight">HalalChain</span>
+              <span className="font-heading text-xl tracking-tight">
+                HalalChain
+              </span>
             </Link>
             <p className="text-muted-foreground max-w-sm opacity-70">
-              End-to-end halal logistics and supply chain management platform designed for integrity, transparency, and compliance with global halal standards.
+              End-to-end halal logistics and supply chain management platform
+              designed for integrity, transparency, and compliance with global
+              halal standards.
             </p>
             <div className="flex gap-4">
-              <Link href="https://twitter.com" target="_blank" rel="noreferrer" className="glassmorphic-icon">
+              <Link
+                href="https://twitter.com"
+                target="_blank"
+                rel="noreferrer"
+                className="glassmorphic-icon"
+              >
                 <Icons.twitter className="h-5 w-5 text-muted-foreground transition-colors hover:text-foreground" />
                 <span className="sr-only">Twitter</span>
               </Link>
-              <Link href="https://github.com" target="_blank" rel="noreferrer" className="glassmorphic-icon">
+              <Link
+                href="https://github.com"
+                target="_blank"
+                rel="noreferrer"
+                className="glassmorphic-icon"
+              >
                 <Icons.gitHub className="h-5 w-5 text-muted-foreground transition-colors hover:text-foreground" />
                 <span className="sr-only">GitHub</span>
               </Link>
-              <Link href="https://discord.com" target="_blank" rel="noreferrer" className="glassmorphic-icon">
+              <Link
+                href="https://discord.com"
+                target="_blank"
+                rel="noreferrer"
+                className="glassmorphic-icon"
+              >
                 <Icons.discord className="h-5 w-5 text-muted-foreground transition-colors hover:text-foreground" />
                 <span className="sr-only">Discord</span>
               </Link>
@@ -178,5 +197,5 @@ export function SiteFooter() {
       </div>
       <ScrollToTopButton />
     </footer>
-  )
+  );
 }

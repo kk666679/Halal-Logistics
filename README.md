@@ -26,14 +26,14 @@ A **comprehensive microservices-based platform** for managing Halal logistics op
 
 ## ✨ Key Features
 
-* **Halal Certification Management**: End-to-end workflows with document management
-* **Real-time Shipment Tracking**: Multi-carrier integration with QR/RFID support
-* **Inventory Management**: Halal-compliant stock control with batch tracking
-* **Cross-border Trade**: Customs automation, duty calculation, compliance checking
-* **Financial Management**: Multi-currency payments and invoicing
-* **Advanced Analytics**: AI-powered forecasting and risk assessment
-* **Blockchain Integration**: Immutable certification records and transparency
-* **OCI Integration**: Full support for Oracle Cloud Infrastructure deployment
+- **Halal Certification Management**: End-to-end workflows with document management
+- **Real-time Shipment Tracking**: Multi-carrier integration with QR/RFID support
+- **Inventory Management**: Halal-compliant stock control with batch tracking
+- **Cross-border Trade**: Customs automation, duty calculation, compliance checking
+- **Financial Management**: Multi-currency payments and invoicing
+- **Advanced Analytics**: AI-powered forecasting and risk assessment
+- **Blockchain Integration**: Immutable certification records and transparency
+- **OCI Integration**: Full support for Oracle Cloud Infrastructure deployment
 
 ---
 
@@ -164,13 +164,13 @@ graph TD
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-✓-326CE5?logo=kubernetes)
 ![Oracle Cloud](https://img.shields.io/badge/Oracle_Cloud-✓-F80000?logo=oracle)
 
-* Node.js 22+
-* Docker & Docker Compose
-* PostgreSQL (Neon or OCI Autonomous DB)
-* Redis instance
-* Blob storage (S3/Azure/OCI)
-* Kubernetes cluster (for production)
-* Oracle Cloud account (optional)
+- Node.js 22+
+- Docker & Docker Compose
+- PostgreSQL (Neon or OCI Autonomous DB)
+- Redis instance
+- Blob storage (S3/Azure/OCI)
+- Kubernetes cluster (for production)
+- Oracle Cloud account (optional)
 
 ### Setup
 
@@ -200,10 +200,10 @@ docker-compose exec auth-service npm run db:migrate
 ![Admin](https://img.shields.io/badge/Admin-Localhost:3000/admin-FF6B6B?logo=react)
 ![OCI Console](https://img.shields.io/badge/OCI_Console-Cloud_Console-F80000?logo=oracle)
 
-* Frontend → [http://localhost:3000](http://localhost:3000)
-* API Gateway → [http://localhost:3000/api](http://localhost:3000/api)
-* API Docs (Swagger) → [http://localhost:3000/api/docs](http://localhost:3000/api/docs)
-* Admin Dashboard → [http://localhost:3000/admin](http://localhost:3000/admin)
+- Frontend → [http://localhost:3000](http://localhost:3000)
+- API Gateway → [http://localhost:3000/api](http://localhost:3000/api)
+- API Docs (Swagger) → [http://localhost:3000/api/docs](http://localhost:3000/api/docs)
+- Admin Dashboard → [http://localhost:3000/admin](http://localhost:3000/admin)
 
 ---
 
@@ -211,16 +211,16 @@ docker-compose exec auth-service npm run db:migrate
 
 ![Tech](https://skillicons.dev/icons?i=nodejs,nextjs,nestjs,ts,tailwind,prisma,postgres,redis,docker,aws,gcp,azure,kafka,kubernetes,react,graphql,jest,oracle)
 
-* **Frontend**: Next.js 15, React 19, Tailwind, shadcn/ui
-* **Backend**: NestJS, Node.js 22
-* **Database**: PostgreSQL (Neon/OCI Autonomous)
-* **ORM**: Prisma
-* **Caching**: Redis
-* **Messaging**: Kafka, Redis Pub/Sub
-* **Storage**: S3/Azure/OCI Object Storage
-* **Blockchain**: Ethereum/Hyperledger
-* **AI/ML**: TensorFlow\.js
-* **Infra**: Docker, Kubernetes, OCI
+- **Frontend**: Next.js 15, React 19, Tailwind, shadcn/ui
+- **Backend**: NestJS, Node.js 22
+- **Database**: PostgreSQL (Neon/OCI Autonomous)
+- **ORM**: Prisma
+- **Caching**: Redis
+- **Messaging**: Kafka, Redis Pub/Sub
+- **Storage**: S3/Azure/OCI Object Storage
+- **Blockchain**: Ethereum/Hyperledger
+- **AI/ML**: TensorFlow\.js
+- **Infra**: Docker, Kubernetes, OCI
 
 ---
 
@@ -256,18 +256,18 @@ This project is licensed under the **MIT License**.
 ![GitHub Issues](https://img.shields.io/badge/Support-GitHub_Issues-181717?logo=github)
 ![Email](https://img.shields.io/badge/Email-support%40halallogistics.com-EA4335?logo=gmail)
 ![Docs](https://img.shields.io/badge/Docs-docs.halallogistics.com-6E5494?logo=readthedocs)
-![Discord](https://img.shields.io/discord/1234567890?label=discord\&logo=discord)
-![Twitter](https://img.shields.io/twitter/follow/halallogistics?style=social\&logo=twitter)
+![Discord](https://img.shields.io/discord/1234567890?label=discord&logo=discord)
+![Twitter](https://img.shields.io/twitter/follow/halallogistics?style=social&logo=twitter)
 ![OCI Forum](https://img.shields.io/badge/Support-OCI_Forum-F80000?logo=oracle)
 
 For support and questions:
 
-* Open an issue on GitHub
-* Email: [support@halallogistics.xyz](mailto:support@halallogistics.xyz)
-* Documentation: docs.halallogistics.com
-* Discord: Join our community
-* Twitter: @halallogistics_halalchain
-* OCI Forum: Oracle Cloud Infrastructure Forum
+- Open an issue on GitHub
+- Email: [support@halallogistics.xyz](mailto:support@halallogistics.xyz)
+- Documentation: docs.halallogistics.com
+- Discord: Join our community
+- Twitter: @halallogistics_halalchain
+- OCI Forum: Oracle Cloud Infrastructure Forum
 
 ---
 

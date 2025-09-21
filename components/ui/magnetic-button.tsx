@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { useState, useRef, type MouseEvent, type ReactNode } from "react"
-import { motion } from "framer-motion"
-import { cn } from "@/lib/utils"
+import { useState, useRef, type MouseEvent, type ReactNode } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface MagneticButtonProps {
-  children: ReactNode
-  className?: string
-  strength?: number
-  radius?: number
-  onClick?: () => void
-  disabled?: boolean
+  children: ReactNode;
+  className?: string;
+  strength?: number;
+  radius?: number;
+  onClick?: () => void;
+  disabled?: boolean;
 }
 
 export function MagneticButton({
@@ -21,30 +21,32 @@ export function MagneticButton({
   onClick,
   disabled = false,
 }: MagneticButtonProps) {
-  const [position, setPosition] = useState({ x: 0, y: 0 })
-  const buttonRef = useRef<HTMLButtonElement>(null)
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (disabled || !buttonRef.current) return
+    if (disabled || !buttonRef.current) return;
 
-    const rect = buttonRef.current.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
+    const rect = buttonRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
 
-    const distance = Math.sqrt(Math.pow(e.clientX - centerX, 2) + Math.pow(e.clientY - centerY, 2))
+    const distance = Math.sqrt(
+      Math.pow(e.clientX - centerX, 2) + Math.pow(e.clientY - centerY, 2),
+    );
 
     if (distance < radius) {
-      const x = ((e.clientX - centerX) * strength) / 100
-      const y = ((e.clientY - centerY) * strength) / 100
-      setPosition({ x, y })
+      const x = ((e.clientX - centerX) * strength) / 100;
+      const y = ((e.clientY - centerY) * strength) / 100;
+      setPosition({ x, y });
     } else {
-      setPosition({ x: 0, y: 0 })
+      setPosition({ x: 0, y: 0 });
     }
-  }
+  };
 
   const handleMouseLeave = () => {
-    setPosition({ x: 0, y: 0 })
-  }
+    setPosition({ x: 0, y: 0 });
+  };
 
   return (
     <motion.button
@@ -61,5 +63,5 @@ export function MagneticButton({
     >
       {children}
     </motion.button>
-  )
+  );
 }

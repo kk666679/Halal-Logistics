@@ -1,51 +1,55 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useRef, useState, useEffect } from "react"
-import { cn } from "@/lib/utils"
+import { useRef, useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
-export function SpotlightCard({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [position, setPosition] = useState({ x: 0, y: 0 })
-  const [opacity, setOpacity] = useState(0)
-  const [isHovered, setIsHovered] = useState(false)
+export function SpotlightCard({
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return
+    if (!containerRef.current) return;
 
-    const rect = containerRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    setPosition({ x, y })
-  }
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setPosition({ x, y });
+  };
 
   const handleMouseEnter = () => {
-    setOpacity(1)
-    setIsHovered(true)
-  }
+    setOpacity(1);
+    setIsHovered(true);
+  };
 
   const handleMouseLeave = () => {
-    setOpacity(0)
-    setIsHovered(false)
-  }
+    setOpacity(0);
+    setIsHovered(false);
+  };
 
   useEffect(() => {
     // Add a subtle animation when not hovered
     if (!isHovered && containerRef.current) {
       const interval = setInterval(() => {
-        const rect = containerRef.current?.getBoundingClientRect()
+        const rect = containerRef.current?.getBoundingClientRect();
         if (rect) {
-          const x = rect.width / 2 + Math.random() * 100 - 50
-          const y = rect.height / 2 + Math.random() * 100 - 50
-          setPosition({ x, y })
-          setOpacity(0.2)
+          const x = rect.width / 2 + Math.random() * 100 - 50;
+          const y = rect.height / 2 + Math.random() * 100 - 50;
+          setPosition({ x, y });
+          setOpacity(0.2);
         }
-      }, 3000)
+      }, 3000);
 
-      return () => clearInterval(interval)
+      return () => clearInterval(interval);
     }
-  }, [isHovered])
+  }, [isHovered]);
 
   return (
     <div
@@ -65,5 +69,5 @@ export function SpotlightCard({ className, children, ...props }: React.HTMLAttri
       />
       {children}
     </div>
-  )
+  );
 }

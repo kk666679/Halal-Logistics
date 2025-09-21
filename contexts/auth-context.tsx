@@ -1,8 +1,14 @@
-"use client"
+"use client";
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { authService } from '@/services';
-import { User, LoginCredentials, RegisterData } from '@/lib/types';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+import { authService } from "@/services";
+import { User, LoginCredentials, RegisterData } from "@/lib/types";
 
 interface AuthContextType {
   user: User | null;
@@ -44,7 +50,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           }
         }
       } catch (error) {
-        console.error('Auth initialization error:', error);
+        console.error("Auth initialization error:", error);
       } finally {
         setIsLoading(false);
       }
@@ -82,7 +88,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await authService.logout();
       setUser(null);
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
       // Still clear local state even if API call fails
       setUser(null);
     }
@@ -107,17 +113,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     updateProfile,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }
@@ -140,7 +142,9 @@ export function withAuth<T extends {}>(Component: React.ComponentType<T>) {
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-4">Authentication Required</h2>
-            <p className="text-muted-foreground mb-4">Please log in to access this page.</p>
+            <p className="text-muted-foreground mb-4">
+              Please log in to access this page.
+            </p>
             <a href="/auth/login" className="text-primary hover:underline">
               Go to Login
             </a>

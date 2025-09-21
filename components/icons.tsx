@@ -21,9 +21,9 @@ import {
   User,
   X,
   type LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-export type Icon = LucideIcon
+export type Icon = LucideIcon;
 
 export const Icons = {
   logo: ({ ...props }) => (
@@ -113,4 +113,4 @@ export const Icons = {
   file: File,
   fileText: FileText,
   image: ImageIcon,
-}
+};

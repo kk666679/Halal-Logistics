@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import type { ReactNode } from "react"
-import { motion } from "framer-motion"
-import { cn } from "@/lib/utils"
+import type { ReactNode } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface AnimatedGradientBorderProps {
-  children: ReactNode
-  className?: string
-  containerClassName?: string
-  duration?: number
-  borderWidth?: number
-  colors?: string[]
-  hoverEffect?: boolean
-  rounded?: boolean
+  children: ReactNode;
+  className?: string;
+  containerClassName?: string;
+  duration?: number;
+  borderWidth?: number;
+  colors?: string[];
+  hoverEffect?: boolean;
+  rounded?: boolean;
 }
 
 export function AnimatedGradientBorder({
@@ -25,7 +25,13 @@ export function AnimatedGradientBorder({
   rounded = true,
 }: AnimatedGradientBorderProps) {
   return (
-    <div className={cn("relative p-[1px] overflow-hidden", rounded ? "rounded-lg" : "", containerClassName)}>
+    <div
+      className={cn(
+        "relative p-[1px] overflow-hidden",
+        rounded ? "rounded-lg" : "",
+        containerClassName,
+      )}
+    >
       <motion.div
         className="absolute inset-0 z-0"
         style={{
@@ -42,7 +48,11 @@ export function AnimatedGradientBorder({
         }}
       />
       <div
-        className={cn("relative z-10 bg-background", rounded ? "rounded-lg" : "", className)}
+        className={cn(
+          "relative z-10 bg-background",
+          rounded ? "rounded-lg" : "",
+          className,
+        )}
         style={{
           margin: borderWidth,
         }}
@@ -50,5 +60,5 @@ export function AnimatedGradientBorder({
         {children}
       </div>
     </div>
-  )
+  );
 }

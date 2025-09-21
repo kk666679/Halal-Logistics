@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import { motion, useAnimation, AnimatePresence } from "framer-motion"
+import { useState, useEffect, useRef } from "react";
+import { motion, useAnimation, AnimatePresence } from "framer-motion";
 
 interface MouseGlowProps {
-  color?: string
-  size?: number
-  blur?: number
-  opacity?: number
-  delay?: number
-  followSpeed?: number
-  pulseEffect?: boolean
-  pulseSpeed?: number
-  pulseScale?: number
-  zIndex?: number
-  disabled?: boolean
+  color?: string;
+  size?: number;
+  blur?: number;
+  opacity?: number;
+  delay?: number;
+  followSpeed?: number;
+  pulseEffect?: boolean;
+  pulseSpeed?: number;
+  pulseScale?: number;
+  zIndex?: number;
+  disabled?: boolean;
 }
 
 export function MouseGlow({
@@ -30,51 +30,58 @@ export function MouseGlow({
   zIndex = -1,
   disabled = false,
 }: MouseGlowProps) {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [isVisible, setIsVisible] = useState(false)
-  const controls = useAnimation()
-  const glowRef = useRef<HTMLDivElement>(null)
-  const lastMousePosition = useRef({ x: 0, y: 0 })
-  const animationFrameId = useRef<number | null>(null)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(false);
+  const controls = useAnimation();
+  const glowRef = useRef<HTMLDivElement>(null);
+  const lastMousePosition = useRef({ x: 0, y: 0 });
+  const animationFrameId = useRef<number | null>(null);
 
   useEffect(() => {
     if (disabled) {
-      setIsVisible(false)
-      return
+      setIsVisible(false);
+      return;
     }
 
     const updateMousePosition = (e: MouseEvent) => {
-      lastMousePosition.current = { x: e.clientX, y: e.clientY }
-      if (!isVisible) setIsVisible(true)
-    }
+      lastMousePosition.current = { x: e.clientX, y: e.clientY };
+      if (!isVisible) setIsVisible(true);
+    };
 
     const handleMouseLeave = () => {
-      setIsVisible(false)
-    }
+      setIsVisible(false);
+    };
 
     const smoothlyUpdatePosition = () => {
-      if (!isVisible) return
+      if (!isVisible) return;
 
       // Smooth follow effect
-      const newX = mousePosition.x + (lastMousePosition.current.x - mousePosition.x) * followSpeed
-      const newY = mousePosition.y + (lastMousePosition.current.y - mousePosition.y) * followSpeed
+      const newX =
+        mousePosition.x +
+        (lastMousePosition.current.x - mousePosition.x) * followSpeed;
+      const newY =
+        mousePosition.y +
+        (lastMousePosition.current.y - mousePosition.y) * followSpeed;
 
-      setMousePosition({ x: newX, y: newY })
-      animationFrameId.current = requestAnimationFrame(smoothlyUpdatePosition)
-    }
+      setMousePosition({ x: newX, y: newY });
+      animationFrameId.current = requestAnimationFrame(smoothlyUpdatePosition);
+    };
 
-    window.addEventListener("mousemove", updateMousePosition)
-    document.documentElement.addEventListener("mouseleave", handleMouseLeave)
-    animationFrameId.current = requestAnimationFrame(smoothlyUpdatePosition)
+    window.addEventListener("mousemove", updateMousePosition);
+    document.documentElement.addEventListener("mouseleave", handleMouseLeave);
+    animationFrameId.current = requestAnimationFrame(smoothlyUpdatePosition);
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition)
-      document.documentElement.removeEventListener("mouseleave", handleMouseLeave)
+      window.removeEventListener("mousemove", updateMousePosition);
+      document.documentElement.removeEventListener(
+        "mouseleave",
+        handleMouseLeave,
+      );
       if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current)
+        cancelAnimationFrame(animationFrameId.current);
       }
-    }
-  }, [isVisible, followSpeed, disabled, mousePosition.x, mousePosition.y])
+    };
+  }, [isVisible, followSpeed, disabled, mousePosition.x, mousePosition.y]);
 
   useEffect(() => {
     if (pulseEffect && isVisible) {
@@ -86,9 +93,16 @@ export function MouseGlow({
           repeatType: "loop",
           ease: "easeInOut",
         },
-      })
+      });
     }
-  }, [controls, pulseEffect, pulseScale, pulseSpeed, isVisible, setMousePosition])
+  }, [
+    controls,
+    pulseEffect,
+    pulseScale,
+    pulseSpeed,
+    isVisible,
+    setMousePosition,
+  ]);
 
   return (
     <AnimatePresence>
@@ -130,5 +144,5 @@ export function MouseGlow({
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  );
 }

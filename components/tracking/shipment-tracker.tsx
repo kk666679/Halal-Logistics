@@ -1,11 +1,17 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   MapPin,
   Truck,
@@ -19,51 +25,51 @@ import {
   Calendar,
   Building,
   FileText,
-} from "lucide-react"
+} from "lucide-react";
 
 interface TrackingEvent {
-  id: string
-  location: string
-  timestamp: string
-  status: "completed" | "in-progress" | "pending" | "delayed"
-  temperature?: number
-  humidity?: number
-  description: string
-  blockchainHash?: string
-  verifiedBy?: string
-  coordinates?: { lat: number; lng: number }
+  id: string;
+  location: string;
+  timestamp: string;
+  status: "completed" | "in-progress" | "pending" | "delayed";
+  temperature?: number;
+  humidity?: number;
+  description: string;
+  blockchainHash?: string;
+  verifiedBy?: string;
+  coordinates?: { lat: number; lng: number };
 }
 
 interface ShipmentData {
-  id: string
-  productName: string
-  quantity: string
-  origin: string
-  destination: string
-  estimatedDelivery: string
-  currentLocation: string
-  status: "in-transit" | "delivered" | "delayed" | "pending"
-  progress: number
-  halalCertified: boolean
+  id: string;
+  productName: string;
+  quantity: string;
+  origin: string;
+  destination: string;
+  estimatedDelivery: string;
+  currentLocation: string;
+  status: "in-transit" | "delivered" | "delayed" | "pending";
+  progress: number;
+  halalCertified: boolean;
   temperature: {
-    current: number
-    min: number
-    max: number
-    unit: "C" | "F"
-  }
-  carrier: string
-  trackingEvents: TrackingEvent[]
-  blockchainVerified: boolean
+    current: number;
+    min: number;
+    max: number;
+    unit: "C" | "F";
+  };
+  carrier: string;
+  trackingEvents: TrackingEvent[];
+  blockchainVerified: boolean;
 }
 
 interface ShipmentTrackerProps {
-  shipmentId: string
+  shipmentId: string;
 }
 
 export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
-  const [shipmentData, setShipmentData] = useState<ShipmentData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState("timeline")
+  const [shipmentData, setShipmentData] = useState<ShipmentData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("timeline");
 
   // Mock data - in real app this would come from API
   useEffect(() => {
@@ -130,7 +136,8 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
           status: "completed",
           temperature: 1,
           humidity: 60,
-          description: "Transferred to cold storage, awaiting connecting flight",
+          description:
+            "Transferred to cold storage, awaiting connecting flight",
           blockchainHash: "0x4d5e6f7g8h9i...",
           verifiedBy: "Cold Chain Logistics",
           coordinates: { lat: 25.2285, lng: 55.3273 },
@@ -161,13 +168,13 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
           description: "Final delivery to destination",
         },
       ],
-    }
+    };
 
     setTimeout(() => {
-      setShipmentData(mockShipmentData)
-      setIsLoading(false)
-    }, 1000)
-  }, [shipmentId])
+      setShipmentData(mockShipmentData);
+      setIsLoading(false);
+    }, 1000);
+  }, [shipmentId]);
 
   if (isLoading) {
     return (
@@ -177,7 +184,7 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
           <span className="ml-2">Loading shipment data...</span>
         </CardContent>
       </Card>
-    )
+    );
   }
 
   if (!shipmentData) {
@@ -188,29 +195,45 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
           <p className="text-muted-foreground">Shipment not found</p>
         </CardContent>
       </Card>
-    )
+    );
   }
 
   const getStatusConfig = (status: string) => {
     switch (status) {
       case "in-transit":
-        return { label: "In Transit", color: "bg-blue-500/20 text-blue-400 border-blue-500/30", icon: <Truck /> }
+        return {
+          label: "In Transit",
+          color: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+          icon: <Truck />,
+        };
       case "delivered":
         return {
           label: "Delivered",
           color: "bg-green-500/20 text-green-400 border-green-500/30",
           icon: <CheckCircle />,
-        }
+        };
       case "delayed":
-        return { label: "Delayed", color: "bg-red-500/20 text-red-400 border-red-500/30", icon: <AlertTriangle /> }
+        return {
+          label: "Delayed",
+          color: "bg-red-500/20 text-red-400 border-red-500/30",
+          icon: <AlertTriangle />,
+        };
       case "pending":
-        return { label: "Pending", color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30", icon: <Clock /> }
+        return {
+          label: "Pending",
+          color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+          icon: <Clock />,
+        };
       default:
-        return { label: "Unknown", color: "bg-gray-500/20 text-gray-400 border-gray-500/30", icon: <Package /> }
+        return {
+          label: "Unknown",
+          color: "bg-gray-500/20 text-gray-400 border-gray-500/30",
+          icon: <Package />,
+        };
     }
-  }
+  };
 
-  const statusConfig = getStatusConfig(shipmentData.status)
+  const statusConfig = getStatusConfig(shipmentData.status);
 
   return (
     <div className="space-y-6">
@@ -231,13 +254,19 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
                 <span className="ml-1">{statusConfig.label}</span>
               </Badge>
               {shipmentData.halalCertified && (
-                <Badge variant="outline" className="bg-green-500/20 text-green-400 border-green-500/30">
+                <Badge
+                  variant="outline"
+                  className="bg-green-500/20 text-green-400 border-green-500/30"
+                >
                   <Shield className="h-3 w-3 mr-1" />
                   Halal Certified
                 </Badge>
               )}
               {shipmentData.blockchainVerified && (
-                <Badge variant="outline" className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                <Badge
+                  variant="outline"
+                  className="bg-amber-500/20 text-amber-400 border-amber-500/30"
+                >
                   <Shield className="h-3 w-3 mr-1" />
                   Blockchain Verified
                 </Badge>
@@ -277,7 +306,8 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
                 Est. Delivery
               </p>
               <p className="font-medium text-sm">
-                {new Date(shipmentData.estimatedDelivery).toLocaleDateString()} at{" "}
+                {new Date(shipmentData.estimatedDelivery).toLocaleDateString()}{" "}
+                at{" "}
                 {new Date(shipmentData.estimatedDelivery).toLocaleTimeString()}
               </p>
             </div>
@@ -300,13 +330,16 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
               <Badge
                 variant="outline"
                 className={
-                  shipmentData.temperature.current >= shipmentData.temperature.min &&
-                  shipmentData.temperature.current <= shipmentData.temperature.max
+                  shipmentData.temperature.current >=
+                    shipmentData.temperature.min &&
+                  shipmentData.temperature.current <=
+                    shipmentData.temperature.max
                     ? "bg-green-500/20 text-green-400 border-green-500/30"
                     : "bg-red-500/20 text-red-400 border-red-500/30"
                 }
               >
-                {shipmentData.temperature.current >= shipmentData.temperature.min &&
+                {shipmentData.temperature.current >=
+                  shipmentData.temperature.min &&
                 shipmentData.temperature.current <= shipmentData.temperature.max
                   ? "Within Range"
                   : "Out of Range"}
@@ -316,7 +349,8 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
               <div>
                 <p className="text-muted-foreground">Current</p>
                 <p className="text-lg font-bold text-blue-400">
-                  {shipmentData.temperature.current}°{shipmentData.temperature.unit}
+                  {shipmentData.temperature.current}°
+                  {shipmentData.temperature.unit}
                 </p>
               </div>
               <div>
@@ -337,7 +371,11 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
       </Card>
 
       {/* Detailed Tracking */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-4"
+      >
         <TabsList className="glassmorphic-tabs">
           <TabsTrigger value="timeline">Timeline</TabsTrigger>
           <TabsTrigger value="map">Map View</TabsTrigger>
@@ -349,7 +387,9 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
           <Card className="glassmorphic-card">
             <CardHeader>
               <CardTitle>Tracking Timeline</CardTitle>
-              <CardDescription>Complete journey of your shipment with blockchain verification</CardDescription>
+              <CardDescription>
+                Complete journey of your shipment with blockchain verification
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -385,7 +425,9 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
                       <div className="flex items-start justify-between">
                         <div>
                           <h4 className="font-medium">{event.location}</h4>
-                          <p className="text-sm text-muted-foreground">{event.description}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {event.description}
+                          </p>
                         </div>
                         <div className="text-right text-sm text-muted-foreground">
                           {new Date(event.timestamp).toLocaleDateString()}
@@ -427,14 +469,20 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
           <Card className="glassmorphic-card">
             <CardHeader>
               <CardTitle>Route Map</CardTitle>
-              <CardDescription>Visual representation of shipment journey</CardDescription>
+              <CardDescription>
+                Visual representation of shipment journey
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-96 bg-muted/20 rounded-lg flex items-center justify-center border border-muted/40">
                 <div className="text-center">
                   <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">Interactive map integration coming soon</p>
-                  <p className="text-sm text-muted-foreground mt-2">Current Location: {shipmentData.currentLocation}</p>
+                  <p className="text-muted-foreground">
+                    Interactive map integration coming soon
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Current Location: {shipmentData.currentLocation}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -445,15 +493,37 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
           <Card className="glassmorphic-card">
             <CardHeader>
               <CardTitle>Shipping Documents</CardTitle>
-              <CardDescription>All documents related to this shipment</CardDescription>
+              <CardDescription>
+                All documents related to this shipment
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {[
-                  { name: "Halal Certificate", type: "PDF", size: "2.3 MB", verified: true },
-                  { name: "Bill of Lading", type: "PDF", size: "1.8 MB", verified: true },
-                  { name: "Temperature Log", type: "CSV", size: "0.5 MB", verified: true },
-                  { name: "Customs Declaration", type: "PDF", size: "1.2 MB", verified: true },
+                  {
+                    name: "Halal Certificate",
+                    type: "PDF",
+                    size: "2.3 MB",
+                    verified: true,
+                  },
+                  {
+                    name: "Bill of Lading",
+                    type: "PDF",
+                    size: "1.8 MB",
+                    verified: true,
+                  },
+                  {
+                    name: "Temperature Log",
+                    type: "CSV",
+                    size: "0.5 MB",
+                    verified: true,
+                  },
+                  {
+                    name: "Customs Declaration",
+                    type: "PDF",
+                    size: "1.2 MB",
+                    verified: true,
+                  },
                 ].map((doc, index) => (
                   <div
                     key={index}
@@ -472,7 +542,10 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
                     </div>
                     <div className="flex items-center space-x-2">
                       {doc.verified && (
-                        <Badge variant="outline" className="bg-green-500/20 text-green-400 border-green-500/30">
+                        <Badge
+                          variant="outline"
+                          className="bg-green-500/20 text-green-400 border-green-500/30"
+                        >
                           <Shield className="h-3 w-3 mr-1" />
                           Verified
                         </Badge>
@@ -492,33 +565,47 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
           <Card className="glassmorphic-card">
             <CardHeader>
               <CardTitle>Blockchain Verification</CardTitle>
-              <CardDescription>Immutable records of shipment events on the blockchain</CardDescription>
+              <CardDescription>
+                Immutable records of shipment events on the blockchain
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {shipmentData.trackingEvents
                   .filter((event) => event.blockchainHash)
                   .map((event) => (
-                    <div key={event.id} className="p-4 rounded-lg bg-muted/20 border border-muted/40">
+                    <div
+                      key={event.id}
+                      className="p-4 rounded-lg bg-muted/20 border border-muted/40"
+                    >
                       <div className="flex items-start justify-between mb-2">
                         <div>
                           <h4 className="font-medium">{event.location}</h4>
-                          <p className="text-sm text-muted-foreground">{event.description}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {event.description}
+                          </p>
                         </div>
-                        <Badge variant="outline" className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                        <Badge
+                          variant="outline"
+                          className="bg-amber-500/20 text-amber-400 border-amber-500/30"
+                        >
                           <Shield className="h-3 w-3 mr-1" />
                           Verified
                         </Badge>
                       </div>
                       <div className="space-y-2">
                         <div>
-                          <p className="text-xs text-muted-foreground">Blockchain Hash</p>
+                          <p className="text-xs text-muted-foreground">
+                            Blockchain Hash
+                          </p>
                           <code className="text-xs bg-muted/50 px-2 py-1 rounded font-mono">
                             {event.blockchainHash}
                           </code>
                         </div>
                         <div className="flex items-center justify-between text-xs text-muted-foreground">
-                          <span>Timestamp: {new Date(event.timestamp).toISOString()}</span>
+                          <span>
+                            Timestamp: {new Date(event.timestamp).toISOString()}
+                          </span>
                           <span>Verified by: {event.verifiedBy}</span>
                         </div>
                       </div>
@@ -530,5 +617,5 @@ export function ShipmentTracker({ shipmentId }: ShipmentTrackerProps) {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

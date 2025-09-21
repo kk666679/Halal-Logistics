@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { forwardRef } from "react"
-import { motion } from "framer-motion"
-import { cn } from "@/lib/utils"
-import { Button, type ButtonProps } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
+import { forwardRef } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { Button, type ButtonProps } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 interface ExtendedButtonProps extends ButtonProps {
-  isLoading?: boolean
-  loadingText?: string
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
-  hoverScale?: number
-  activeScale?: number
-  withRing?: boolean
+  isLoading?: boolean;
+  loadingText?: string;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  hoverScale?: number;
+  activeScale?: number;
+  withRing?: boolean;
 }
 
 export const PrimaryButton = forwardRef<HTMLButtonElement, ExtendedButtonProps>(
@@ -68,13 +68,16 @@ export const PrimaryButton = forwardRef<HTMLButtonElement, ExtendedButtonProps>(
           )}
         </Button>
       </motion.div>
-    )
+    );
   },
-)
+);
 
-PrimaryButton.displayName = "PrimaryButton"
+PrimaryButton.displayName = "PrimaryButton";
 
-export const SecondaryButton = forwardRef<HTMLButtonElement, ExtendedButtonProps>(
+export const SecondaryButton = forwardRef<
+  HTMLButtonElement,
+  ExtendedButtonProps
+>(
   (
     {
       className,
@@ -125,11 +128,11 @@ export const SecondaryButton = forwardRef<HTMLButtonElement, ExtendedButtonProps
           )}
         </Button>
       </motion.div>
-    )
+    );
   },
-)
+);
 
-SecondaryButton.displayName = "SecondaryButton"
+SecondaryButton.displayName = "SecondaryButton";
 
 export const OutlineButton = forwardRef<HTMLButtonElement, ExtendedButtonProps>(
   (
@@ -182,8 +185,8 @@ export const OutlineButton = forwardRef<HTMLButtonElement, ExtendedButtonProps>(
           )}
         </Button>
       </motion.div>
-    )
+    );
   },
-)
+);
 
-OutlineButton.displayName = "OutlineButton"
+OutlineButton.displayName = "OutlineButton";

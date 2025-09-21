@@ -110,6 +110,7 @@ backend/
 ## 🚀 Installation
 
 ### Prerequisites
+
 - Node.js 18+
 - MongoDB 5+
 - npm or yarn
@@ -117,17 +118,20 @@ backend/
 ### Setup Steps
 
 1. **Clone and Install**:
+
    ```bash
    cd backend
    npm install
    ```
 
 2. **Environment Configuration**:
+
    ```bash
    cp .env.example .env
    ```
 
    Update `.env` with your configuration:
+
    ```env
    # Database
    MONGODB_URI=mongodb://localhost:27017/halalchain
@@ -153,6 +157,7 @@ backend/
    ```
 
 3. **Start MongoDB**:
+
    ```bash
    # Using Docker
    docker run -d -p 27017:27017 --name mongodb mongo:latest
@@ -164,17 +169,20 @@ backend/
 ## 🏃 Running the Application
 
 ### Development Mode
+
 ```bash
 npm run start:dev
 ```
 
 ### Production Mode
+
 ```bash
 npm run build
 npm run start:prod
 ```
 
 ### Debug Mode
+
 ```bash
 npm run start:debug
 ```
@@ -184,59 +192,65 @@ The API will be available at `http://localhost:3001`
 ## 📡 API Endpoints
 
 ### Authentication Endpoints
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/auth/register` | Register new user | ❌ |
-| POST | `/auth/login` | User login | ❌ |
-| GET | `/auth/profile` | Get user profile | ✅ |
-| PATCH | `/auth/profile` | Update user profile | ✅ |
+
+| Method | Endpoint         | Description         | Auth Required |
+| ------ | ---------------- | ------------------- | ------------- |
+| POST   | `/auth/register` | Register new user   | ❌            |
+| POST   | `/auth/login`    | User login          | ❌            |
+| GET    | `/auth/profile`  | Get user profile    | ✅            |
+| PATCH  | `/auth/profile`  | Update user profile | ✅            |
 
 ### User Management Endpoints
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/users/profile` | Get current user profile | ✅ |
-| GET | `/users/stats` | Get user statistics | ✅ |
-| GET | `/users` | Get all users (Admin) | ✅ |
+
+| Method | Endpoint         | Description              | Auth Required |
+| ------ | ---------------- | ------------------------ | ------------- |
+| GET    | `/users/profile` | Get current user profile | ✅            |
+| GET    | `/users/stats`   | Get user statistics      | ✅            |
+| GET    | `/users`         | Get all users (Admin)    | ✅            |
 
 ### Product Management Endpoints
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/products` | Get all products | ✅ |
-| GET | `/products/low-stock` | Get low stock products | ✅ |
-| GET | `/products/stats` | Get product statistics | ✅ |
-| GET | `/products/:id` | Get product by ID | ✅ |
-| POST | `/products` | Create new product | ✅ |
-| PATCH | `/products/:id` | Update product | ✅ |
-| PATCH | `/products/:id/stock` | Update product stock | ✅ |
-| DELETE | `/products/:id` | Delete product | ✅ |
+
+| Method | Endpoint              | Description            | Auth Required |
+| ------ | --------------------- | ---------------------- | ------------- |
+| GET    | `/products`           | Get all products       | ✅            |
+| GET    | `/products/low-stock` | Get low stock products | ✅            |
+| GET    | `/products/stats`     | Get product statistics | ✅            |
+| GET    | `/products/:id`       | Get product by ID      | ✅            |
+| POST   | `/products`           | Create new product     | ✅            |
+| PATCH  | `/products/:id`       | Update product         | ✅            |
+| PATCH  | `/products/:id/stock` | Update product stock   | ✅            |
+| DELETE | `/products/:id`       | Delete product         | ✅            |
 
 ### Certification Endpoints
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/certifications` | Get all applications | ✅ |
-| GET | `/certifications/my-applications` | Get user's applications | ✅ |
-| GET | `/certifications/stats` | Get certification statistics | ✅ |
-| GET | `/certifications/:id` | Get application by ID | ✅ |
-| POST | `/certifications` | Submit new application | ✅ |
-| PATCH | `/certifications/:id` | Update application | ✅ |
-| PATCH | `/certifications/:id/status` | Update application status | ✅ |
-| PATCH | `/certifications/:id/assign` | Assign to reviewer | ✅ |
+
+| Method | Endpoint                          | Description                  | Auth Required |
+| ------ | --------------------------------- | ---------------------------- | ------------- |
+| GET    | `/certifications`                 | Get all applications         | ✅            |
+| GET    | `/certifications/my-applications` | Get user's applications      | ✅            |
+| GET    | `/certifications/stats`           | Get certification statistics | ✅            |
+| GET    | `/certifications/:id`             | Get application by ID        | ✅            |
+| POST   | `/certifications`                 | Submit new application       | ✅            |
+| PATCH  | `/certifications/:id`             | Update application           | ✅            |
+| PATCH  | `/certifications/:id/status`      | Update application status    | ✅            |
+| PATCH  | `/certifications/:id/assign`      | Assign to reviewer           | ✅            |
 
 ### Tracking Endpoints
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/tracking` | Get all shipments | ✅ |
-| GET | `/tracking/my-shipments` | Get user's shipments | ✅ |
-| GET | `/tracking/stats` | Get tracking statistics | ✅ |
-| GET | `/tracking/:id` | Get shipment by ID | ✅ |
-| POST | `/tracking` | Create new shipment | ✅ |
-| PATCH | `/tracking/:id` | Update shipment | ✅ |
-| PATCH | `/tracking/:id/status` | Update shipment status | ✅ |
-| POST | `/tracking/:id/events` | Add tracking event | ✅ |
+
+| Method | Endpoint                 | Description             | Auth Required |
+| ------ | ------------------------ | ----------------------- | ------------- |
+| GET    | `/tracking`              | Get all shipments       | ✅            |
+| GET    | `/tracking/my-shipments` | Get user's shipments    | ✅            |
+| GET    | `/tracking/stats`        | Get tracking statistics | ✅            |
+| GET    | `/tracking/:id`          | Get shipment by ID      | ✅            |
+| POST   | `/tracking`              | Create new shipment     | ✅            |
+| PATCH  | `/tracking/:id`          | Update shipment         | ✅            |
+| PATCH  | `/tracking/:id/status`   | Update shipment status  | ✅            |
+| POST   | `/tracking/:id/events`   | Add tracking event      | ✅            |
 
 ## 🗄️ Database Models
 
 ### User Model
+
 ```typescript
 {
   _id: ObjectId,
@@ -254,6 +268,7 @@ The API will be available at `http://localhost:3001`
 ```
 
 ### Product Model
+
 ```typescript
 {
   _id: ObjectId,
@@ -284,6 +299,7 @@ The API will be available at `http://localhost:3001`
 ```
 
 ### Certification Model
+
 ```typescript
 {
   _id: ObjectId,
@@ -315,6 +331,7 @@ The API will be available at `http://localhost:3001`
 ```
 
 ### Tracking Model
+
 ```typescript
 {
   _id: ObjectId,
@@ -351,6 +368,7 @@ Authorization: Bearer <your-jwt-token>
 ```
 
 ### Role-based Access
+
 - **Supplier**: Can manage products and track shipments
 - **Certifier**: Can review and approve certification applications
 - **Auditor**: Can access audit logs and verification data
@@ -399,6 +417,7 @@ npm run test:cov
 ## 🚀 Deployment
 
 ### Docker Deployment
+
 ```dockerfile
 FROM node:18-alpine
 WORKDIR /app
@@ -411,6 +430,7 @@ CMD ["npm", "run", "start:prod"]
 ```
 
 ### Environment Variables for Production
+
 ```env
 NODE_ENV=production
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/halalchain
@@ -431,6 +451,7 @@ FRONTEND_URL=https://yourdomain.com
 ## 📝 API Documentation
 
 Once the server is running, visit:
+
 - **Swagger UI**: `http://localhost:3001/api`
 - **ReDoc**: `http://localhost:3001/api-json`
 
@@ -441,6 +462,7 @@ This project is licensed under the MIT License.
 ## 🆘 Support
 
 For support and questions:
+
 - Create an issue in the repository
 - Check the API documentation
 - Review the example requests in the test files

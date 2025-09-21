@@ -1,8 +1,16 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Tracking, TrackingDocument, TrackingStatus } from './tracking.schema';
-import { CreateTrackingDto, UpdateTrackingDto, AddTrackingEventDto } from './dto/tracking.dto';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Tracking, TrackingDocument, TrackingStatus } from "./tracking.schema";
+import {
+  CreateTrackingDto,
+  UpdateTrackingDto,
+  AddTrackingEventDto,
+} from "./dto/tracking.dto";
 
 @Injectable()
 export class TrackingService {
@@ -10,7 +18,10 @@ export class TrackingService {
     @InjectModel(Tracking.name) private trackingModel: Model<TrackingDocument>,
   ) {}
 
-  async create(createTrackingDto: CreateTrackingDto, userId: string): Promise<Tracking> {
+  async create(
+    createTrackingDto: CreateTrackingDto,
+    userId: string,
+  ): Promise<Tracking> {
     const tracking = new this.trackingModel({
       ...createTrackingDto,
       createdBy: userId,
@@ -22,17 +33,17 @@ export class TrackingService {
   async findAll(): Promise<Tracking[]> {
     return this.trackingModel
       .find()
-      .populate('createdBy', 'firstName lastName email')
+      .populate("createdBy", "firstName lastName email")
       .sort({ createdAt: -1 });
   }
 
   async findById(id: string): Promise<Tracking> {
     const tracking = await this.trackingModel
       .findById(id)
-      .populate('createdBy', 'firstName lastName email');
+      .populate("createdBy", "firstName lastName email");
 
     if (!tracking) {
-      throw new NotFoundException('Tracking record not found');
+      throw new NotFoundException("Tracking record not found");
     }
 
     return tracking;
@@ -41,24 +52,27 @@ export class TrackingService {
   async findByUser(userId: string): Promise<Tracking[]> {
     return this.trackingModel
       .find({ createdBy: userId })
-      .populate('createdBy', 'firstName lastName email')
+      .populate("createdBy", "firstName lastName email")
       .sort({ createdAt: -1 });
   }
 
   async findByStatus(status: TrackingStatus): Promise<Tracking[]> {
     return this.trackingModel
       .find({ status })
-      .populate('createdBy', 'firstName lastName email')
+      .populate("createdBy", "firstName lastName email")
       .sort({ createdAt: -1 });
   }
 
-  async update(id: string, updateTrackingDto: UpdateTrackingDto): Promise<Tracking> {
+  async update(
+    id: string,
+    updateTrackingDto: UpdateTrackingDto,
+  ): Promise<Tracking> {
     const tracking = await this.trackingModel
       .findByIdAndUpdate(id, updateTrackingDto, { new: true })
-      .populate('createdBy', 'firstName lastName email');
+      .populate("createdBy", "firstName lastName email");
 
     if (!tracking) {
-      throw new NotFoundException('Tracking record not found');
+      throw new NotFoundException("Tracking record not found");
     }
 
     return tracking;
@@ -67,20 +81,23 @@ export class TrackingService {
   async updateStatus(id: string, status: TrackingStatus): Promise<Tracking> {
     const tracking = await this.trackingModel
       .findByIdAndUpdate(id, { status }, { new: true })
-      .populate('createdBy', 'firstName lastName email');
+      .populate("createdBy", "firstName lastName email");
 
     if (!tracking) {
-      throw new NotFoundException('Tracking record not found');
+      throw new NotFoundException("Tracking record not found");
     }
 
     return tracking;
   }
 
-  async addTrackingEvent(id: string, eventDto: AddTrackingEventDto): Promise<Tracking> {
+  async addTrackingEvent(
+    id: string,
+    eventDto: AddTrackingEventDto,
+  ): Promise<Tracking> {
     const tracking = await this.trackingModel.findById(id);
 
     if (!tracking) {
-      throw new NotFoundException('Tracking record not found');
+      throw new NotFoundException("Tracking record not found");
     }
 
     tracking.trackingEvents.push({
@@ -89,15 +106,19 @@ export class TrackingService {
     });
 
     // Update current location and status based on the latest event
-    const latestEvent = tracking.trackingEvents[tracking.trackingEvents.length - 1];
+    const latestEvent =
+      tracking.trackingEvents[tracking.trackingEvents.length - 1];
     tracking.currentLocation = latestEvent.location;
     tracking.status = latestEvent.status;
 
     // Calculate progress based on events
     const completedEvents = tracking.trackingEvents.filter(
-      event => event.status === TrackingStatus.DELIVERED
+      (event) => event.status === TrackingStatus.DELIVERED,
     ).length;
-    tracking.progress = Math.min((completedEvents / tracking.trackingEvents.length) * 100, 100);
+    tracking.progress = Math.min(
+      (completedEvents / tracking.trackingEvents.length) * 100,
+      100,
+    );
 
     await tracking.save();
     return this.findById(id);
@@ -118,15 +139,15 @@ export class TrackingService {
     }
 
     const inTransit = await this.trackingModel.countDocuments({
-      status: TrackingStatus.IN_TRANSIT
+      status: TrackingStatus.IN_TRANSIT,
     });
 
     const delivered = await this.trackingModel.countDocuments({
-      status: TrackingStatus.DELIVERED
+      status: TrackingStatus.DELIVERED,
     });
 
     const delayed = await this.trackingModel.countDocuments({
-      status: TrackingStatus.DELAYED
+      status: TrackingStatus.DELAYED,
     });
 
     return { total, byStatus, inTransit, delivered, delayed };

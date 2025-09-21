@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BentoGrid } from "@/components/ui/bento-grid"
-import { TiltCard } from "@/components/ui/tilt-card"
-import { Palette, Layers, Code, Sparkles } from "lucide-react"
-import { ScrollReveal } from "@/components/scroll-reveal"
-import { AnimatedText } from "@/components/ui/animated-text"
-import { AnimatedGradientBorder } from "@/components/ui/animated-gradient-border"
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BentoGrid } from "@/components/ui/bento-grid";
+import { TiltCard } from "@/components/ui/tilt-card";
+import { Palette, Layers, Code, Sparkles } from "lucide-react";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { AnimatedGradientBorder } from "@/components/ui/animated-gradient-border";
 
 export function ComponentShowcase() {
-  const [activeTab, setActiveTab] = useState("buttons")
+  const [activeTab, setActiveTab] = useState("buttons");
 
   return (
     <section id="components" className="w-full py-12 md:py-24 lg:py-32">
@@ -38,7 +38,12 @@ export function ComponentShowcase() {
 
         <ScrollReveal delay={0.2}>
           <div className="mt-12">
-            <Tabs defaultValue="buttons" value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <Tabs
+              defaultValue="buttons"
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full"
+            >
               <div className="flex justify-center mb-8">
                 <AnimatedGradientBorder
                   colors={["#dc2626", "#4b5563", "#dc2626", "#4b5563"]}
@@ -66,7 +71,9 @@ export function ComponentShowcase() {
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                   >
                     <div className="flex flex-col gap-4 p-6 border rounded-lg glassmorphic-card">
-                      <h3 className="text-lg font-medium tracking-tight">Primary Buttons</h3>
+                      <h3 className="text-lg font-medium tracking-tight">
+                        Primary Buttons
+                      </h3>
                       <div className="flex flex-wrap gap-2">
                         <motion.button
                           className="neumorphic-button-primary inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
@@ -93,7 +100,9 @@ export function ComponentShowcase() {
                     </div>
 
                     <div className="flex flex-col gap-4 p-6 border rounded-lg glassmorphic-card">
-                      <h3 className="text-lg font-medium tracking-tight">Secondary Buttons</h3>
+                      <h3 className="text-lg font-medium tracking-tight">
+                        Secondary Buttons
+                      </h3>
                       <div className="flex flex-wrap gap-2">
                         <motion.button
                           className="neumorphic-button inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
@@ -120,7 +129,9 @@ export function ComponentShowcase() {
                     </div>
 
                     <div className="flex flex-col gap-4 p-6 border rounded-lg glassmorphic-card">
-                      <h3 className="text-lg font-medium tracking-tight">Outline Buttons</h3>
+                      <h3 className="text-lg font-medium tracking-tight">
+                        Outline Buttons
+                      </h3>
                       <div className="flex flex-wrap gap-2">
                         <motion.button
                           className="neumorphic-button-outline inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
@@ -200,7 +211,10 @@ export function ComponentShowcase() {
                         description="Clean and minimal design for modern web applications."
                         className="col-span-2 md:row-span-2 group"
                         icon={
-                          <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.8, ease: "easeInOut" }}>
+                          <motion.div
+                            whileHover={{ rotate: 360 }}
+                            transition={{ duration: 0.8, ease: "easeInOut" }}
+                          >
                             <Palette className="h-6 w-6" />
                           </motion.div>
                         }
@@ -210,7 +224,10 @@ export function ComponentShowcase() {
                         description="Fully responsive components that work on all devices."
                         className="group"
                         icon={
-                          <motion.div whileHover={{ scale: 1.2 }} transition={{ duration: 0.3 }}>
+                          <motion.div
+                            whileHover={{ scale: 1.2 }}
+                            transition={{ duration: 0.3 }}
+                          >
                             <Layers className="h-6 w-6" />
                           </motion.div>
                         }
@@ -220,7 +237,10 @@ export function ComponentShowcase() {
                         description="Built with accessibility in mind for all users."
                         className="group"
                         icon={
-                          <motion.div whileHover={{ scale: 1.2 }} transition={{ duration: 0.3 }}>
+                          <motion.div
+                            whileHover={{ scale: 1.2 }}
+                            transition={{ duration: 0.3 }}
+                          >
                             <Code className="h-6 w-6" />
                           </motion.div>
                         }
@@ -311,5 +331,5 @@ export function ComponentShowcase() {
         </ScrollReveal>
       </div>
     </section>
-  )
+  );
 }

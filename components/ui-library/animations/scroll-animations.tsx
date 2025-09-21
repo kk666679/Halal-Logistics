@@ -1,26 +1,32 @@
-"use client"
+"use client";
 
-import { useRef, useEffect, type ReactNode } from "react"
-import { motion, useAnimation, useScroll, useTransform, type Variant } from "framer-motion"
-import { useInView } from "react-intersection-observer"
-import { cn } from "@/lib/utils"
+import { useRef, useEffect, type ReactNode } from "react";
+import {
+  motion,
+  useAnimation,
+  useScroll,
+  useTransform,
+  type Variant,
+} from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { cn } from "@/lib/utils";
 
-type AnimationDirection = "up" | "down" | "left" | "right" | "none"
-type AnimationType = "fade" | "slide" | "scale" | "rotate" | "flip" | "none"
+type AnimationDirection = "up" | "down" | "left" | "right" | "none";
+type AnimationType = "fade" | "slide" | "scale" | "rotate" | "flip" | "none";
 
 interface ScrollAnimationProps {
-  children: ReactNode
-  className?: string
-  type?: AnimationType
-  direction?: AnimationDirection
-  duration?: number
-  delay?: number
-  threshold?: number
-  once?: boolean
-  distance?: number
-  staggerChildren?: boolean
-  staggerDelay?: number
-  ease?: string
+  children: ReactNode;
+  className?: string;
+  type?: AnimationType;
+  direction?: AnimationDirection;
+  duration?: number;
+  delay?: number;
+  threshold?: number;
+  once?: boolean;
+  distance?: number;
+  staggerChildren?: boolean;
+  staggerDelay?: number;
+  ease?: string;
 }
 
 export function ScrollAnimation({
@@ -37,64 +43,64 @@ export function ScrollAnimation({
   staggerDelay = 0.1,
   ease = "easeOut",
 }: ScrollAnimationProps) {
-  const controls = useAnimation()
-  const [ref, inView] = useInView({ triggerOnce: once, threshold })
+  const controls = useAnimation();
+  const [ref, inView] = useInView({ triggerOnce: once, threshold });
 
   // Define animation variants
   const getVariants = () => {
     const variants: { hidden: Variant; visible: Variant } = {
       hidden: {},
       visible: {},
-    }
+    };
 
     // Handle fade animation
     if (type === "fade" || type === "slide") {
-      variants.hidden.opacity = 0
-      variants.visible.opacity = 1
+      variants.hidden.opacity = 0;
+      variants.visible.opacity = 1;
     }
 
     // Handle slide animation
     if (type === "slide") {
       switch (direction) {
         case "up":
-          variants.hidden.y = distance
-          variants.visible.y = 0
-          break
+          variants.hidden.y = distance;
+          variants.visible.y = 0;
+          break;
         case "down":
-          variants.hidden.y = -distance
-          variants.visible.y = 0
-          break
+          variants.hidden.y = -distance;
+          variants.visible.y = 0;
+          break;
         case "left":
-          variants.hidden.x = distance
-          variants.visible.x = 0
-          break
+          variants.hidden.x = distance;
+          variants.visible.x = 0;
+          break;
         case "right":
-          variants.hidden.x = -distance
-          variants.visible.x = 0
-          break
+          variants.hidden.x = -distance;
+          variants.visible.x = 0;
+          break;
       }
     }
 
     // Handle scale animation
     if (type === "scale") {
-      variants.hidden.scale = 0.8
-      variants.visible.scale = 1
+      variants.hidden.scale = 0.8;
+      variants.visible.scale = 1;
     }
 
     // Handle rotate animation
     if (type === "rotate") {
-      variants.hidden.rotate = direction === "left" ? -90 : 90
-      variants.visible.rotate = 0
+      variants.hidden.rotate = direction === "left" ? -90 : 90;
+      variants.visible.rotate = 0;
     }
 
     // Handle flip animation
     if (type === "flip") {
       if (direction === "up" || direction === "down") {
-        variants.hidden.rotateX = direction === "down" ? 90 : -90
-        variants.visible.rotateX = 0
+        variants.hidden.rotateX = direction === "down" ? 90 : -90;
+        variants.visible.rotateX = 0;
       } else {
-        variants.hidden.rotateY = direction === "right" ? 90 : -90
-        variants.visible.rotateY = 0
+        variants.hidden.rotateY = direction === "right" ? 90 : -90;
+        variants.visible.rotateY = 0;
       }
     }
 
@@ -104,59 +110,83 @@ export function ScrollAnimation({
       delay,
       ease,
       staggerChildren: staggerChildren ? staggerDelay : 0,
-    }
+    };
 
-    return variants
-  }
+    return variants;
+  };
 
   useEffect(() => {
     if (inView) {
-      controls.start("visible")
+      controls.start("visible");
     } else if (!once) {
-      controls.start("hidden")
+      controls.start("hidden");
     }
-  }, [controls, inView, once])
+  }, [controls, inView, once]);
 
   return (
-    <motion.div ref={ref} className={className} initial="hidden" animate={controls} variants={getVariants()}>
+    <motion.div
+      ref={ref}
+      className={className}
+      initial="hidden"
+      animate={controls}
+      variants={getVariants()}
+    >
       {children}
     </motion.div>
-  )
+  );
 }
 
 interface ParallaxProps {
-  children: ReactNode
-  className?: string
-  speed?: number
-  direction?: "vertical" | "horizontal"
-  reverse?: boolean
+  children: ReactNode;
+  className?: string;
+  speed?: number;
+  direction?: "vertical" | "horizontal";
+  reverse?: boolean;
 }
 
-export function Parallax({ children, className, speed = 0.5, direction = "vertical", reverse = false }: ParallaxProps) {
-  const ref = useRef<HTMLDivElement>(null)
+export function Parallax({
+  children,
+  className,
+  speed = 0.5,
+  direction = "vertical",
+  reverse = false,
+}: ParallaxProps) {
+  const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
-  })
+  });
 
-  const factor = reverse ? -1 : 1
-  const yRange = useTransform(scrollYProgress, [0, 1], [0, speed * 100 * factor])
-  const xRange = useTransform(scrollYProgress, [0, 1], [0, speed * 100 * factor])
+  const factor = reverse ? -1 : 1;
+  const yRange = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, speed * 100 * factor],
+  );
+  const xRange = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, speed * 100 * factor],
+  );
 
   return (
     <motion.div ref={ref} className={cn("relative overflow-hidden", className)}>
-      <motion.div style={direction === "vertical" ? { y: yRange } : { x: xRange }}>{children}</motion.div>
+      <motion.div
+        style={direction === "vertical" ? { y: yRange } : { x: xRange }}
+      >
+        {children}
+      </motion.div>
     </motion.div>
-  )
+  );
 }
 
 interface StaggerContainerProps {
-  children: ReactNode
-  className?: string
-  delay?: number
-  staggerDelay?: number
-  once?: boolean
-  threshold?: number
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  staggerDelay?: number;
+  once?: boolean;
+  threshold?: number;
 }
 
 export function StaggerContainer({
@@ -167,16 +197,16 @@ export function StaggerContainer({
   once = true,
   threshold = 0.1,
 }: StaggerContainerProps) {
-  const controls = useAnimation()
-  const [ref, inView] = useInView({ triggerOnce: once, threshold })
+  const controls = useAnimation();
+  const [ref, inView] = useInView({ triggerOnce: once, threshold });
 
   useEffect(() => {
     if (inView) {
-      controls.start("visible")
+      controls.start("visible");
     } else if (!once) {
-      controls.start("hidden")
+      controls.start("hidden");
     }
-  }, [controls, inView, once])
+  }, [controls, inView, once]);
 
   return (
     <motion.div
@@ -195,10 +225,16 @@ export function StaggerContainer({
     >
       {children}
     </motion.div>
-  )
+  );
 }
 
-export function StaggerItem({ children, className }: { children: ReactNode; className?: string }) {
+export function StaggerItem({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <motion.div
       className={className}
@@ -216,5 +252,5 @@ export function StaggerItem({ children, className }: { children: ReactNode; clas
     >
       {children}
     </motion.div>
-  )
+  );
 }

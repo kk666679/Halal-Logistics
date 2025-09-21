@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { useRef } from "react"
-import { motion } from "framer-motion"
-import { cn } from "@/lib/utils"
+import { useRef } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface AnimatedBackgroundProps {
-  className?: string
-  variant?: "dots" | "grid" | "waves" | "gradient"
-  color?: string
-  secondaryColor?: string
-  speed?: number
-  density?: number
-  interactive?: boolean
+  className?: string;
+  variant?: "dots" | "grid" | "waves" | "gradient";
+  color?: string;
+  secondaryColor?: string;
+  speed?: number;
+  density?: number;
+  interactive?: boolean;
 }
 
 export function AnimatedBackground({
@@ -22,7 +22,7 @@ export function AnimatedBackground({
   speed = 5,
   density = 30,
 }: AnimatedBackgroundProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null);
 
   if (variant === "gradient") {
     return (
@@ -63,12 +63,20 @@ export function AnimatedBackground({
           }}
         />
       </motion.div>
-    )
+    );
   }
 
   return (
-    <div ref={containerRef} className={cn("absolute inset-0 -z-10 overflow-hidden", className)}>
-      <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+    <div
+      ref={containerRef}
+      className={cn("absolute inset-0 -z-10 overflow-hidden", className)}
+    >
+      <svg
+        className="absolute inset-0 w-full h-full"
+        xmlns="http://www.w3.org/2000/svg"
+        width="100%"
+        height="100%"
+      >
         <defs>
           <pattern
             id={`${variant}-pattern`}
@@ -76,9 +84,16 @@ export function AnimatedBackground({
             height={variant === "dots" ? density : density * 2}
             patternUnits="userSpaceOnUse"
           >
-            {variant === "dots" && <circle cx={density / 2} cy={density / 2} r="1" fill={color} />}
+            {variant === "dots" && (
+              <circle cx={density / 2} cy={density / 2} r="1" fill={color} />
+            )}
             {variant === "grid" && (
-              <path d={`M ${density} 0 L 0 0 0 ${density}`} fill="none" stroke={color} strokeWidth="0.5" />
+              <path
+                d={`M ${density} 0 L 0 0 0 ${density}`}
+                fill="none"
+                stroke={color}
+                strokeWidth="0.5"
+              />
             )}
             {variant === "waves" && (
               <path
@@ -93,5 +108,5 @@ export function AnimatedBackground({
         <rect width="100%" height="100%" fill={`url(#${variant}-pattern)`} />
       </svg>
     </div>
-  )
+  );
 }

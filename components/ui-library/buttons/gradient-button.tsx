@@ -1,20 +1,23 @@
-"use client"
+"use client";
 
-import { forwardRef } from "react"
-import { motion } from "framer-motion"
-import { cn } from "@/lib/utils"
-import { Button, type ButtonProps } from "@/components/ui/button"
+import { forwardRef } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { Button, type ButtonProps } from "@/components/ui/button";
 
 interface GradientButtonProps extends ButtonProps {
-  gradientFrom?: string
-  gradientTo?: string
-  gradientHoverFrom?: string
-  gradientHoverTo?: string
-  borderWidth?: number
-  glowAmount?: number
+  gradientFrom?: string;
+  gradientTo?: string;
+  gradientHoverFrom?: string;
+  gradientHoverTo?: string;
+  borderWidth?: number;
+  glowAmount?: number;
 }
 
-export const GradientButton = forwardRef<HTMLButtonElement, GradientButtonProps>(
+export const GradientButton = forwardRef<
+  HTMLButtonElement,
+  GradientButtonProps
+>(
   (
     {
       className,
@@ -36,7 +39,7 @@ export const GradientButton = forwardRef<HTMLButtonElement, GradientButtonProps>
       "hover:bg-gradient-to-r",
       `hover:${gradientHoverFrom}`,
       `hover:${gradientHoverTo}`,
-    )
+    );
 
     return (
       <motion.div
@@ -82,8 +85,8 @@ export const GradientButton = forwardRef<HTMLButtonElement, GradientButtonProps>
           )}
         </Button>
       </motion.div>
-    )
+    );
   },
-)
+);
 
-GradientButton.displayName = "GradientButton"
+GradientButton.displayName = "GradientButton";

@@ -1,16 +1,29 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { Eye, EyeOff, Shield, Loader2, Building, User } from "lucide-react"
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Eye, EyeOff, Shield, Loader2, Building, User } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
 
 const signupSchema = z
   .object({
@@ -29,19 +42,19 @@ const signupSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
-  })
+  });
 
-type SignupFormData = z.infer<typeof signupSchema>
+type SignupFormData = z.infer<typeof signupSchema>;
 
 interface SignupFormProps {
-  onSubmit?: (data: SignupFormData) => Promise<void>
-  onSwitchToLogin?: () => void
+  onSubmit?: (data: SignupFormData) => Promise<void>;
+  onSwitchToLogin?: () => void;
 }
 
 export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
@@ -56,20 +69,20 @@ export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
       companyDescription: "",
       halalCertificationNumber: "",
     },
-  })
+  });
 
-  const selectedRole = form.watch("role")
+  const selectedRole = form.watch("role");
 
   const handleSubmit = async (data: SignupFormData) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      await onSubmit?.(data)
+      await onSubmit?.(data);
     } catch (error) {
-      console.error("Signup failed:", error)
+      console.error("Signup failed:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const roleOptions = [
     {
@@ -100,7 +113,7 @@ export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
       icon: <User className="h-4 w-4" />,
       description: "End consumers and buyers",
     },
-  ]
+  ];
 
   return (
     <Card className="w-full max-w-2xl glassmorphic-card blockchain-glow">
@@ -110,12 +123,19 @@ export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
             <Shield className="h-6 w-6 text-primary" />
           </div>
         </div>
-        <CardTitle className="text-2xl font-heading tracking-tight">Join HalalChain</CardTitle>
-        <CardDescription>Create your account to start tracking Halal compliance</CardDescription>
+        <CardTitle className="text-2xl font-heading tracking-tight">
+          Join HalalChain
+        </CardTitle>
+        <CardDescription>
+          Create your account to start tracking Halal compliance
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-6"
+          >
             {/* Personal Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
@@ -125,7 +145,11 @@ export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
                   <FormItem>
                     <FormLabel>First Name</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter your first name" className="glassmorphic-inner-card" />
+                      <Input
+                        {...field}
+                        placeholder="Enter your first name"
+                        className="glassmorphic-inner-card"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -139,7 +163,11 @@ export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
                   <FormItem>
                     <FormLabel>Last Name</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter your last name" className="glassmorphic-inner-card" />
+                      <Input
+                        {...field}
+                        placeholder="Enter your last name"
+                        className="glassmorphic-inner-card"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -154,7 +182,12 @@ export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
                 <FormItem>
                   <FormLabel>Email Address</FormLabel>
                   <FormControl>
-                    <Input {...field} type="email" placeholder="Enter your email" className="glassmorphic-inner-card" />
+                    <Input
+                      {...field}
+                      type="email"
+                      placeholder="Enter your email"
+                      className="glassmorphic-inner-card"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -216,7 +249,9 @@ export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
                           variant="ghost"
                           size="icon"
                           className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          onClick={() =>
+                            setShowConfirmPassword(!showConfirmPassword)
+                          }
                         >
                           {showConfirmPassword ? (
                             <EyeOff className="h-4 w-4 text-muted-foreground" />
@@ -245,7 +280,9 @@ export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
                         <label
                           key={role.value}
                           className={`cursor-pointer rounded-lg border-2 p-4 transition-all hover:scale-105 ${
-                            field.value === role.value ? role.color : "border-muted bg-muted/20 hover:bg-muted/40"
+                            field.value === role.value
+                              ? role.color
+                              : "border-muted bg-muted/20 hover:bg-muted/40"
                           }`}
                         >
                           <input
@@ -259,7 +296,9 @@ export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
                             {role.icon}
                             <div>
                               <div className="font-medium">{role.label}</div>
-                              <div className="text-xs text-muted-foreground">{role.description}</div>
+                              <div className="text-xs text-muted-foreground">
+                                {role.description}
+                              </div>
                             </div>
                           </div>
                         </label>
@@ -281,7 +320,11 @@ export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
                     <FormItem>
                       <FormLabel>Company Name</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter your company name" className="glassmorphic-inner-card" />
+                        <Input
+                          {...field}
+                          placeholder="Enter your company name"
+                          className="glassmorphic-inner-card"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -328,7 +371,11 @@ export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
               />
             )}
 
-            <Button type="submit" className="w-full halal-gradient" disabled={isLoading}>
+            <Button
+              type="submit"
+              className="w-full halal-gradient"
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -344,12 +391,16 @@ export function SignupForm({ onSubmit, onSwitchToLogin }: SignupFormProps) {
         <div className="mt-6 text-center">
           <p className="text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Button variant="link" className="p-0 h-auto text-primary hover:underline" onClick={onSwitchToLogin}>
+            <Button
+              variant="link"
+              className="p-0 h-auto text-primary hover:underline"
+              onClick={onSwitchToLogin}
+            >
               Sign in here
             </Button>
           </p>
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

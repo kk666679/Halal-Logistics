@@ -1,24 +1,24 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
+import { useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 interface ImageCardProps {
-  imageSrc: string
-  imageAlt: string
-  title: string
-  description: string
-  tags?: string[]
-  className?: string
-  variant?: "default" | "hover-zoom" | "hover-lift" | "hover-reveal"
-  aspectRatio?: "square" | "video" | "wide"
-  imagePosition?: "top" | "bottom" | "left" | "right"
-  onClick?: () => void
+  imageSrc: string;
+  imageAlt: string;
+  title: string;
+  description: string;
+  tags?: string[];
+  className?: string;
+  variant?: "default" | "hover-zoom" | "hover-lift" | "hover-reveal";
+  aspectRatio?: "square" | "video" | "wide";
+  imagePosition?: "top" | "bottom" | "left" | "right";
+  onClick?: () => void;
 }
 
 export function ImageCard({
@@ -33,15 +33,15 @@ export function ImageCard({
   imagePosition = "top",
   onClick,
 }: ImageCardProps) {
-  const [isHovered, setIsHovered] = useState(false)
+  const [isHovered, setIsHovered] = useState(false);
 
-  const isHorizontal = imagePosition === "left" || imagePosition === "right"
+  const isHorizontal = imagePosition === "left" || imagePosition === "right";
 
   const aspectRatioClasses = {
     square: "aspect-square",
     video: "aspect-video",
     wide: "aspect-[21/9]",
-  }
+  };
 
   const variants = {
     default: {},
@@ -63,7 +63,7 @@ export function ImageCard({
         transition: { duration: 0.3 },
       },
     },
-  }
+  };
 
   return (
     <motion.div
@@ -88,8 +88,17 @@ export function ImageCard({
           imagePosition === "bottom" && "order-last",
         )}
       >
-        <motion.div className="h-full w-full" variants={variants["hover-zoom"]} animate="image">
-          <Image src={imageSrc || "/placeholder.svg"} alt={imageAlt} fill className="object-cover" />
+        <motion.div
+          className="h-full w-full"
+          variants={variants["hover-zoom"]}
+          animate="image"
+        >
+          <Image
+            src={imageSrc || "/placeholder.svg"}
+            alt={imageAlt}
+            fill
+            className="object-cover"
+          />
         </motion.div>
 
         <motion.div
@@ -101,7 +110,11 @@ export function ImageCard({
           {tags && variant === "hover-reveal" && (
             <div className="flex flex-wrap gap-2">
               {tags.map((tag, i) => (
-                <Badge key={i} variant="secondary" className="bg-primary/20 text-primary-foreground">
+                <Badge
+                  key={i}
+                  variant="secondary"
+                  className="bg-primary/20 text-primary-foreground"
+                >
                   {tag}
                 </Badge>
               ))}
@@ -110,11 +123,20 @@ export function ImageCard({
         </motion.div>
       </div>
 
-      <div className={cn("flex flex-col", isHorizontal ? "justify-center p-6" : "p-6")}>
+      <div
+        className={cn(
+          "flex flex-col",
+          isHorizontal ? "justify-center p-6" : "p-6",
+        )}
+      >
         {tags && variant !== "hover-reveal" && (
           <div className="flex flex-wrap gap-2 mb-3">
             {tags.map((tag, i) => (
-              <Badge key={i} variant="secondary" className="bg-primary/20 text-primary-foreground">
+              <Badge
+                key={i}
+                variant="secondary"
+                className="bg-primary/20 text-primary-foreground"
+              >
                 {tag}
               </Badge>
             ))}
@@ -128,12 +150,15 @@ export function ImageCard({
         <p className="text-muted-foreground mb-4 line-clamp-3">{description}</p>
 
         <div className="mt-auto">
-          <Button variant="ghost" className="p-0 h-auto font-medium text-primary group/btn">
+          <Button
+            variant="ghost"
+            className="p-0 h-auto font-medium text-primary group/btn"
+          >
             Read more
             <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
           </Button>
         </div>
       </div>
     </motion.div>
-  )
+  );
 }

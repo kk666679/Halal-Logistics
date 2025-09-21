@@ -1,46 +1,59 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Shield, CheckCircle, Clock, AlertTriangle } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ScrollReveal } from "@/components/scroll-reveal"
-import { AnimatedText } from "@/components/ui/animated-text"
-import { Badge } from "@/components/ui/badge"
+import { motion } from "framer-motion";
+import { Shield, CheckCircle, Clock, AlertTriangle } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { Badge } from "@/components/ui/badge";
 
 export function CertificationSection() {
   const certificationSteps = [
     {
       icon: <Shield className="h-8 w-8 text-amber-600" />,
       title: "Submit Application",
-      description: "Upload product details and documentation for Halal certification review",
+      description:
+        "Upload product details and documentation for Halal certification review",
       status: "completed",
       blockchain: true,
     },
     {
       icon: <CheckCircle className="h-8 w-8 text-green-500" />,
       title: "Blockchain Verification",
-      description: "Smart contracts automatically verify compliance against Halal standards",
+      description:
+        "Smart contracts automatically verify compliance against Halal standards",
       status: "completed",
       blockchain: true,
     },
     {
       icon: <Clock className="h-8 w-8 text-indigo-500" />,
       title: "Certifier Review",
-      description: "Authorized Halal certifiers review and approve applications",
+      description:
+        "Authorized Halal certifiers review and approve applications",
       status: "in-progress",
       blockchain: false,
     },
     {
       icon: <AlertTriangle className="h-8 w-8 text-orange-500" />,
       title: "Immutable Record",
-      description: "Approved certifications are permanently recorded on the blockchain",
+      description:
+        "Approved certifications are permanently recorded on the blockchain",
       status: "pending",
       blockchain: true,
     },
-  ]
+  ];
 
   return (
-    <section id="certification" className="relative w-full py-12 md:py-24 lg:py-32 overflow-hidden">
+    <section
+      id="certification"
+      className="relative w-full py-12 md:py-24 lg:py-32 overflow-hidden"
+    >
       <div className="container px-6 md:px-8">
         <ScrollReveal>
           <div className="flex flex-col items-center justify-center space-y-6 text-center mb-12">
@@ -66,7 +79,10 @@ export function CertificationSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {certificationSteps.map((step, index) => (
               <ScrollReveal key={index} delay={index * 0.1}>
-                <motion.div whileHover={{ y: -5 }} transition={{ type: "spring", stiffness: 300 }}>
+                <motion.div
+                  whileHover={{ y: -5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
                   <Card className="h-full glassmorphic-card group blockchain-glow">
                     <CardHeader>
                       <div className="flex items-center justify-between">
@@ -94,7 +110,10 @@ export function CertificationSection() {
                             {step.status.replace("-", " ")}
                           </Badge>
                           {step.blockchain && (
-                            <Badge variant="outline" className="text-xs border-amber-600 text-amber-600">
+                            <Badge
+                              variant="outline"
+                              className="text-xs border-amber-600 text-amber-600"
+                            >
                               Blockchain
                             </Badge>
                           )}
@@ -114,5 +133,5 @@ export function CertificationSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

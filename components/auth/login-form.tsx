@@ -1,18 +1,31 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { Eye, EyeOff, Shield, Loader2 } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Eye, EyeOff, Shield, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { useAuth } from "@/contexts/auth-context"
-import { LoginCredentials } from "@/lib/types"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useAuth } from "@/contexts/auth-context";
+import { LoginCredentials } from "@/lib/types";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -20,20 +33,20 @@ const loginSchema = z.object({
   role: z.enum(["supplier", "certifier", "auditor", "consumer"], {
     required_error: "Please select your role",
   }),
-})
+});
 
-type LoginFormData = z.infer<typeof loginSchema>
+type LoginFormData = z.infer<typeof loginSchema>;
 
 interface LoginFormProps {
-  onSwitchToSignup?: () => void
+  onSwitchToSignup?: () => void;
 }
 
 export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const { login } = useAuth()
-  const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { login } = useAuth();
+  const router = useRouter();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -42,51 +55,71 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
       password: "",
       role: "supplier",
     },
-  })
+  });
 
   const handleSubmit = async (data: LoginFormData) => {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
 
     try {
       const credentials: LoginCredentials = {
         email: data.email,
         password: data.password,
         role: data.role,
-      }
+      };
 
-      await login(credentials)
+      await login(credentials);
 
       // Redirect based on user role
       switch (data.role) {
         case "supplier":
-          router.push("/inventory")
-          break
+          router.push("/inventory");
+          break;
         case "certifier":
-          router.push("/certification")
-          break
+          router.push("/certification");
+          break;
         case "auditor":
-          router.push("/tracking")
-          break
+          router.push("/tracking");
+          break;
         case "consumer":
-          router.push("/tracking")
-          break
+          router.push("/tracking");
+          break;
         default:
-          router.push("/")
+          router.push("/");
       }
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "Login failed. Please try again.")
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Login failed. Please try again.",
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const roleOptions = [
-    { value: "supplier", label: "Supplier", color: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
-    { value: "certifier", label: "Certifier", color: "bg-green-500/20 text-green-400 border-green-500/30" },
-    { value: "auditor", label: "Auditor", color: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30" },
-    { value: "consumer", label: "Consumer", color: "bg-purple-500/20 text-purple-400 border-purple-500/30" },
-  ]
+    {
+      value: "supplier",
+      label: "Supplier",
+      color: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+    },
+    {
+      value: "certifier",
+      label: "Certifier",
+      color: "bg-green-500/20 text-green-400 border-green-500/30",
+    },
+    {
+      value: "auditor",
+      label: "Auditor",
+      color: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
+    },
+    {
+      value: "consumer",
+      label: "Consumer",
+      color: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+    },
+  ];
 
   return (
     <Card className="w-full max-w-md glassmorphic-card blockchain-glow">
@@ -96,12 +129,17 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
             <Shield className="h-6 w-6 text-primary" />
           </div>
         </div>
-        <CardTitle className="text-2xl font-heading tracking-tight">Welcome Back</CardTitle>
+        <CardTitle className="text-2xl font-heading tracking-tight">
+          Welcome Back
+        </CardTitle>
         <CardDescription>Sign in to your HalalChain account</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             {error && (
               <div className="p-3 rounded-md bg-red-500/20 border border-red-500/30 text-red-400 text-sm">
                 {error}
@@ -115,7 +153,12 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
                 <FormItem>
                   <FormLabel>Email Address</FormLabel>
                   <FormControl>
-                    <Input {...field} type="email" placeholder="Enter your email" className="glassmorphic-inner-card" />
+                    <Input
+                      {...field}
+                      type="email"
+                      placeholder="Enter your email"
+                      className="glassmorphic-inner-card"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -168,7 +211,9 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
                         <label
                           key={role.value}
                           className={`cursor-pointer rounded-lg border-2 p-3 text-center transition-all hover:scale-105 ${
-                            field.value === role.value ? role.color : "border-muted bg-muted/20 hover:bg-muted/40"
+                            field.value === role.value
+                              ? role.color
+                              : "border-muted bg-muted/20 hover:bg-muted/40"
                           }`}
                         >
                           <input
@@ -178,7 +223,9 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
                             onChange={field.onChange}
                             className="sr-only"
                           />
-                          <div className="text-sm font-medium">{role.label}</div>
+                          <div className="text-sm font-medium">
+                            {role.label}
+                          </div>
                         </label>
                       ))}
                     </div>
@@ -188,7 +235,11 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
               )}
             />
 
-            <Button type="submit" className="w-full halal-gradient" disabled={isLoading}>
+            <Button
+              type="submit"
+              className="w-full halal-gradient"
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -204,12 +255,16 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
         <div className="mt-6 text-center">
           <p className="text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <Button variant="link" className="p-0 h-auto text-primary hover:underline" onClick={onSwitchToSignup}>
+            <Button
+              variant="link"
+              className="p-0 h-auto text-primary hover:underline"
+              onClick={onSwitchToSignup}
+            >
               Sign up here
             </Button>
           </p>
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

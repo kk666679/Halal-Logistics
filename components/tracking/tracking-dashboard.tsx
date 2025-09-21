@@ -1,12 +1,18 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ShipmentTracker } from "./shipment-tracker"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ShipmentTracker } from "./shipment-tracker";
 import {
   Search,
   Package,
@@ -19,7 +25,7 @@ import {
   Plus,
   Filter,
   BarChart3,
-} from "lucide-react"
+} from "lucide-react";
 
 // Mock shipment data
 const mockShipments = [
@@ -71,31 +77,47 @@ const mockShipments = [
     carrier: "UPS Worldwide",
     halalCertified: true,
   },
-]
+];
 
 export function TrackingDashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedShipment, setSelectedShipment] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState("overview");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedShipment, setSelectedShipment] = useState<string | null>(null);
 
   const getStatusConfig = (status: string) => {
     switch (status) {
       case "in-transit":
-        return { label: "In Transit", color: "bg-blue-500/20 text-blue-400 border-blue-500/30", icon: <Truck /> }
+        return {
+          label: "In Transit",
+          color: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+          icon: <Truck />,
+        };
       case "delivered":
         return {
           label: "Delivered",
           color: "bg-green-500/20 text-green-400 border-green-500/30",
           icon: <CheckCircle />,
-        }
+        };
       case "delayed":
-        return { label: "Delayed", color: "bg-red-500/20 text-red-400 border-red-500/30", icon: <AlertTriangle /> }
+        return {
+          label: "Delayed",
+          color: "bg-red-500/20 text-red-400 border-red-500/30",
+          icon: <AlertTriangle />,
+        };
       case "pending":
-        return { label: "Pending", color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30", icon: <Clock /> }
+        return {
+          label: "Pending",
+          color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+          icon: <Clock />,
+        };
       default:
-        return { label: "Unknown", color: "bg-gray-500/20 text-gray-400 border-gray-500/30", icon: <Package /> }
+        return {
+          label: "Unknown",
+          color: "bg-gray-500/20 text-gray-400 border-gray-500/30",
+          icon: <Package />,
+        };
     }
-  }
+  };
 
   const getStatusCounts = () => {
     return {
@@ -104,43 +126,51 @@ export function TrackingDashboard() {
       delivered: mockShipments.filter((s) => s.status === "delivered").length,
       delayed: mockShipments.filter((s) => s.status === "delayed").length,
       pending: mockShipments.filter((s) => s.status === "pending").length,
-    }
-  }
+    };
+  };
 
-  const statusCounts = getStatusCounts()
+  const statusCounts = getStatusCounts();
 
   const filteredShipments = mockShipments.filter(
     (shipment) =>
       shipment.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       shipment.productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       shipment.destination.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+  );
 
   if (selectedShipment) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-heading font-bold tracking-tight">Shipment Tracking</h2>
+          <h2 className="text-2xl font-heading font-bold tracking-tight">
+            Shipment Tracking
+          </h2>
           <Button variant="outline" onClick={() => setSelectedShipment(null)}>
             Back to Dashboard
           </Button>
         </div>
         <ShipmentTracker shipmentId={selectedShipment} />
       </div>
-    )
+    );
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-heading font-bold tracking-tight">Shipment Tracking Dashboard</h2>
+        <h2 className="text-2xl font-heading font-bold tracking-tight">
+          Shipment Tracking Dashboard
+        </h2>
         <Button className="halal-gradient">
           <Plus className="h-4 w-4 mr-2" />
           New Shipment
         </Button>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
         <TabsList className="glassmorphic-tabs">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="active">Active Shipments</TabsTrigger>
@@ -153,60 +183,80 @@ export function TrackingDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <Card className="glassmorphic-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total Shipments</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Total Shipments
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <Package className="h-5 w-5 text-primary" />
-                  <span className="text-2xl font-bold">{statusCounts.total}</span>
+                  <span className="text-2xl font-bold">
+                    {statusCounts.total}
+                  </span>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="glassmorphic-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">In Transit</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  In Transit
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <Truck className="h-5 w-5 text-blue-500" />
-                  <span className="text-2xl font-bold text-blue-500">{statusCounts.inTransit}</span>
+                  <span className="text-2xl font-bold text-blue-500">
+                    {statusCounts.inTransit}
+                  </span>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="glassmorphic-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Delivered</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Delivered
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="h-5 w-5 text-green-500" />
-                  <span className="text-2xl font-bold text-green-500">{statusCounts.delivered}</span>
+                  <span className="text-2xl font-bold text-green-500">
+                    {statusCounts.delivered}
+                  </span>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="glassmorphic-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Delayed</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Delayed
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <AlertTriangle className="h-5 w-5 text-red-500" />
-                  <span className="text-2xl font-bold text-red-500">{statusCounts.delayed}</span>
+                  <span className="text-2xl font-bold text-red-500">
+                    {statusCounts.delayed}
+                  </span>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="glassmorphic-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Pending
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-2">
                   <Clock className="h-5 w-5 text-yellow-500" />
-                  <span className="text-2xl font-bold text-yellow-500">{statusCounts.pending}</span>
+                  <span className="text-2xl font-bold text-yellow-500">
+                    {statusCounts.pending}
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -216,12 +266,14 @@ export function TrackingDashboard() {
           <Card className="glassmorphic-card">
             <CardHeader>
               <CardTitle>Recent Shipments</CardTitle>
-              <CardDescription>Latest shipment activities and status updates</CardDescription>
+              <CardDescription>
+                Latest shipment activities and status updates
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {mockShipments.slice(0, 3).map((shipment) => {
-                  const statusConfig = getStatusConfig(shipment.status)
+                  const statusConfig = getStatusConfig(shipment.status);
                   return (
                     <div
                       key={shipment.id}
@@ -233,7 +285,9 @@ export function TrackingDashboard() {
                           <Package className="h-4 w-4 text-primary" />
                         </div>
                         <div>
-                          <h4 className="font-medium">{shipment.productName}</h4>
+                          <h4 className="font-medium">
+                            {shipment.productName}
+                          </h4>
                           <p className="text-sm text-muted-foreground">
                             {shipment.origin} → {shipment.destination}
                           </p>
@@ -243,7 +297,10 @@ export function TrackingDashboard() {
                         <div className="text-right">
                           <p className="text-sm font-medium">{shipment.id}</p>
                           <p className="text-xs text-muted-foreground">
-                            ETA: {new Date(shipment.estimatedDelivery).toLocaleDateString()}
+                            ETA:{" "}
+                            {new Date(
+                              shipment.estimatedDelivery,
+                            ).toLocaleDateString()}
                           </p>
                         </div>
                         <Badge variant="outline" className={statusConfig.color}>
@@ -252,7 +309,7 @@ export function TrackingDashboard() {
                         </Badge>
                       </div>
                     </div>
-                  )
+                  );
                 })}
               </div>
             </CardContent>
@@ -282,14 +339,21 @@ export function TrackingDashboard() {
             {filteredShipments
               .filter((shipment) => shipment.status !== "delivered")
               .map((shipment) => {
-                const statusConfig = getStatusConfig(shipment.status)
+                const statusConfig = getStatusConfig(shipment.status);
                 return (
-                  <Card key={shipment.id} className="glassmorphic-card blockchain-glow">
+                  <Card
+                    key={shipment.id}
+                    className="glassmorphic-card blockchain-glow"
+                  >
                     <CardHeader>
                       <div className="flex items-start justify-between">
                         <div className="space-y-1">
-                          <CardTitle className="text-lg tracking-tight">{shipment.productName}</CardTitle>
-                          <CardDescription>Shipment ID: {shipment.id}</CardDescription>
+                          <CardTitle className="text-lg tracking-tight">
+                            {shipment.productName}
+                          </CardTitle>
+                          <CardDescription>
+                            Shipment ID: {shipment.id}
+                          </CardDescription>
                         </div>
                         <Badge variant="outline" className={statusConfig.color}>
                           {statusConfig.icon}
@@ -328,7 +392,11 @@ export function TrackingDashboard() {
                         </div>
                         <div className="text-right">
                           <p className="text-muted-foreground">ETA</p>
-                          <p className="font-medium">{new Date(shipment.estimatedDelivery).toLocaleDateString()}</p>
+                          <p className="font-medium">
+                            {new Date(
+                              shipment.estimatedDelivery,
+                            ).toLocaleDateString()}
+                          </p>
                         </div>
                       </div>
 
@@ -354,7 +422,7 @@ export function TrackingDashboard() {
                       </Button>
                     </CardContent>
                   </Card>
-                )
+                );
               })}
           </div>
         </TabsContent>
@@ -363,12 +431,14 @@ export function TrackingDashboard() {
           <Card className="glassmorphic-card">
             <CardHeader>
               <CardTitle>Shipment History</CardTitle>
-              <CardDescription>Complete history of all shipments</CardDescription>
+              <CardDescription>
+                Complete history of all shipments
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {mockShipments.map((shipment) => {
-                  const statusConfig = getStatusConfig(shipment.status)
+                  const statusConfig = getStatusConfig(shipment.status);
                   return (
                     <div
                       key={shipment.id}
@@ -382,21 +452,28 @@ export function TrackingDashboard() {
                         <div>
                           <p className="font-medium">{shipment.productName}</p>
                           <p className="text-sm text-muted-foreground">
-                            {shipment.id} • {shipment.origin} → {shipment.destination}
+                            {shipment.id} • {shipment.origin} →{" "}
+                            {shipment.destination}
                           </p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-3">
                         <div className="text-right text-sm">
-                          <p className="font-medium">{new Date(shipment.estimatedDelivery).toLocaleDateString()}</p>
-                          <p className="text-muted-foreground">{shipment.carrier}</p>
+                          <p className="font-medium">
+                            {new Date(
+                              shipment.estimatedDelivery,
+                            ).toLocaleDateString()}
+                          </p>
+                          <p className="text-muted-foreground">
+                            {shipment.carrier}
+                          </p>
                         </div>
                         <Badge variant="outline" className={statusConfig.color}>
                           {statusConfig.label}
                         </Badge>
                       </div>
                     </div>
-                  )
+                  );
                 })}
               </div>
             </CardContent>
@@ -407,17 +484,21 @@ export function TrackingDashboard() {
           <Card className="glassmorphic-card">
             <CardHeader>
               <CardTitle>Tracking Analytics</CardTitle>
-              <CardDescription>Performance metrics and insights for your shipments</CardDescription>
+              <CardDescription>
+                Performance metrics and insights for your shipments
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-center py-12">
                 <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">Analytics dashboard coming soon</p>
+                <p className="text-muted-foreground">
+                  Analytics dashboard coming soon
+                </p>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
