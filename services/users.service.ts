@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api";
-import { User, UserRole } from "@/lib/types";
+import { User, UserRole, ApiResponse } from "@/lib/types";
 
 export class UsersService {
   /**
@@ -7,7 +7,7 @@ export class UsersService {
    */
   async getProfile(): Promise<User> {
     try {
-      const response = await apiClient.get<User>("/users/profile");
+      const response = await apiClient.get<ApiResponse<User>>("/users/profile");
       return response.data;
     } catch (error: any) {
       throw new Error(
@@ -29,7 +29,7 @@ export class UsersService {
     }>,
   ): Promise<User> {
     try {
-      const response = await apiClient.patch<User>(
+      const response = await apiClient.patch<ApiResponse<User>>(
         "/users/profile",
         updateData,
       );
@@ -52,7 +52,7 @@ export class UsersService {
    */
   async getByRole(role: UserRole): Promise<User[]> {
     try {
-      const response = await apiClient.get<User[]>(`/users/role/${role}`);
+      const response = await apiClient.get<ApiResponse<User[]>>(`/users/role/${role}`);
       return response.data;
     } catch (error: any) {
       throw new Error(
@@ -70,11 +70,11 @@ export class UsersService {
     recentRegistrations: number;
   }> {
     try {
-      const response = await apiClient.get<{
+      const response = await apiClient.get<ApiResponse<{
         totalUsers: number;
         byRole: Record<UserRole, number>;
         recentRegistrations: number;
-      }>("/users/stats");
+      }>>("/users/stats");
       return response.data;
     } catch (error: any) {
       throw new Error(
@@ -88,7 +88,7 @@ export class UsersService {
    */
   async getAll(): Promise<User[]> {
     try {
-      const response = await apiClient.get<User[]>("/users");
+      const response = await apiClient.get<ApiResponse<User[]>>("/users");
       return response.data;
     } catch (error: any) {
       throw new Error(error.response?.data?.message || "Failed to fetch users");

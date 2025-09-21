@@ -5,6 +5,7 @@ import {
   UpdateProductData,
   ProductStats,
   ProductCategory,
+  ApiResponse,
 } from "@/lib/types";
 
 export class ProductsService {
@@ -14,7 +15,7 @@ export class ProductsService {
   async getAll(category?: ProductCategory): Promise<Product[]> {
     try {
       const params = category ? { category } : undefined;
-      const response = await apiClient.get<Product[]>("/products", params);
+      const response = await apiClient.get<ApiResponse<Product[]>>("/products", params);
       return response.data;
     } catch (error: any) {
       throw new Error(
@@ -28,7 +29,7 @@ export class ProductsService {
    */
   async getById(id: string): Promise<Product> {
     try {
-      const response = await apiClient.get<Product>(`/products/${id}`);
+      const response = await apiClient.get<ApiResponse<Product>>(`/products/${id}`);
       return response.data;
     } catch (error: any) {
       throw new Error(
@@ -42,7 +43,7 @@ export class ProductsService {
    */
   async create(productData: CreateProductData): Promise<Product> {
     try {
-      const response = await apiClient.post<Product>("/products", productData);
+      const response = await apiClient.post<ApiResponse<Product>>("/products", productData);
       return response.data;
     } catch (error: any) {
       throw new Error(
@@ -56,7 +57,7 @@ export class ProductsService {
    */
   async update(id: string, updateData: UpdateProductData): Promise<Product> {
     try {
-      const response = await apiClient.patch<Product>(
+      const response = await apiClient.patch<ApiResponse<Product>>(
         `/products/${id}`,
         updateData,
       );
@@ -73,7 +74,7 @@ export class ProductsService {
    */
   async updateStock(id: string, stock: number): Promise<Product> {
     try {
-      const response = await apiClient.patch<Product>(`/products/${id}/stock`, {
+      const response = await apiClient.patch<ApiResponse<Product>>(`/products/${id}/stock`, {
         stock,
       });
       return response.data;
@@ -102,7 +103,7 @@ export class ProductsService {
    */
   async getLowStock(): Promise<Product[]> {
     try {
-      const response = await apiClient.get<Product[]>("/products/low-stock");
+      const response = await apiClient.get<ApiResponse<Product[]>>("/products/low-stock");
       return response.data;
     } catch (error: any) {
       throw new Error(
@@ -116,7 +117,7 @@ export class ProductsService {
    */
   async getStats(): Promise<ProductStats> {
     try {
-      const response = await apiClient.get<ProductStats>("/products/stats");
+      const response = await apiClient.get<ApiResponse<ProductStats>>("/products/stats");
       return response.data;
     } catch (error: any) {
       throw new Error(
@@ -130,7 +131,7 @@ export class ProductsService {
    */
   async search(query: string): Promise<Product[]> {
     try {
-      const response = await apiClient.get<Product[]>("/products", {
+      const response = await apiClient.get<ApiResponse<Product[]>>("/products", {
         search: query,
       });
       return response.data;

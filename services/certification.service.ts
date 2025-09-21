@@ -5,6 +5,7 @@ import {
   UpdateCertificationData,
   CertificationStats,
   CertificationStatus,
+  ApiResponse,
 } from "@/lib/types";
 
 export class CertificationService {
@@ -14,7 +15,7 @@ export class CertificationService {
   async getAll(status?: CertificationStatus): Promise<Certification[]> {
     try {
       const params = status ? { status } : undefined;
-      const response = await apiClient.get<Certification[]>(
+      const response = await apiClient.get<ApiResponse<Certification[]>>(
         "/certifications",
         params,
       );
@@ -31,7 +32,7 @@ export class CertificationService {
    */
   async getById(id: string): Promise<Certification> {
     try {
-      const response = await apiClient.get<Certification>(
+      const response = await apiClient.get<ApiResponse<Certification>>(
         `/certifications/${id}`,
       );
       return response.data;
@@ -47,7 +48,7 @@ export class CertificationService {
    */
   async getMyApplications(): Promise<Certification[]> {
     try {
-      const response = await apiClient.get<Certification[]>(
+      const response = await apiClient.get<ApiResponse<Certification[]>>(
         "/certifications/my-applications",
       );
       return response.data;
@@ -65,7 +66,7 @@ export class CertificationService {
     applicationData: CreateCertificationData,
   ): Promise<Certification> {
     try {
-      const response = await apiClient.post<Certification>(
+      const response = await apiClient.post<ApiResponse<Certification>>(
         "/certifications",
         applicationData,
       );
@@ -85,7 +86,7 @@ export class CertificationService {
     updateData: UpdateCertificationData,
   ): Promise<Certification> {
     try {
-      const response = await apiClient.patch<Certification>(
+      const response = await apiClient.patch<ApiResponse<Certification>>(
         `/certifications/${id}`,
         updateData,
       );
@@ -114,7 +115,7 @@ export class CertificationService {
         certificationNumber,
         validUntil: validUntil?.toISOString(),
       };
-      const response = await apiClient.patch<Certification>(
+      const response = await apiClient.patch<ApiResponse<Certification>>(
         `/certifications/${id}/status`,
         updateData,
       );
@@ -134,7 +135,7 @@ export class CertificationService {
     reviewerId: string,
   ): Promise<Certification> {
     try {
-      const response = await apiClient.patch<Certification>(
+      const response = await apiClient.patch<ApiResponse<Certification>>(
         `/certifications/${id}/assign`,
         {
           reviewerId,
@@ -153,7 +154,7 @@ export class CertificationService {
    */
   async getStats(): Promise<CertificationStats> {
     try {
-      const response = await apiClient.get<CertificationStats>(
+      const response = await apiClient.get<ApiResponse<CertificationStats>>(
         "/certifications/stats",
       );
       return response.data;

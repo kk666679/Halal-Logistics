@@ -4,6 +4,7 @@ import {
   RegisterData,
   AuthResponse,
   User,
+  ApiResponse,
 } from "@/lib/types";
 
 export class AuthService {
@@ -12,14 +13,14 @@ export class AuthService {
    */
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
-      const response = await apiClient.post<AuthResponse>(
+      const response = await apiClient.post<ApiResponse<AuthResponse>>(
         "/auth/login",
         credentials,
       );
 
       if (response.success && response.data.token) {
         // Store auth token and user data
-        apiClient.setAuthToken(response.data.token);
+        apiClient.setToken(response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
       }
 
@@ -34,14 +35,14 @@ export class AuthService {
    */
   async register(userData: RegisterData): Promise<AuthResponse> {
     try {
-      const response = await apiClient.post<AuthResponse>(
+      const response = await apiClient.post<ApiResponse<AuthResponse>>(
         "/auth/register",
         userData,
       );
 
       if (response.success && response.data.token) {
         // Store auth token and user data
-        apiClient.setAuthToken(response.data.token);
+        apiClient.setToken(response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
       }
 
@@ -56,7 +57,7 @@ export class AuthService {
    */
   async getProfile(): Promise<User> {
     try {
-      const response = await apiClient.get<User>("/auth/profile");
+      const response = await apiClient.get<ApiResponse<User>>("/auth/profile");
       return response.data;
     } catch (error: any) {
       throw new Error(
@@ -70,7 +71,7 @@ export class AuthService {
    */
   async updateProfile(updateData: Partial<RegisterData>): Promise<User> {
     try {
-      const response = await apiClient.patch<User>("/auth/profile", updateData);
+      const response = await apiClient.patch<ApiResponse<User>>("/auth/profile", updateData);
 
       if (response.success) {
         // Update stored user data
@@ -97,7 +98,7 @@ export class AuthService {
       console.warn("Logout API call failed:", error);
     } finally {
       // Clear local storage
-      apiClient.removeAuthToken();
+      apiClient.removeToken();
     }
   }
 
@@ -105,7 +106,7 @@ export class AuthService {
    * Check if user is authenticated
    */
   isAuthenticated(): boolean {
-    return !!apiClient.getAuthToken();
+    return !!apiClient.getToken();
   }
 
   /**
@@ -125,7 +126,7 @@ export class AuthService {
    * Get stored auth token
    */
   getToken(): string | null {
-    return apiClient.getAuthToken();
+    return apiClient.getToken();
   }
 }
 
