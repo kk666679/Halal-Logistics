@@ -1,5 +1,4 @@
 import { Module } from "@nestjs/common";
-import { MongooseModule } from "@nestjs/mongoose";
 import { TrackingService } from "./tracking.service";
 import { TrackingController } from "./tracking.controller";
 import { Tracking, TrackingSchema } from "./tracking.schema";

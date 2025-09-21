@@ -11,6 +11,14 @@ import { AuthService } from "./auth.service";
 import { RegisterDto, LoginDto, UpdateProfileDto } from "./dto/auth.dto";
 import { JwtAuthGuard } from "./jwt-auth.guard";
 
+interface AuthenticatedRequest extends Request {
+  user: {
+    userId: string;
+    email: string;
+    role: string;
+  };
+}
+
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -27,13 +35,13 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get("profile")
-  async getProfile(@Request() req) {
+  async getProfile(@Request() req: AuthenticatedRequest) {
     return this.authService.getProfile(req.user.userId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch("profile")
-  async updateProfile(@Request() req, @Body() updateData: UpdateProfileDto) {
+  async updateProfile(@Request() req: AuthenticatedRequest, @Body() updateData: UpdateProfileDto) {
     return this.authService.updateProfile(req.user.userId, updateData);
   }
 }

@@ -3,8 +3,6 @@ import {
   NotFoundException,
   BadRequestException,
 } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
 import { Tracking, TrackingDocument, TrackingStatus } from "./tracking.schema";
 import {
   CreateTrackingDto,

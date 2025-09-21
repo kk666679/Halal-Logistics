@@ -5,73 +5,63 @@ import {
   Body,
   Patch,
   Param,
+  Delete,
   UseGuards,
   Request,
-  Query,
 } from "@nestjs/common";
 import { TrackingService } from "./tracking.service";
-import {
-  CreateTrackingDto,
-  UpdateTrackingDto,
-  AddTrackingEventDto,
-} from "./dto/tracking.dto";
+import { CreateTrackingDto, UpdateTrackingDto } from "./dto/tracking.dto";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
-import { TrackingStatus } from "./tracking.schema";
+
+interface AuthenticatedRequest extends Request {
+  user: {
+    userId: string;
+    email: string;
+    role: string;
+  };
+}
 
 @Controller("tracking")
-@UseGuards(JwtAuthGuard)
 export class TrackingController {
   constructor(private readonly trackingService: TrackingService) {}
 
   @Post()
-  async create(@Body() createTrackingDto: CreateTrackingDto, @Request() req) {
+  @UseGuards(JwtAuthGuard)
+  async create(@Body() createTrackingDto: CreateTrackingDto, @Request() req: AuthenticatedRequest) {
     return this.trackingService.create(createTrackingDto, req.user.userId);
   }
 
   @Get()
-  async findAll(@Query("status") status?: TrackingStatus) {
-    if (status) {
-      return this.trackingService.findByStatus(status);
-    }
-    return this.trackingService.findAll();
+  @UseGuards(JwtAuthGuard)
+  async findAll(@Request() req: AuthenticatedRequest) {
+    return this.trackingService.findAll(req.user.userId);
   }
 
-  @Get("my-shipments")
-  async findMyShipments(@Request() req) {
-    return this.trackingService.findByUser(req.user.userId);
-  }
-
-  @Get("stats")
-  async getStats() {
-    return this.trackingService.getTrackingStats();
+  @Get("my")
+  @UseGuards(JwtAuthGuard)
+  async findMyShipments(@Request() req: AuthenticatedRequest) {
+    return this.trackingService.findMyShipments(req.user.userId);
   }
 
   @Get(":id")
-  async findOne(@Param("id") id: string) {
-    return this.trackingService.findById(id);
+  @UseGuards(JwtAuthGuard)
+  async findOne(@Param("id") id: string, @Request() req: AuthenticatedRequest) {
+    return this.trackingService.findOne(id, req.user.userId);
   }
 
   @Patch(":id")
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param("id") id: string,
     @Body() updateTrackingDto: UpdateTrackingDto,
+    @Request() req: AuthenticatedRequest,
   ) {
-    return this.trackingService.update(id, updateTrackingDto);
+    return this.trackingService.update(id, updateTrackingDto, req.user.userId);
   }
 
-  @Patch(":id/status")
-  async updateStatus(
-    @Param("id") id: string,
-    @Body() body: { status: TrackingStatus },
-  ) {
-    return this.trackingService.updateStatus(id, body.status);
-  }
-
-  @Post(":id/events")
-  async addTrackingEvent(
-    @Param("id") id: string,
-    @Body() eventDto: AddTrackingEventDto,
-  ) {
-    return this.trackingService.addTrackingEvent(id, eventDto);
+  @Delete(":id")
+  @UseGuards(JwtAuthGuard)
+  async remove(@Param("id") id: string, @Request() req: AuthenticatedRequest) {
+    return this.trackingService.remove(id, req.user.userId);
   }
 }

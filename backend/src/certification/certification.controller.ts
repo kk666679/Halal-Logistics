@@ -5,88 +5,66 @@ import {
   Body,
   Patch,
   Param,
+  Delete,
   UseGuards,
   Request,
-  Query,
 } from "@nestjs/common";
 import { CertificationService } from "./certification.service";
-import {
-  CreateCertificationDto,
-  UpdateCertificationDto,
-  UpdateCertificationStatusDto,
-} from "./dto/certification.dto";
+import { CreateCertificationDto, UpdateCertificationDto } from "./dto/certification.dto";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
-import { CertificationStatus, CertificationType } from "./certification.schema";
 
-@Controller("certifications")
-@UseGuards(JwtAuthGuard)
+interface AuthenticatedRequest extends Request {
+  user: {
+    userId: string;
+    email: string;
+    role: string;
+  };
+}
+
+@Controller("certification")
 export class CertificationController {
   constructor(private readonly certificationService: CertificationService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async create(
     @Body() createCertificationDto: CreateCertificationDto,
-    @Request() req,
+    @Request() req: AuthenticatedRequest,
   ) {
-    return this.certificationService.create(
-      createCertificationDto,
-      req.user.userId,
-    );
+    return this.certificationService.create(createCertificationDto, req.user.userId);
   }
 
   @Get()
-  async findAll(@Query("status") status?: CertificationStatus) {
-    if (status) {
-      return this.certificationService.findByStatus(status);
-    }
-    return this.certificationService.findAll();
+  @UseGuards(JwtAuthGuard)
+  async findAll(@Request() req: AuthenticatedRequest) {
+    return this.certificationService.findAll(req.user.userId);
   }
 
-  @Get("my-applications")
-  async findMyApplications(@Request() req) {
-    return this.certificationService.findByUser(req.user.userId);
-  }
-
-  @Get("stats")
-  async getStats() {
-    return this.certificationService.getCertificationStats();
+  @Get("my")
+  @UseGuards(JwtAuthGuard)
+  async findMyApplications(@Request() req: AuthenticatedRequest) {
+    return this.certificationService.findMyApplications(req.user.userId);
   }
 
   @Get(":id")
-  async findOne(@Param("id") id: string) {
-    return this.certificationService.findById(id);
+  @UseGuards(JwtAuthGuard)
+  async findOne(@Param("id") id: string, @Request() req: AuthenticatedRequest) {
+    return this.certificationService.findOne(id, req.user.userId);
   }
 
   @Patch(":id")
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param("id") id: string,
     @Body() updateCertificationDto: UpdateCertificationDto,
+    @Request() req: AuthenticatedRequest,
   ) {
-    return this.certificationService.update(id, updateCertificationDto);
+    return this.certificationService.update(id, updateCertificationDto, req.user.userId);
   }
 
-  @Patch(":id/status")
-  async updateStatus(
-    @Param("id") id: string,
-    @Body() updateStatusDto: UpdateCertificationStatusDto,
-  ) {
-    return this.certificationService.updateStatus(
-      id,
-      updateStatusDto.status,
-      updateStatusDto.reviewComments,
-      undefined, // assignedTo - would need to be passed separately
-      updateStatusDto.certificationNumber,
-      updateStatusDto.validUntil
-        ? new Date(updateStatusDto.validUntil)
-        : undefined,
-    );
-  }
-
-  @Patch(":id/assign")
-  async assignToReviewer(
-    @Param("id") id: string,
-    @Body() body: { reviewerId: string },
-  ) {
-    return this.certificationService.assignToReviewer(id, body.reviewerId);
+  @Delete(":id")
+  @UseGuards(JwtAuthGuard)
+  async remove(@Param("id") id: string, @Request() req: AuthenticatedRequest) {
+    return this.certificationService.remove(id, req.user.userId);
   }
 }
