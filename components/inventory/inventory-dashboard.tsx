@@ -413,7 +413,7 @@ export function InventoryDashboard() {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-3 py-2 rounded-md border border-input bg-background text-sm glassmorphic-inner-card"
+                className="px-3 py-2 rounded-md border border-input bg-white text-sm glassmorphic-inner-card"
               >
                 {categories.map((category) => (
                   <option key={category} value={category}>

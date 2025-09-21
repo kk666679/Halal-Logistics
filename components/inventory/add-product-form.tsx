@@ -336,7 +336,7 @@ export function AddProductForm({ onSubmit }: AddProductFormProps) {
                       <FormControl>
                         <select
                           {...field}
-                          className="w-full px-3 py-2 rounded-md border border-input bg-background"
+                          className="w-full px-3 py-2 rounded-md border border-input bg-white"
                         >
                           {units.map((unit) => (
                             <option key={unit} value={unit}>

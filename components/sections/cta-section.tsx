@@ -69,7 +69,7 @@ export function CtaSection() {
               >
                 <OutlineButton
                   size="lg"
-                  className="bg-background w-full h-full border-0 px-8 py-3"
+                  className="bg-white w-full h-full border-0 px-8 py-3"
                   asChild
                 >
                   <Link href="#services">Explore Solutions</Link>

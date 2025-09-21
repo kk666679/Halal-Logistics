@@ -398,7 +398,7 @@ export function ComponentLibraryShowcase() {
                     >
                       <PrimaryButton
                         size="lg"
-                        className="bg-background border-0 text-foreground hover:text-white px-6 py-2.5"
+                        className="bg-white border-0 text-foreground hover:text-white px-6 py-2.5"
                       >
                         <span className="flex items-center">
                           Explore Full Library

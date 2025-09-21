@@ -125,7 +125,7 @@ export function PricingSection() {
                       borderWidth={1}
                       duration={8}
                     >
-                      <Button className="w-full bg-background border-0 text-foreground hover:text-white">
+                      <Button className="w-full bg-white border-0 text-foreground hover:text-white">
                         {plan.cta}
                       </Button>
                     </AnimatedGradientBorder>

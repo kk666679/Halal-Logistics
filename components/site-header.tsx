@@ -39,7 +39,7 @@ export function SiteHeader() {
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-300",
         scrollPosition > 10
-          ? "bg-background/80 backdrop-blur-lg border-b border-border/40"
+          ? "bg-white/80 backdrop-blur-lg border-b border-border/40"
           : "bg-transparent",
       )}
     >
@@ -104,7 +104,7 @@ export function SiteHeader() {
 
           {/* Mobile Menu Button - Only visible on mobile */}
           <button
-            className="md:hidden flex items-center justify-center p-2 rounded-md bg-background/90 border border-border/40 shadow-sm"
+            className="md:hidden flex items-center justify-center p-2 rounded-md bg-white/90 border border-border/40 shadow-sm"
             onClick={toggleMobileMenu}
             aria-label="Toggle menu"
           >
@@ -121,14 +121,14 @@ export function SiteHeader() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            className="fixed inset-0 z-40 bg-background/50 backdrop-blur-sm md:hidden"
+            className="fixed inset-0 z-40 bg-white/50 backdrop-blur-sm md:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
             <motion.div
-              className="fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-background shadow-xl border-l border-border"
+              className="fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-white shadow-xl border-l border-border"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}

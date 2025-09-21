@@ -74,7 +74,7 @@ export const GradientButton = forwardRef<
           {borderWidth > 0 ? (
             <span
               className={cn(
-                "rounded-[0.6rem] bg-background px-4 py-2 flex items-center justify-center h-full w-full",
+                "rounded-[0.6rem] bg-white px-4 py-2 flex items-center justify-center h-full w-full",
                 "transition-colors duration-300 group-hover:bg-transparent group-hover:text-white",
               )}
             >

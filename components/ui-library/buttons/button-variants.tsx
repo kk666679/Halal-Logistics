@@ -160,7 +160,7 @@ export const OutlineButton = forwardRef<HTMLButtonElement, ExtendedButtonProps>(
         <Button
           ref={ref}
           className={cn(
-            "border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-xl",
+            "border border-input bg-white hover:bg-accent hover:text-accent-foreground rounded-xl",
             withRing &&
               "ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
             "transition-all duration-300 font-medium",

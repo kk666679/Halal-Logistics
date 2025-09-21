@@ -52,7 +52,7 @@ export function CtaCard({
     default: "bg-card",
     gradient: "bg-gradient-to-br from-red-900/40 to-gray-900/40",
     outlined: "bg-transparent border-2 border-primary/20",
-    glass: "bg-background/60 backdrop-blur-lg border border-white/10",
+    glass: "bg-white/60 backdrop-blur-lg border border-white/10",
   };
 
   const renderButton = () => {

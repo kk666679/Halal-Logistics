@@ -49,7 +49,7 @@ export function AnimatedGradientBorder({
       />
       <div
         className={cn(
-          "relative z-10 bg-background",
+          "relative z-10 bg-white",
           rounded ? "rounded-lg" : "",
           className,
         )}
