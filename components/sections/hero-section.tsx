@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { ArrowRight, Shield, Truck, FileCheck } from "lucide-react"
+import { useEffect, useRef } from "react"
 
 import { SpotlightCard } from "@/components/ui/spotlight-card"
 import { ScrollReveal } from "@/components/scroll-reveal"
@@ -32,6 +33,37 @@ const itemVariants = {
 }
 
 export function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (video) {
+      // Configure video for non-stop playback
+      video.muted = true // Required for autoplay
+      video.loop = true
+      video.playsInline = true
+
+      // Attempt to play the video
+      const playVideo = async () => {
+        try {
+          await video.play()
+        } catch (error) {
+          console.log("Video autoplay failed:", error)
+          // Fallback: try again when user interacts with the page
+          const handleUserInteraction = () => {
+            video.play()
+            document.removeEventListener("click", handleUserInteraction)
+            document.removeEventListener("touchstart", handleUserInteraction)
+          }
+          document.addEventListener("click", handleUserInteraction)
+          document.addEventListener("touchstart", handleUserInteraction)
+        }
+      }
+
+      playVideo()
+    }
+  }, [])
+
   return (
     <section id="home" className="relative w-full py-12 md:py-24 lg:py-32 xl:py-48 overflow-hidden">
       <AnimatedBackground
@@ -132,44 +164,66 @@ export function HeroSection() {
           <ScrollReveal delay={0.3}>
             <SpotlightCard className="relative h-[450px] w-full overflow-hidden rounded-xl border glassmorphic-card p-1 blockchain-glow">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-900/20 via-transparent to-indigo-900/20 z-10"></div>
-              <div className="relative z-20 h-full w-full rounded-xl bg-gradient-to-br from-amber-950/50 to-indigo-950/50 p-6 flex items-center justify-center">
-                <div className="grid grid-cols-2 gap-6 w-full max-w-md">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                    className="col-span-2 h-24 rounded-xl bg-amber-800/20 border border-amber-800/30 flex items-center justify-center glassmorphic-inner-card"
-                    whileHover={{ scale: 1.03, boxShadow: "0 0 15px rgba(217, 119, 6, 0.3)" }}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <Shield className="h-6 w-6 text-amber-400" />
-                      <span className="font-heading text-xl text-white tracking-tight">Halal Certified</span>
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.8 }}
-                    className="h-32 rounded-xl bg-indigo-800/20 border border-indigo-800/30 flex items-center justify-center glassmorphic-inner-card"
-                    whileHover={{ scale: 1.03, boxShadow: "0 0 15px rgba(99, 102, 241, 0.3)" }}
-                  >
-                    <div className="flex flex-col items-center space-y-2">
-                      <Truck className="h-6 w-6 text-indigo-400" />
-                      <span className="font-heading text-white tracking-tight text-center">Supply Chain</span>
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 1.0 }}
-                    className="h-32 rounded-xl bg-amber-900/20 border border-amber-900/30 flex items-center justify-center glassmorphic-inner-card"
-                    whileHover={{ scale: 1.03, boxShadow: "0 0 15px rgba(217, 119, 6, 0.3)" }}
-                  >
-                    <div className="flex flex-col items-center space-y-2">
-                      <FileCheck className="h-6 w-6 text-amber-400" />
-                      <span className="font-heading text-white tracking-tight text-center">Blockchain</span>
-                    </div>
-                  </motion.div>
+
+              {/* Video inside SpotlightCard */}
+              <div className="relative z-20 h-full w-full rounded-xl overflow-hidden">
+                <video
+                  ref={videoRef}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ filter: "brightness(0.7) contrast(1.1)" }}
+                  preload="metadata"
+                  muted
+                  loop
+                  playsInline
+                >
+                  <source
+                    src="https://tdqwbwhr1jotkcsm.public.blob.vercel-storage.com/Presentation%20-%20Government-Certified%20Supply%20Chain_20250921_055838_0001.mp4"
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+
+                {/* Overlay content on top of video */}
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-950/40 via-transparent to-indigo-950/40 z-10"></div>
+                <div className="relative z-20 h-full w-full p-6 flex items-center justify-center">
+                  <div className="grid grid-cols-2 gap-6 w-full max-w-md">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.6 }}
+                      className="col-span-2 h-24 rounded-xl bg-amber-800/20 border border-amber-800/30 flex items-center justify-center glassmorphic-inner-card backdrop-blur-sm"
+                      whileHover={{ scale: 1.03, boxShadow: "0 0 15px rgba(217, 119, 6, 0.3)" }}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <Shield className="h-6 w-6 text-amber-400" />
+                        <span className="font-heading text-xl text-white tracking-tight">Halal Certified</span>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.8 }}
+                      className="h-32 rounded-xl bg-indigo-800/20 border border-indigo-800/30 flex items-center justify-center glassmorphic-inner-card backdrop-blur-sm"
+                      whileHover={{ scale: 1.03, boxShadow: "0 0 15px rgba(99, 102, 241, 0.3)" }}
+                    >
+                      <div className="flex flex-col items-center space-y-2">
+                        <Truck className="h-6 w-6 text-indigo-400" />
+                        <span className="font-heading text-white tracking-tight text-center">Supply Chain</span>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 1.0 }}
+                      className="h-32 rounded-xl bg-amber-900/20 border border-amber-900/30 flex items-center justify-center glassmorphic-inner-card backdrop-blur-sm"
+                      whileHover={{ scale: 1.03, boxShadow: "0 0 15px rgba(217, 119, 6, 0.3)" }}
+                    >
+                      <div className="flex flex-col items-center space-y-2">
+                        <FileCheck className="h-6 w-6 text-amber-400" />
+                        <span className="font-heading text-white tracking-tight text-center">Blockchain</span>
+                      </div>
+                    </motion.div>
+                  </div>
                 </div>
               </div>
             </SpotlightCard>
