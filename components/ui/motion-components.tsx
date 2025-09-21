@@ -1,7 +1,8 @@
 "use client";
 
+import React, { forwardRef } from "react";
+import type { JSX } from "react";
 import { motion, type HTMLMotionProps, type Variants, type Transition } from "framer-motion";
-import { forwardRef } from "react";
 
 // Reusable motion components with consistent animation patterns
 export interface MotionComponentProps extends HTMLMotionProps<"div"> {
@@ -61,14 +62,14 @@ function createMotionComponent<T extends keyof JSX.IntrinsicElements>(
   defaultVariants: Variants = motionVariants.fadeInUp,
   defaultTransition: Transition = motionTransitions.smooth
 ) {
-  const MotionComponent = forwardRef<HTMLElement, MotionComponentProps & { as?: T }>(
-    ({ variant = "fadeInUp", delay = 0, duration, className, as, ...props }, ref) => {
-      const selectedVariants = (motionVariants as any)[variant] || defaultVariants;
+  const MotionComponent = forwardRef<HTMLElement, MotionComponentProps>(
+    ({ variant = "fadeInUp", delay = 0, duration, className, ...props }, ref) => {
+      const selectedVariants = motionVariants[variant] || defaultVariants;
       const transition = duration
         ? { ...defaultTransition, duration }
         : { ...defaultTransition, delay };
 
-      const Component = motion[element as keyof typeof motion] as any;
+      const Component = motion[element as keyof typeof motion];
 
       return (
         <Component
@@ -85,7 +86,7 @@ function createMotionComponent<T extends keyof JSX.IntrinsicElements>(
     }
   );
 
-  MotionComponent.displayName = `Motion${element.charAt(0).toUpperCase() + element.slice(1)}`;
+  MotionComponent.displayName = `Motion${String(element).charAt(0).toUpperCase() + String(element).slice(1)}`;
   return MotionComponent;
 }
 
@@ -192,7 +193,7 @@ export const MotionStaggerItem = forwardRef<HTMLDivElement, MotionComponentProps
   ({ variant = "fadeInUp", className, ...props }, ref) => (
     <MotionDiv
       ref={ref}
-      variants={(motionVariants as any)[variant]}
+      variants={motionVariants[variant]}
       className={className}
       {...props}
     />

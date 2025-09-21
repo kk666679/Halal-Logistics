@@ -108,10 +108,10 @@ export function HeroSection() {
             <motion.div className="space-y-4" variants={itemVariants}>
               <h1 className="text-4xl font-heading font-bold tracking-tighter sm:text-5xl xl:text-7xl/none">
                 <span className="gradient-text">
-                  Government-Certified Halal
+                  Business to Business - Business to Government
                 </span>
                 <br />
-                <span className="text-foreground">Supply Chain Platform</span>
+                <span className="text-foreground">Certified Halal - Supply Chain Platform</span>
               </h1>
               <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400 opacity-70">
                 Ensure complete Halal compliance from farm to table with our

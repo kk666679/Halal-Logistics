@@ -3,7 +3,11 @@ import {
   NotFoundException,
   BadRequestException,
 } from "@nestjs/common";
-import { Tracking, TrackingDocument, TrackingStatus } from "./tracking.schema";
+import { PrismaService } from "../prisma/prisma.service";
+import {
+  Tracking,
+  TrackingStatus,
+} from "@prisma/client";
 import {
   CreateTrackingDto,
   UpdateTrackingDto,
@@ -12,33 +16,53 @@ import {
 
 @Injectable()
 export class TrackingService {
-  constructor(
-    @InjectModel(Tracking.name) private trackingModel: Model<TrackingDocument>,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   async create(
     createTrackingDto: CreateTrackingDto,
     userId: string,
   ): Promise<Tracking> {
-    const tracking = new this.trackingModel({
-      ...createTrackingDto,
-      createdBy: userId,
+    const tracking = await this.prisma.tracking.create({
+      data: {
+        ...createTrackingDto,
+        createdBy: userId,
+        status: TrackingStatus.PENDING,
+        progress: 0,
+      },
     });
-
-    return tracking.save();
+    return tracking;
   }
 
   async findAll(): Promise<Tracking[]> {
-    return this.trackingModel
-      .find()
-      .populate("createdBy", "firstName lastName email")
-      .sort({ createdAt: -1 });
+    return this.prisma.tracking.findMany({
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   async findById(id: string): Promise<Tracking> {
-    const tracking = await this.trackingModel
-      .findById(id)
-      .populate("createdBy", "firstName lastName email");
+    const tracking = await this.prisma.tracking.findUnique({
+      where: { id },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
 
     if (!tracking) {
       throw new NotFoundException("Tracking record not found");
@@ -48,26 +72,58 @@ export class TrackingService {
   }
 
   async findByUser(userId: string): Promise<Tracking[]> {
-    return this.trackingModel
-      .find({ createdBy: userId })
-      .populate("createdBy", "firstName lastName email")
-      .sort({ createdAt: -1 });
+    return this.prisma.tracking.findMany({
+      where: { createdBy: userId },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   async findByStatus(status: TrackingStatus): Promise<Tracking[]> {
-    return this.trackingModel
-      .find({ status })
-      .populate("createdBy", "firstName lastName email")
-      .sort({ createdAt: -1 });
+    return this.prisma.tracking.findMany({
+      where: { status },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   async update(
     id: string,
     updateTrackingDto: UpdateTrackingDto,
   ): Promise<Tracking> {
-    const tracking = await this.trackingModel
-      .findByIdAndUpdate(id, updateTrackingDto, { new: true })
-      .populate("createdBy", "firstName lastName email");
+    const tracking = await this.prisma.tracking.update({
+      where: { id },
+      data: updateTrackingDto,
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
 
     if (!tracking) {
       throw new NotFoundException("Tracking record not found");
@@ -77,9 +133,19 @@ export class TrackingService {
   }
 
   async updateStatus(id: string, status: TrackingStatus): Promise<Tracking> {
-    const tracking = await this.trackingModel
-      .findByIdAndUpdate(id, { status }, { new: true })
-      .populate("createdBy", "firstName lastName email");
+    const tracking = await this.prisma.tracking.update({
+      where: { id },
+      data: { status },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
 
     if (!tracking) {
       throw new NotFoundException("Tracking record not found");
@@ -92,33 +158,54 @@ export class TrackingService {
     id: string,
     eventDto: AddTrackingEventDto,
   ): Promise<Tracking> {
-    const tracking = await this.trackingModel.findById(id);
+    const tracking = await this.prisma.tracking.findUnique({
+      where: { id },
+    });
 
     if (!tracking) {
       throw new NotFoundException("Tracking record not found");
     }
 
-    tracking.trackingEvents.push({
-      ...eventDto,
-      timestamp: new Date(),
+    // Create new tracking event
+    await this.prisma.trackingEvent.create({
+      data: {
+        ...eventDto,
+        trackingId: id,
+        timestamp: new Date(),
+      },
     });
 
-    // Update current location and status based on the latest event
-    const latestEvent =
-      tracking.trackingEvents[tracking.trackingEvents.length - 1];
-    tracking.currentLocation = latestEvent.location;
-    tracking.status = latestEvent.status;
+    // Update tracking record with latest event information
+    const latestEvent = await this.prisma.trackingEvent.findFirst({
+      where: { trackingId: id },
+      orderBy: { timestamp: 'desc' },
+    });
 
-    // Calculate progress based on events
-    const completedEvents = tracking.trackingEvents.filter(
-      (event) => event.status === TrackingStatus.DELIVERED,
-    ).length;
-    tracking.progress = Math.min(
-      (completedEvents / tracking.trackingEvents.length) * 100,
-      100,
-    );
+    if (latestEvent) {
+      // Calculate progress based on events
+      const allEvents = await this.prisma.trackingEvent.findMany({
+        where: { trackingId: id },
+      });
 
-    await tracking.save();
+      const completedEvents = allEvents.filter(
+        (event) => event.status === TrackingStatus.DELIVERED,
+      ).length;
+
+      const progress = Math.min(
+        (completedEvents / allEvents.length) * 100,
+        100,
+      );
+
+      await this.prisma.tracking.update({
+        where: { id },
+        data: {
+          currentLocation: latestEvent.location,
+          status: latestEvent.status,
+          progress: progress,
+        },
+      });
+    }
+
     return this.findById(id);
   }
 
@@ -129,23 +216,25 @@ export class TrackingService {
     delivered: number;
     delayed: number;
   }> {
-    const total = await this.trackingModel.countDocuments();
+    const total = await this.prisma.tracking.count();
 
     const byStatus = {} as Record<TrackingStatus, number>;
     for (const status of Object.values(TrackingStatus)) {
-      byStatus[status] = await this.trackingModel.countDocuments({ status });
+      byStatus[status] = await this.prisma.tracking.count({
+        where: { status },
+      });
     }
 
-    const inTransit = await this.trackingModel.countDocuments({
-      status: TrackingStatus.IN_TRANSIT,
+    const inTransit = await this.prisma.tracking.count({
+      where: { status: TrackingStatus.IN_TRANSIT },
     });
 
-    const delivered = await this.trackingModel.countDocuments({
-      status: TrackingStatus.DELIVERED,
+    const delivered = await this.prisma.tracking.count({
+      where: { status: TrackingStatus.DELIVERED },
     });
 
-    const delayed = await this.trackingModel.countDocuments({
-      status: TrackingStatus.DELAYED,
+    const delayed = await this.prisma.tracking.count({
+      where: { status: TrackingStatus.DELAYED },
     });
 
     return { total, byStatus, inTransit, delivered, delayed };

@@ -127,6 +127,33 @@ export function ServicesSection() {
       <div className="container px-6 md:px-8">
         <ScrollReveal>
           <div className="flex flex-col items-center justify-center space-y-6 text-center mb-12">
+            {/* Video Hero Section */}
+            <div className="relative w-full max-w-4xl mx-auto mb-8">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-64 md:h-80 lg:h-96 object-cover"
+                  poster="/placeholder.svg"
+                >
+                  <source
+                    src="https://tdqwbwhr1jotkcsm.public.blob.vercel-storage.com/assets_task_01jtqw50xqetjvpkfsse6sreqk_task_01jtqw50xqetjvpkfsse6sreqk_genid_88b8970f-e538-4de7-8c0a-5b02cb6f1c5e_25_05_08_11_58_307455_videos_00000_635401763_source.mp4"
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="flex items-center space-x-2 text-white">
+                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-medium">HalalChain Services Overview</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="space-y-4">
               <AnimatedText
                 text="Comprehensive Halal Supply Chain Services"

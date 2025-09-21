@@ -6,7 +6,7 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
 import { PrismaService } from "../prisma/prisma.service";
-import { User } from "@prisma/client";
+import { User, UserRole } from "@prisma/client";
 import { LoginDto, RegisterDto } from "./dto/auth.dto";
 
 @Injectable()
@@ -46,7 +46,7 @@ export class AuthService {
         password: hashedPassword,
         firstName,
         lastName,
-        role: role as any,
+        role: role as UserRole,
         companyName,
         phoneNumber,
         isActive: true,
@@ -109,35 +109,33 @@ export class AuthService {
     return this.generateJwtToken(user);
   }
 
-  async getProfile(userId: string): Promise<User> {
+  async getProfile(userId: string): Promise<Omit<User, 'password'>> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
-      select: {
-        password: false,
-      },
     });
     if (!user) {
       throw new UnauthorizedException("User not found");
     }
-    return user;
+    // Remove password from the returned user object
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 
   async updateProfile(
     userId: string,
     updateData: Partial<User>,
-  ): Promise<User> {
+  ): Promise<Omit<User, 'password'>> {
     const user = await this.prisma.user.update({
       where: { id: userId },
       data: updateData,
-      select: {
-        password: false,
-      },
     });
 
     if (!user) {
       throw new UnauthorizedException("User not found");
     }
 
-    return user;
+    // Remove password from the returned user object
+    const { password, ...userWithoutPassword } = user;
+    return userWithoutPassword;
   }
 }

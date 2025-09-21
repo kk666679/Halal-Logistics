@@ -3,12 +3,12 @@ import {
   NotFoundException,
   BadRequestException,
 } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
 import {
   Certification,
-  CertificationDocument,
   CertificationStatus,
   CertificationType,
-} from "./certification.schema";
+} from "@prisma/client";
 import {
   CreateCertificationDto,
   UpdateCertificationDto,
@@ -16,36 +16,66 @@ import {
 
 @Injectable()
 export class CertificationService {
-  constructor(
-    @InjectModel(Certification.name)
-    private certificationModel: Model<CertificationDocument>,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   async create(
     createCertificationDto: CreateCertificationDto,
     userId: string,
   ): Promise<Certification> {
-    const certification = new this.certificationModel({
-      ...createCertificationDto,
-      submittedBy: userId,
+    const certification = await this.prisma.certification.create({
+      data: {
+        ...createCertificationDto,
+        submittedBy: userId,
+        status: CertificationStatus.PENDING,
+      },
     });
-
-    return certification.save();
+    return certification;
   }
 
   async findAll(): Promise<Certification[]> {
-    return this.certificationModel
-      .find()
-      .populate("submittedBy", "firstName lastName email")
-      .populate("assignedTo", "firstName lastName email")
-      .sort({ createdAt: -1 });
+    return this.prisma.certification.findMany({
+      include: {
+        submitter: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        assignee: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   async findById(id: string): Promise<Certification> {
-    const certification = await this.certificationModel
-      .findById(id)
-      .populate("submittedBy", "firstName lastName email")
-      .populate("assignedTo", "firstName lastName email");
+    const certification = await this.prisma.certification.findUnique({
+      where: { id },
+      include: {
+        submitter: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        assignee: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
 
     if (!certification) {
       throw new NotFoundException("Certification application not found");
@@ -55,18 +85,46 @@ export class CertificationService {
   }
 
   async findByUser(userId: string): Promise<Certification[]> {
-    return this.certificationModel
-      .find({ submittedBy: userId })
-      .populate("submittedBy", "firstName lastName email")
-      .sort({ createdAt: -1 });
+    return this.prisma.certification.findMany({
+      where: { submittedBy: userId },
+      include: {
+        submitter: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   async findByStatus(status: CertificationStatus): Promise<Certification[]> {
-    return this.certificationModel
-      .find({ status })
-      .populate("submittedBy", "firstName lastName email")
-      .populate("assignedTo", "firstName lastName email")
-      .sort({ createdAt: -1 });
+    return this.prisma.certification.findMany({
+      where: { status },
+      include: {
+        submitter: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        assignee: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   async updateStatus(
@@ -81,18 +139,33 @@ export class CertificationService {
 
     if (reviewComments) updateData.reviewComments = reviewComments;
     if (assignedTo) updateData.assignedTo = assignedTo;
-    if (certificationNumber)
-      updateData.certificationNumber = certificationNumber;
+    if (certificationNumber) updateData.certificationNumber = certificationNumber;
     if (validUntil) updateData.validUntil = validUntil;
 
     if (status === CertificationStatus.APPROVED) {
       updateData.approvedAt = new Date();
     }
 
-    const certification = await this.certificationModel
-      .findByIdAndUpdate(id, updateData, { new: true })
-      .populate("submittedBy", "firstName lastName email")
-      .populate("assignedTo", "firstName lastName email");
+    const certification = await this.prisma.certification.update({
+      where: { id },
+      data: updateData,
+      include: {
+        submitter: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        assignee: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
 
     if (!certification) {
       throw new NotFoundException("Certification application not found");
@@ -105,17 +178,29 @@ export class CertificationService {
     id: string,
     reviewerId: string,
   ): Promise<Certification> {
-    const certification = await this.certificationModel
-      .findByIdAndUpdate(
-        id,
-        {
-          assignedTo: reviewerId,
-          status: CertificationStatus.UNDER_REVIEW,
+    const certification = await this.prisma.certification.update({
+      where: { id },
+      data: {
+        assignedTo: reviewerId,
+        status: CertificationStatus.UNDER_REVIEW,
+      },
+      include: {
+        submitter: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
         },
-        { new: true },
-      )
-      .populate("submittedBy", "firstName lastName email")
-      .populate("assignedTo", "firstName lastName email");
+        assignee: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
 
     if (!certification) {
       throw new NotFoundException("Certification application not found");
@@ -128,10 +213,26 @@ export class CertificationService {
     id: string,
     updateCertificationDto: UpdateCertificationDto,
   ): Promise<Certification> {
-    const certification = await this.certificationModel
-      .findByIdAndUpdate(id, updateCertificationDto, { new: true })
-      .populate("submittedBy", "firstName lastName email")
-      .populate("assignedTo", "firstName lastName email");
+    const certification = await this.prisma.certification.update({
+      where: { id },
+      data: updateCertificationDto,
+      include: {
+        submitter: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        assignee: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
 
     if (!certification) {
       throw new NotFoundException("Certification application not found");
@@ -146,24 +247,24 @@ export class CertificationService {
     byType: Record<CertificationType, number>;
     pendingReview: number;
   }> {
-    const total = await this.certificationModel.countDocuments();
+    const total = await this.prisma.certification.count();
 
     const byStatus = {} as Record<CertificationStatus, number>;
     for (const status of Object.values(CertificationStatus)) {
-      byStatus[status] = await this.certificationModel.countDocuments({
-        status,
+      byStatus[status] = await this.prisma.certification.count({
+        where: { status },
       });
     }
 
     const byType = {} as Record<CertificationType, number>;
     for (const type of Object.values(CertificationType)) {
-      byType[type] = await this.certificationModel.countDocuments({
-        requestedCertificationType: type,
+      byType[type] = await this.prisma.certification.count({
+        where: { requestedCertificationType: type },
       });
     }
 
-    const pendingReview = await this.certificationModel.countDocuments({
-      status: CertificationStatus.UNDER_REVIEW,
+    const pendingReview = await this.prisma.certification.count({
+      where: { status: CertificationStatus.UNDER_REVIEW },
     });
 
     return { total, byStatus, byType, pendingReview };

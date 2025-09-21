@@ -58,12 +58,6 @@ export function SiteHeader() {
               key={item.name}
               href={item.href}
               className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector(item.href)?.scrollIntoView({
-                  behavior: "smooth",
-                });
-              }}
             >
               {item.name}
               <span className="absolute inset-x-0 bottom-0 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200"></span>
@@ -159,13 +153,7 @@ export function SiteHeader() {
                       key={item.name}
                       href={item.href}
                       className="px-4 py-3 text-base font-medium text-foreground hover:bg-muted rounded-md transition-colors"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        document.querySelector(item.href)?.scrollIntoView({
-                          behavior: "smooth",
-                        });
-                        closeMobileMenu();
-                      }}
+                      onClick={closeMobileMenu}
                     >
                       {item.name}
                     </Link>
