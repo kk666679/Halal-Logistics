@@ -32,8 +32,11 @@ export class CertificationService {
     return certification;
   }
 
-  async findAll(): Promise<Certification[]> {
+  async findAll(userId?: string): Promise<Certification[]> {
+    const whereClause: { submittedBy?: string } = userId ? { submittedBy: userId } : {};
+
     return this.prisma.certification.findMany({
+      where: whereClause,
       include: {
         submitter: {
           select: {
@@ -54,6 +57,39 @@ export class CertificationService {
         createdAt: 'desc',
       },
     });
+  }
+
+  async findOne(id: string, userId?: string): Promise<Certification> {
+    const whereClause: { id: string; submittedBy?: string } = { id };
+    if (userId) {
+      whereClause.submittedBy = userId;
+    }
+
+    const certification = await this.prisma.certification.findFirst({
+      where: whereClause,
+      include: {
+        submitter: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        assignee: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!certification) {
+      throw new NotFoundException("Certification application not found");
+    }
+
+    return certification;
   }
 
   async findById(id: string): Promise<Certification> {
@@ -82,6 +118,24 @@ export class CertificationService {
     }
 
     return certification;
+  }
+
+  async findMyApplications(userId: string): Promise<Certification[]> {
+    return this.prisma.certification.findMany({
+      where: { submittedBy: userId },
+      include: {
+        submitter: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   async findByUser(userId: string): Promise<Certification[]> {
@@ -135,7 +189,14 @@ export class CertificationService {
     certificationNumber?: string,
     validUntil?: Date,
   ): Promise<Certification> {
-    const updateData: any = { status };
+    const updateData: {
+      status: CertificationStatus;
+      reviewComments?: string;
+      assignedTo?: string;
+      certificationNumber?: string;
+      validUntil?: Date;
+      approvedAt?: Date;
+    } = { status };
 
     if (reviewComments) updateData.reviewComments = reviewComments;
     if (assignedTo) updateData.assignedTo = assignedTo;
@@ -212,9 +273,15 @@ export class CertificationService {
   async update(
     id: string,
     updateCertificationDto: UpdateCertificationDto,
+    userId?: string,
   ): Promise<Certification> {
+    const whereClause: { id: string; submittedBy?: string } = { id };
+    if (userId) {
+      whereClause.submittedBy = userId;
+    }
+
     const certification = await this.prisma.certification.update({
-      where: { id },
+      where: whereClause,
       data: updateCertificationDto,
       include: {
         submitter: {
@@ -237,6 +304,35 @@ export class CertificationService {
     if (!certification) {
       throw new NotFoundException("Certification application not found");
     }
+
+    return certification;
+  }
+
+  async remove(id: string, userId?: string): Promise<Certification> {
+    const whereClause: { id: string; submittedBy?: string } = { id };
+    if (userId) {
+      whereClause.submittedBy = userId;
+    }
+
+    const certification = await this.prisma.certification.delete({
+      where: whereClause,
+      include: {
+        submitter: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+        assignee: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
 
     return certification;
   }

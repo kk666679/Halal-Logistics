@@ -17,16 +17,21 @@ export class ProductsService {
   ): Promise<Product> {
     const product = await this.prisma.product.create({
       data: {
-        ...(createProductDto as any),
+        ...createProductDto,
         createdBy: userId,
       },
     });
     return product;
   }
 
-  async findAll(): Promise<Product[]> {
+  async findAll(userId?: string): Promise<Product[]> {
+    const whereClause: { isActive: boolean; createdBy?: string } = { isActive: true };
+    if (userId) {
+      whereClause.createdBy = userId;
+    }
+
     return this.prisma.product.findMany({
-      where: { isActive: true },
+      where: whereClause,
       include: {
         user: {
           select: {
@@ -37,6 +42,32 @@ export class ProductsService {
         },
       },
     });
+  }
+
+  async findOne(id: string, userId?: string): Promise<Product> {
+    const whereClause: { id: string; createdBy?: string } = { id };
+    if (userId) {
+      whereClause.createdBy = userId;
+    }
+
+    const product = await this.prisma.product.findFirst({
+      where: whereClause,
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!product || !product.isActive) {
+      throw new NotFoundException("Product not found");
+    }
+
+    return product;
   }
 
   async findById(id: string): Promise<Product> {
@@ -98,12 +129,18 @@ export class ProductsService {
   async update(
     id: string,
     updateProductDto: UpdateProductDto,
+    userId?: string,
   ): Promise<Product> {
     const { category, ...rest } = updateProductDto;
+    const whereClause: { id: string; createdBy?: string } = { id };
+    if (userId) {
+      whereClause.createdBy = userId;
+    }
+
     const product = await this.prisma.product.update({
-      where: { id },
+      where: whereClause,
       data: {
-        ...(rest as any),
+        ...rest,
         category: category,
       },
       include: {
@@ -124,9 +161,14 @@ export class ProductsService {
     return product;
   }
 
-  async remove(id: string): Promise<Product> {
+  async remove(id: string, userId?: string): Promise<Product> {
+    const whereClause: { id: string; createdBy?: string } = { id };
+    if (userId) {
+      whereClause.createdBy = userId;
+    }
+
     const product = await this.prisma.product.update({
-      where: { id },
+      where: whereClause,
       data: { isActive: false },
       include: {
         user: {

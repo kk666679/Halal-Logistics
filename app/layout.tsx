@@ -4,6 +4,7 @@ import { Inter, Manrope } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AuthProvider } from "@/contexts/auth-context";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { PageTransition } from "@/components/page-transition";
@@ -53,20 +54,20 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider
-          attribute="class"
           defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
+          storageKey="halal-logistics-theme"
         >
-          <div className="relative flex min-h-screen flex-col">
-            <SiteHeader />
-            <Suspense>
-              <PageTransition>
-                <main className="flex-1">{children}</main>
-              </PageTransition>
-            </Suspense>
-            <SiteFooter />
-          </div>
+          <AuthProvider>
+            <div className="relative flex min-h-screen flex-col">
+              <SiteHeader />
+              <Suspense>
+                <PageTransition>
+                  <main className="flex-1">{children}</main>
+                </PageTransition>
+              </Suspense>
+              <SiteFooter />
+            </div>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

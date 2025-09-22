@@ -33,8 +33,14 @@ export class TrackingService {
     return tracking;
   }
 
-  async findAll(): Promise<Tracking[]> {
+  async findAll(userId?: string): Promise<Tracking[]> {
+    const whereClause: { createdBy?: string } = {};
+    if (userId) {
+      whereClause.createdBy = userId;
+    }
+
     return this.prisma.tracking.findMany({
+      where: whereClause,
       include: {
         user: {
           select: {
@@ -48,6 +54,32 @@ export class TrackingService {
         createdAt: 'desc',
       },
     });
+  }
+
+  async findOne(id: string, userId?: string): Promise<Tracking> {
+    const whereClause: { id: string; createdBy?: string } = { id };
+    if (userId) {
+      whereClause.createdBy = userId;
+    }
+
+    const tracking = await this.prisma.tracking.findFirst({
+      where: whereClause,
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!tracking) {
+      throw new NotFoundException("Tracking record not found");
+    }
+
+    return tracking;
   }
 
   async findById(id: string): Promise<Tracking> {
@@ -69,6 +101,24 @@ export class TrackingService {
     }
 
     return tracking;
+  }
+
+  async findMyShipments(userId: string): Promise<Tracking[]> {
+    return this.prisma.tracking.findMany({
+      where: { createdBy: userId },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   async findByUser(userId: string): Promise<Tracking[]> {
@@ -110,9 +160,15 @@ export class TrackingService {
   async update(
     id: string,
     updateTrackingDto: UpdateTrackingDto,
+    userId?: string,
   ): Promise<Tracking> {
+    const whereClause: { id: string; createdBy?: string } = { id };
+    if (userId) {
+      whereClause.createdBy = userId;
+    }
+
     const tracking = await this.prisma.tracking.update({
-      where: { id },
+      where: whereClause,
       data: updateTrackingDto,
       include: {
         user: {
@@ -128,6 +184,28 @@ export class TrackingService {
     if (!tracking) {
       throw new NotFoundException("Tracking record not found");
     }
+
+    return tracking;
+  }
+
+  async remove(id: string, userId?: string): Promise<Tracking> {
+    const whereClause: { id: string; createdBy?: string } = { id };
+    if (userId) {
+      whereClause.createdBy = userId;
+    }
+
+    const tracking = await this.prisma.tracking.delete({
+      where: whereClause,
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
+      },
+    });
 
     return tracking;
   }
