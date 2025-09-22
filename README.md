@@ -264,7 +264,7 @@ For support and questions:
 
 - Open an issue on GitHub
 - Email: [support@halallogistics.xyz](mailto:support@halallogistics.xyz)
-- Documentation: docs.halallogistics.com
+- Documentation: docs.halallogistics.xyz
 - Discord: Join our community
 - Twitter: @halallogistics_halalchain
 - OCI Forum: Oracle Cloud Infrastructure Forum
