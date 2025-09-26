@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-type Theme = "light" | "dark";
+type Theme = "light" | "dark" | "system";
 
 interface ThemeContextType {
   theme: Theme;
@@ -38,10 +38,17 @@ export function ThemeProvider({
 
   // Initialize theme from localStorage or system preference
   useEffect(() => {
-    const stored = localStorage.getItem(storageKey) as Theme;
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-
-    setThemeState(stored || systemTheme);
+    const stored = localStorage.getItem(storageKey);
+    let initialTheme: Theme;
+    if (stored === "system") {
+      initialTheme = "system";
+    } else if (stored && (stored === "light" || stored === "dark")) {
+      initialTheme = stored as Theme;
+    } else {
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      initialTheme = systemTheme;
+    }
+    setThemeState(initialTheme);
     setMounted(true);
   }, [storageKey]);
 
@@ -50,28 +57,34 @@ export function ThemeProvider({
     if (!mounted) return;
 
     const root = document.documentElement;
+    let effectiveTheme: "light" | "dark";
+    if (theme === "system") {
+      effectiveTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    } else {
+      effectiveTheme = theme;
+    }
     root.classList.remove("light", "dark");
-    root.classList.add(theme);
+    root.classList.add(effectiveTheme);
 
     localStorage.setItem(storageKey, theme);
   }, [theme, mounted, storageKey]);
 
-  // Listen for system theme changes
+  // Listen for system theme changes when in system mode
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || theme !== "system") return;
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
     const handleChange = (e: MediaQueryListEvent) => {
-      const stored = localStorage.getItem(storageKey);
-      if (!stored) {
-        setThemeState(e.matches ? "dark" : "light");
-      }
+      const root = document.documentElement;
+      const effectiveTheme = e.matches ? "dark" : "light";
+      root.classList.remove("light", "dark");
+      root.classList.add(effectiveTheme);
     };
 
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
-  }, [mounted, storageKey]);
+  }, [mounted, theme]);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
@@ -96,11 +109,15 @@ export function ThemeProvider({
     );
   }
 
+  const effectiveTheme = theme === "system" 
+    ? window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light" 
+    : theme;
+
   return (
     <ThemeContext.Provider value={value} {...props}>
       <AnimatePresence mode="wait">
         <motion.div
-          key={theme}
+          key={effectiveTheme}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -109,7 +126,7 @@ export function ThemeProvider({
             ease: "easeInOut"
           }}
           className={`min-h-screen transition-colors duration-300 ${
-            theme === "dark"
+            effectiveTheme === "dark"
               ? "bg-gray-900 text-white"
               : "bg-white text-gray-900"
           }`}
