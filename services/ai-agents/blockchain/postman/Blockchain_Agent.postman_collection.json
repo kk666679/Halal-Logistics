@@ -1,0 +1,548 @@
+{
+  "info": {
+    "name": "Blockchain Agent API",
+    "description": "Comprehensive API collection for the Blockchain Agent in Halal Logistics Multi AI Agent System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3026/api/v1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Blockchain Operations",
+      "item": [
+        {
+          "name": "Get Network Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/blockchain/network-info",
+              "host": ["{{baseUrl}}"],
+              "path": ["blockchain", "network-info"]
+            },
+            "description": "Get blockchain network information including network name, RPC URL, chain ID, gas price, and gas limit."
+          }
+        },
+        {
+          "name": "Get Account Balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/blockchain/balance/0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+              "host": ["{{baseUrl}}"],
+              "path": ["blockchain", "balance", "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"]
+            },
+            "description": "Get the balance of a specific blockchain address in ether."
+          }
+        },
+        {
+          "name": "Validate Address",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/blockchain/validate-address/0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+              "host": ["{{baseUrl}}"],
+              "path": ["blockchain", "validate-address", "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"]
+            },
+            "description": "Validate if a given string is a valid blockchain address."
+          }
+        },
+        {
+          "name": "Get Current Block Number",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/blockchain/block-number",
+              "host": ["{{baseUrl}}"],
+              "path": ["blockchain", "block-number"]
+            },
+            "description": "Get the current block number of the blockchain network."
+          }
+        },
+        {
+          "name": "Get Block Information",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/blockchain/block?timestamp=1704067200",
+              "host": ["{{baseUrl}}"],
+              "path": ["blockchain", "block"],
+              "query": [
+                {
+                  "key": "timestamp",
+                  "value": "1704067200",
+                  "description": "Optional timestamp to get block by approximate time"
+                }
+              ]
+            },
+            "description": "Get block information by block number or timestamp."
+          }
+        },
+        {
+          "name": "Deploy Smart Contract",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"abi\": [],\n  \"bytecode\": \"0x608060405234801561001057600080fd5b50...\",\n  \"from\": \"0x742d35Cc6634C0532925a3b844Bc454e4438f44e\",\n  \"args\": []\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/blockchain/deploy-contract",
+              "host": ["{{baseUrl}}"],
+              "path": ["blockchain", "deploy-contract"]
+            },
+            "description": "Deploy a smart contract to the blockchain network."
+          }
+        },
+        {
+          "name": "Call Contract Method",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contractAddress\": \"0x1234567890123456789012345678901234567890\",\n  \"abi\": [],\n  \"method\": \"getCertificate\",\n  \"args\": [\"HALAL-2024-001\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/blockchain/call-contract",
+              "host": ["{{baseUrl}}"],
+              "path": ["blockchain", "call-contract"]
+            },
+            "description": "Call a read-only method on a deployed smart contract."
+          }
+        },
+        {
+          "name": "Send Transaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contractAddress\": \"0x1234567890123456789012345678901234567890\",\n  \"abi\": [],\n  \"method\": \"issueCertificate\",\n  \"from\": \"0x742d35Cc6634C0532925a3b844Bc454e4438f44e\",\n  \"privateKey\": \"0x1234567890abcdef...\",\n  \"args\": [\"HALAL-2024-001\", \"Premium Halal Chicken\", \"Halal Foods Ltd\", 1735689600, \"QmYourIPFSHash\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/blockchain/send-transaction",
+              "host": ["{{baseUrl}}"],
+              "path": ["blockchain", "send-transaction"]
+            },
+            "description": "Send a transaction to a smart contract method that modifies state."
+          }
+        },
+        {
+          "name": "Get Transaction Receipt",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/blockchain/transaction/0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+              "host": ["{{baseUrl}}"],
+              "path": ["blockchain", "transaction", "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"]
+            },
+            "description": "Get the receipt of a blockchain transaction by its hash."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Smart Contracts",
+      "item": [
+        {
+          "name": "Get Halal Certification Template",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/smart-contracts/halal-certification-template",
+              "host": ["{{baseUrl}}"],
+              "path": ["smart-contracts", "halal-certification-template"]
+            },
+            "description": "Get the ABI and bytecode for the Halal Certification smart contract template."
+          }
+        },
+        {
+          "name": "Get Supply Chain Tracker Template",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/smart-contracts/supply-chain-tracker-template",
+              "host": ["{{baseUrl}}"],
+              "path": ["smart-contracts", "supply-chain-tracker-template"]
+            },
+            "description": "Get the ABI and bytecode for the Supply Chain Tracker smart contract template."
+          }
+        },
+        {
+          "name": "Deploy Halal Certification Contract",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"from\": \"0x742d35Cc6634C0532925a3b844Bc454e4438f44e\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/smart-contracts/deploy-halal-certification",
+              "host": ["{{baseUrl}}"],
+              "path": ["smart-contracts", "deploy-halal-certification"]
+            },
+            "description": "Deploy a new Halal Certification smart contract to the blockchain."
+          }
+        },
+        {
+          "name": "Deploy Supply Chain Tracker Contract",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"from\": \"0x742d35Cc6634C0532925a3b844Bc454e4438f44e\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/smart-contracts/deploy-supply-chain-tracker",
+              "host": ["{{baseUrl}}"],
+              "path": ["smart-contracts", "deploy-supply-chain-tracker"]
+            },
+            "description": "Deploy a new Supply Chain Tracker smart contract to the blockchain."
+          }
+        },
+        {
+          "name": "Issue Halal Certificate",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contractAddress\": \"0x1234567890123456789012345678901234567890\",\n  \"certificateNumber\": \"HALAL-2024-001\",\n  \"productName\": \"Premium Halal Chicken\",\n  \"supplier\": \"Halal Foods Ltd\",\n  \"expiryDate\": 1735689600,\n  \"ipfsHash\": \"QmYourIPFSHash\",\n  \"from\": \"0x742d35Cc6634C0532925a3b844Bc454e4438f44e\",\n  \"privateKey\": \"0x1234567890abcdef...\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/smart-contracts/issue-certificate",
+              "host": ["{{baseUrl}}"],
+              "path": ["smart-contracts", "issue-certificate"]
+            },
+            "description": "Issue a new Halal certificate using the deployed smart contract."
+          }
+        },
+        {
+          "name": "Get Certificate Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/smart-contracts/certificate/0x1234567890123456789012345678901234567890/HALAL-2024-001",
+              "host": ["{{baseUrl}}"],
+              "path": ["smart-contracts", "certificate", "0x1234567890123456789012345678901234567890", "HALAL-2024-001"]
+            },
+            "description": "Get the details of a specific Halal certificate from the smart contract."
+          }
+        },
+        {
+          "name": "Check Certificate Validity",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/smart-contracts/certificate-validity/0x1234567890123456789012345678901234567890/HALAL-2024-001",
+              "host": ["{{baseUrl}}"],
+              "path": ["smart-contracts", "certificate-validity", "0x1234567890123456789012345678901234567890", "HALAL-2024-001"]
+            },
+            "description": "Check if a specific Halal certificate is currently valid."
+          }
+        }
+      ]
+    },
+    {
+      "name": "IPFS Operations",
+      "item": [
+        {
+          "name": "Upload JSON Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"name\": \"John Doe\",\n    \"age\": 30,\n    \"city\": \"Kuala Lumpur\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ipfs/upload-json",
+              "host": ["{{baseUrl}}"],
+              "path": ["ipfs", "upload-json"]
+            },
+            "description": "Upload JSON data to IPFS and get the hash for later retrieval."
+          }
+        },
+        {
+          "name": "Upload Certificate Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"certificateNumber\": \"HALAL-2024-001\",\n  \"productName\": \"Premium Halal Chicken\",\n  \"supplier\": \"Halal Foods Ltd\",\n  \"issueDate\": \"2024-01-01\",\n  \"expiryDate\": \"2025-01-01\",\n  \"issuer\": \"JAKIM Certified\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ipfs/upload-certificate",
+              "host": ["{{baseUrl}}"],
+              "path": ["ipfs", "upload-certificate"]
+            },
+            "description": "Upload a Halal certificate document to IPFS with structured metadata."
+          }
+        },
+        {
+          "name": "Upload Supply Chain Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"PROD-2024-001\",\n  \"location\": \"Kuala Lumpur Warehouse\",\n  \"temperature\": 22.5,\n  \"humidity\": 65,\n  \"timestamp\": \"2024-01-01T10:00:00Z\",\n  \"notes\": \"Temperature controlled storage\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ipfs/upload-supply-chain",
+              "host": ["{{baseUrl}}"],
+              "path": ["ipfs", "upload-supply-chain"]
+            },
+            "description": "Upload a supply chain tracking document to IPFS with sensor data."
+          }
+        },
+        {
+          "name": "Download File by Hash",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ipfs/download/QmYourIPFSHashHere",
+              "host": ["{{baseUrl}}"],
+              "path": ["ipfs", "download", "QmYourIPFSHashHere"]
+            },
+            "description": "Download a file from IPFS using its hash."
+          }
+        },
+        {
+          "name": "Download JSON by Hash",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ipfs/download-json/QmYourIPFSHashHere",
+              "host": ["{{baseUrl}}"],
+              "path": ["ipfs", "download-json", "QmYourIPFSHashHere"]
+            },
+            "description": "Download and parse JSON data from IPFS using its hash."
+          }
+        },
+        {
+          "name": "Get File Information",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ipfs/info/QmYourIPFSHashHere",
+              "host": ["{{baseUrl}}"],
+              "path": ["ipfs", "info", "QmYourIPFSHashHere"]
+            },
+            "description": "Get information about a file stored on IPFS."
+          }
+        },
+        {
+          "name": "Pin File",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ipfs/pin/QmYourIPFSHashHere",
+              "host": ["{{baseUrl}}"],
+              "path": ["ipfs", "pin", "QmYourIPFSHashHere"]
+            },
+            "description": "Pin a file on IPFS to ensure it remains available."
+          }
+        },
+        {
+          "name": "Unpin File",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ipfs/unpin/QmYourIPFSHashHere",
+              "host": ["{{baseUrl}}"],
+              "path": ["ipfs", "unpin", "QmYourIPFSHashHere"]
+            },
+            "description": "Unpin a file on IPFS to allow garbage collection."
+          }
+        },
+        {
+          "name": "Check if Pinned",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ipfs/pinned/QmYourIPFSHashHere",
+              "host": ["{{baseUrl}}"],
+              "path": ["ipfs", "pinned", "QmYourIPFSHashHere"]
+            },
+            "description": "Check if a file is currently pinned on IPFS."
+          }
+        },
+        {
+          "name": "Verify File",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ipfs/verify/QmYourIPFSHashHere",
+              "host": ["{{baseUrl}}"],
+              "path": ["ipfs", "verify", "QmYourIPFSHashHere"]
+            },
+            "description": "Verify that a file exists and is accessible on IPFS."
+          }
+        },
+        {
+          "name": "Get Gateway URL",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ipfs/gateway-url/QmYourIPFSHashHere",
+              "host": ["{{baseUrl}}"],
+              "path": ["ipfs", "gateway-url", "QmYourIPFSHashHere"]
+            },
+            "description": "Get the public gateway URL for accessing a file on IPFS."
+          }
+        },
+        {
+          "name": "Get IPFS Node Information",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ipfs/node-info",
+              "host": ["{{baseUrl}}"],
+              "path": ["ipfs", "node-info"]
+            },
+            "description": "Get information about the connected IPFS node."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Oracle Services",
+      "item": [
+        {
+          "name": "Get Price Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/oracles/price?symbol=BTC",
+              "host": ["{{baseUrl}}"],
+              "path": ["oracles", "price"],
+              "query": [
+                {
+                  "key": "symbol",
+                  "value": "BTC",
+                  "description": "Cryptocurrency symbol (e.g., BTC, ETH, MATIC)"
+                }
+              ]
+            },
+            "description": "Get current price data for a cryptocurrency or asset."
+          }
+        },
+        {
+          "name": "Get Weather Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/oracles/weather?location=Kuala%20Lumpur",
+              "host": ["{{baseUrl}}"],
+              "path": ["oracles", "weather"],
+              "query": [
+                {
+                  "key": "location",
+                  "value": "Kuala Lumpur",
+                  "description": "Location for weather data (city name)"
+                }
+              ]
+            },
+            "description": "Get current weather data for a specific location."
+          }
+        },
+        {
+          "name": "Get Government Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/oracles/government?agency=JAKIM",
+              "host": ["{{baseUrl}}"],
+              "path": ["oracles", "government"],
+              "query": [
+                {
+                  "key": "agency",
+                  "value": "JAKIM",
+                  "description": "Government agency name"
+                }
+              ]
+            },
+            "description": "Get data from government sources and APIs."
+          }
+        }
+      ]
+    }
+  ]
+}

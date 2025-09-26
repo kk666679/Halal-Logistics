@@ -1,0 +1,986 @@
+{
+  "info": {
+    "name": "Quality Control Agent API",
+    "description": "Comprehensive API collection for the Quality Control Agent in Halal Logistics Multi AI Agent System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "quality-control-agent"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3017/api/v1/quality",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url.replace('quality', 'auth')}}/login",
+              "host": ["{{base_url.replace('quality', 'auth')}}", "login"]
+            },
+            "description": "Authenticate user and get JWT token"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('auth_token', response.access_token);",
+                  "    console.log('Authentication successful, token saved');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Health & Status",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}", "health"]
+            },
+            "description": "Check service health status"
+          }
+        },
+        {
+          "name": "Service Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/status",
+              "host": ["{{base_url}}", "status"]
+            },
+            "description": "Get detailed service status information"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Quality Inspection",
+      "item": [
+        {
+          "name": "Perform Quality Inspection",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"product_123\",\n  \"inspectionType\": \"comprehensive\",\n  \"parameters\": {\n    \"visualCheck\": true,\n    \"dimensionalCheck\": true,\n    \"functionalCheck\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/inspect",
+              "host": ["{{base_url}}", "inspect"]
+            },
+            "description": "Perform comprehensive quality inspection on a product"
+          }
+        },
+        {
+          "name": "Get Inspection by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/inspection/:inspectionId",
+              "host": ["{{base_url}}", "inspection", ":inspectionId"],
+              "variable": [
+                {
+                  "key": "inspectionId",
+                  "value": "inspection_123"
+                }
+              ]
+            },
+            "description": "Get specific inspection details by ID"
+          }
+        },
+        {
+          "name": "Get Inspections List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/inspections?page=1&limit=10&status=completed",
+              "host": ["{{base_url}}", "inspections"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "status",
+                  "value": "completed"
+                }
+              ]
+            },
+            "description": "Get list of inspections with filtering options"
+          }
+        },
+        {
+          "name": "Batch Quality Inspection",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inspections\": [\n    {\n      \"productId\": \"product_001\",\n      \"inspectionType\": \"visual\"\n    },\n    {\n      \"productId\": \"product_002\",\n      \"inspectionType\": \"dimensional\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/batch/inspect",
+              "host": ["{{base_url}}", "batch", "inspect"]
+            },
+            "description": "Perform batch quality inspection on multiple products"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Image Analysis",
+      "item": [
+        {
+          "name": "Analyze Product Image",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/path/to/product/image.jpg"
+                },
+                {
+                  "key": "productId",
+                  "value": "product_123",
+                  "type": "text"
+                },
+                {
+                  "key": "analysisType",
+                  "value": "defect_detection",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/image/analyze",
+              "host": ["{{base_url}}", "image", "analyze"]
+            },
+            "description": "Analyze product image for quality defects using computer vision"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Quality Standards",
+      "item": [
+        {
+          "name": "Get Quality Standards",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/standards?category=halal&type=product",
+              "host": ["{{base_url}}", "standards"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "halal"
+                },
+                {
+                  "key": "type",
+                  "value": "product"
+                }
+              ]
+            },
+            "description": "Get quality standards with filtering options"
+          }
+        },
+        {
+          "name": "Validate Against Standard",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"product_123\",\n  \"standardId\": \"halal_standard_001\",\n  \"parameters\": {\n    \"qualityScore\": 0.85,\n    \"defectRate\": 0.02\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/standard/validate",
+              "host": ["{{base_url}}", "standard", "validate"]
+            },
+            "description": "Validate product against specific quality standard"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Defect Management",
+      "item": [
+        {
+          "name": "Get Defect Types",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/defects?category=surface&severity=high",
+              "host": ["{{base_url}}", "defects"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "surface"
+                },
+                {
+                  "key": "severity",
+                  "value": "high"
+                }
+              ]
+            },
+            "description": "Get available defect types with filtering"
+          }
+        },
+        {
+          "name": "Analyze Defect",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"defectId\": \"defect_123\",\n  \"context\": {\n    \"productId\": \"product_123\",\n    \"processId\": \"process_456\"\n  },\n  \"timeframe\": \"week\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/defect/analyze",
+              "host": ["{{base_url}}", "defect", "analyze"]
+            },
+            "description": "Analyze specific defect with context and trends"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Quality Analytics",
+      "item": [
+        {
+          "name": "Get Quality Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/metrics?metric=quality_score&period=week&groupBy=product",
+              "host": ["{{base_url}}", "metrics"],
+              "query": [
+                {
+                  "key": "metric",
+                  "value": "quality_score"
+                },
+                {
+                  "key": "period",
+                  "value": "week"
+                },
+                {
+                  "key": "groupBy",
+                  "value": "product"
+                }
+              ]
+            },
+            "description": "Get quality metrics with filtering and grouping"
+          }
+        },
+        {
+          "name": "Get Quality Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard?timeframe=week&includeAlerts=true&includeMetrics=true",
+              "host": ["{{base_url}}", "dashboard"],
+              "query": [
+                {
+                  "key": "timeframe",
+                  "value": "week"
+                },
+                {
+                  "key": "includeAlerts",
+                  "value": "true"
+                },
+                {
+                  "key": "includeMetrics",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Get comprehensive quality dashboard data"
+          }
+        },
+        {
+          "name": "Get Quality KPIs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/kpi?category=product&timeframe=month",
+              "host": ["{{base_url}}", "kpi"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "product"
+                },
+                {
+                  "key": "timeframe",
+                  "value": "month"
+                }
+              ]
+            },
+            "description": "Get quality key performance indicators"
+          }
+        },
+        {
+          "name": "Set KPI Target",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kpi\": \"quality_score\",\n  \"target\": 0.90,\n  \"timeframe\": \"month\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/kpi/target",
+              "host": ["{{base_url}}", "kpi", "target"]
+            },
+            "description": "Set target for quality KPI"
+          }
+        },
+        {
+          "name": "Get Quality Trends",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/trends?metric=quality_score&period=month&interval=day",
+              "host": ["{{base_url}}", "trends"],
+              "query": [
+                {
+                  "key": "metric",
+                  "value": "quality_score"
+                },
+                {
+                  "key": "period",
+                  "value": "month"
+                },
+                {
+                  "key": "interval",
+                  "value": "day"
+                }
+              ]
+            },
+            "description": "Get quality trends over time"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Alerts & Notifications",
+      "item": [
+        {
+          "name": "Get Quality Alerts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/alerts?status=active&priority=high",
+              "host": ["{{base_url}}", "alerts"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "priority",
+                  "value": "high"
+                }
+              ]
+            },
+            "description": "Get quality alerts with filtering"
+          }
+        },
+        {
+          "name": "Acknowledge Quality Alert",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/alert/acknowledge/:alertId",
+              "host": ["{{base_url}}", "alert", "acknowledge", ":alertId"],
+              "variable": [
+                {
+                  "key": "alertId",
+                  "value": "alert_123"
+                }
+              ]
+            },
+            "description": "Acknowledge and resolve quality alert"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reporting",
+      "item": [
+        {
+          "name": "Get Quality Reports",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reports?type=summary&period=month",
+              "host": ["{{base_url}}", "reports"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "summary"
+                },
+                {
+                  "key": "period",
+                  "value": "month"
+                }
+              ]
+            },
+            "description": "Get available quality reports"
+          }
+        },
+        {
+          "name": "Generate Quality Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"comprehensive\",\n  \"period\": \"month\",\n  \"format\": \"pdf\",\n  \"parameters\": {\n    \"includeCharts\": true,\n    \"includeRawData\": false\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/report/generate",
+              "host": ["{{base_url}}", "report", "generate"]
+            },
+            "description": "Generate custom quality report"
+          }
+        },
+        {
+          "name": "Export Quality Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/export?format=csv&filters={\"timeframe\":\"month\"}&fields=quality_score,defect_rate",
+              "host": ["{{base_url}}", "export"],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "csv"
+                },
+                {
+                  "key": "filters",
+                  "value": "{\"timeframe\":\"month\"}"
+                },
+                {
+                  "key": "fields",
+                  "value": "quality_score,defect_rate"
+                }
+              ]
+            },
+            "description": "Export quality data in specified format"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Compliance & Certification",
+      "item": [
+        {
+          "name": "Get Compliance Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/compliance?standard=halal_standard_001&product=product_123&timeframe=month",
+              "host": ["{{base_url}}", "compliance"],
+              "query": [
+                {
+                  "key": "standard",
+                  "value": "halal_standard_001"
+                },
+                {
+                  "key": "product",
+                  "value": "product_123"
+                },
+                {
+                  "key": "timeframe",
+                  "value": "month"
+                }
+              ]
+            },
+            "description": "Get compliance status for specific standard and product"
+          }
+        },
+        {
+          "name": "Check Compliance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"product_123\",\n  \"standards\": [\"halal_standard_001\", \"safety_standard_001\"],\n  \"parameters\": {\n    \"qualityScore\": 0.85,\n    \"defectRate\": 0.02\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/compliance/check",
+              "host": ["{{base_url}}", "compliance", "check"]
+            },
+            "description": "Check product compliance against multiple standards"
+          }
+        },
+        {
+          "name": "Get Quality Certifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/certifications?status=active&type=quality_management",
+              "host": ["{{base_url}}", "certifications"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "type",
+                  "value": "quality_management"
+                }
+              ]
+            },
+            "description": "Get quality certifications with filtering"
+          }
+        },
+        {
+          "name": "Validate Certification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"certificationId\": \"cert_001\",\n  \"productId\": \"product_123\",\n  \"parameters\": {\n    \"batchId\": \"batch_456\",\n    \"productionDate\": \"2024-01-15\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/certification/validate",
+              "host": ["{{base_url}}", "certification", "validate"]
+            },
+            "description": "Validate certification for specific product"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Advanced Features",
+      "item": [
+        {
+          "name": "Get Supplier Quality",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/suppliers?supplierId=supplier_001&timeframe=month&metrics=quality_score,defect_rate",
+              "host": ["{{base_url}}", "suppliers"],
+              "query": [
+                {
+                  "key": "supplierId",
+                  "value": "supplier_001"
+                },
+                {
+                  "key": "timeframe",
+                  "value": "month"
+                },
+                {
+                  "key": "metrics",
+                  "value": "quality_score,defect_rate"
+                }
+              ]
+            },
+            "description": "Get supplier quality metrics and performance"
+          }
+        },
+        {
+          "name": "Rate Supplier Quality",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"supplierId\": \"supplier_001\",\n  \"rating\": 4.5,\n  \"criteria\": {\n    \"quality\": 4.5,\n    \"delivery\": 4.0,\n    \"service\": 4.8\n  },\n  \"comments\": \"Excellent quality and service\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/supplier/rate",
+              "host": ["{{base_url}}", "supplier", "rate"]
+            },
+            "description": "Rate supplier quality performance"
+          }
+        },
+        {
+          "name": "Get Process Quality",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/processes?processId=process_001&timeframe=week&metrics=yield,efficiency",
+              "host": ["{{base_url}}", "processes"],
+              "query": [
+                {
+                  "key": "processId",
+                  "value": "process_001"
+                },
+                {
+                  "key": "timeframe",
+                  "value": "week"
+                },
+                {
+                  "key": "metrics",
+                  "value": "yield,efficiency"
+                }
+              ]
+            },
+            "description": "Get process quality metrics and performance"
+          }
+        },
+        {
+          "name": "Monitor Process Quality",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"processId\": \"process_001\",\n  \"parameters\": {\n    \"temperature\": 25.5,\n    \"pressure\": 1.2,\n    \"speed\": 100\n  },\n  \"thresholds\": {\n    \"temperature\": {\"min\": 20, \"max\": 30},\n    \"pressure\": {\"min\": 1.0, \"max\": 1.5}\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/process/monitor",
+              "host": ["{{base_url}}", "process", "monitor"]
+            },
+            "description": "Monitor process quality in real-time"
+          }
+        },
+        {
+          "name": "Get Batch Quality",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/batches?batchId=batch_001&timeframe=day&metrics=quality_score,defect_count",
+              "host": ["{{base_url}}", "batches"],
+              "query": [
+                {
+                  "key": "batchId",
+                  "value": "batch_001"
+                },
+                {
+                  "key": "timeframe",
+                  "value": "day"
+                },
+                {
+                  "key": "metrics",
+                  "value": "quality_score,defect_count"
+                }
+              ]
+            },
+            "description": "Get batch quality information and metrics"
+          }
+        },
+        {
+          "name": "Assess Batch Quality",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"batchId\": \"batch_001\",\n  \"inspectionPoints\": [\n    {\"point\": \"start\", \"qualityScore\": 0.85},\n    {\"point\": \"middle\", \"qualityScore\": 0.88},\n    {\"point\": \"end\", \"qualityScore\": 0.82}\n  ],\n  \"criteria\": {\n    \"minimumScore\": 0.8,\n    \"maxDefects\": 5\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/batch/quality",
+              "host": ["{{base_url}}", "batch", "quality"]
+            },
+            "description": "Assess overall batch quality"
+          }
+        },
+        {
+          "name": "Get Quality History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/history?entityId=product_001&entityType=product&timeframe=month",
+              "host": ["{{base_url}}", "history"],
+              "query": [
+                {
+                  "key": "entityId",
+                  "value": "product_001"
+                },
+                {
+                  "key": "entityType",
+                  "value": "product"
+                },
+                {
+                  "key": "timeframe",
+                  "value": "month"
+                }
+              ]
+            },
+            "description": "Get quality history for specific entity"
+          }
+        },
+        {
+          "name": "Import Quality Data",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/quality-data.csv"
+                },
+                {
+                  "key": "format",
+                  "value": "csv",
+                  "type": "text"
+                },
+                {
+                  "key": "mapping",
+                  "value": "{\"productId\":\"column1\",\"qualityScore\":\"column2\"}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/import",
+              "host": ["{{base_url}}", "import"]
+            },
+            "description": "Import quality data from file"
+          }
+        },
+        {
+          "name": "Train Quality Model",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"modelType\": \"defect_detection\",\n  \"trainingSet\": {\n    \"images\": 1000,\n    \"labels\": 5000\n  },\n  \"parameters\": {\n    \"epochs\": 50,\n    \"batchSize\": 32,\n    \"learningRate\": 0.001\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/model/train",
+              "host": ["{{base_url}}", "model", "train"]
+            },
+            "description": "Train quality model with new data"
+          }
+        },
+        {
+          "name": "Get Quality Models",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/models?type=defect_detection&status=active",
+              "host": ["{{base_url}}", "models"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "defect_detection"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            },
+            "description": "Get available quality models"
+          }
+        },
+        {
+          "name": "Simulate Quality Scenario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scenario\": \"process_failure\",\n  \"parameters\": {\n    \"failureRate\": 0.1,\n    \"duration\": 60\n  },\n  \"timeframe\": \"hour\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/simulate",
+              "host": ["{{base_url}}", "simulate"]
+            },
+            "description": "Simulate quality scenario for analysis"
+          }
+        },
+        {
+          "name": "Get Quality Recommendations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recommendations?qualityScore=0.85&category=product&context=production",
+              "host": ["{{base_url}}", "recommendations"],
+              "query": [
+                {
+                  "key": "qualityScore",
+                  "value": "0.85"
+                },
+                {
+                  "key": "category",
+                  "value": "product"
+                },
+                {
+                  "key": "context",
+                  "value": "production"
+                }
+              ]
+            },
+            "description": "Get quality improvement recommendations"
+          }
+        },
+        {
+          "name": "Apply Quality Recommendation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"autoApply\": false,\n  \"parameters\": {\n    \"priority\": \"high\",\n    \"resources\": \"required\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/recommendation/apply/:recommendationId",
+              "host": ["{{base_url}}", "recommendation", "apply", ":recommendationId"],
+              "variable": [
+                {
+                  "key": "recommendationId",
+                  "value": "rec_123"
+                }
+              ]
+            },
+            "description": "Apply quality improvement recommendation"
+          }
+        }
+      ]
+    }
+  ]
+}

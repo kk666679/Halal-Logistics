@@ -1,0 +1,590 @@
+{
+  "info": {
+    "name": "Document Agent API",
+    "description": "Comprehensive API collection for the Halal Logistics Document Agent",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3015/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "jwtToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"test-admin\",\n  \"password\": \"test-password-123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.access_token) {",
+                  "        pm.collectionVariables.set('jwtToken', response.access_token);",
+                  "        console.log('JWT Token saved:', response.access_token);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Health & Status",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/document/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Document Management",
+      "item": [
+        {
+          "name": "Upload Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": [],
+                  "description": "Document file to upload (PDF, DOC, DOCX, JPG, PNG, TXT)"
+                },
+                {
+                  "key": "metadata",
+                  "value": "{\n  \"documentType\": \"halal_certificate\",\n  \"supplierId\": \"SUP-001\",\n  \"description\": \"Halal certification document\"\n}",
+                  "type": "text",
+                  "description": "Document metadata in JSON format"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/document/upload",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "upload"]
+            }
+          }
+        },
+        {
+          "name": "List Documents",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/document/list?page=1&limit=10&type=certificate&status=processed",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "list"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "type",
+                  "value": "certificate"
+                },
+                {
+                  "key": "status",
+                  "value": "processed"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Document",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/document/DOC-001",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "DOC-001"]
+            }
+          }
+        },
+        {
+          "name": "Update Document Metadata",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tags\": [\"halal\", \"certificate\", \"verified\"],\n  \"customFields\": {\n    \"expiryDate\": \"2024-12-31\",\n    \"certificationBody\": \"JAKIM\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/document/DOC-001/metadata",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "DOC-001", "metadata"]
+            }
+          }
+        },
+        {
+          "name": "Share Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipients\": [\"user1@company.com\", \"user2@company.com\"],\n  \"permissions\": \"view\",\n  \"expiresAt\": \"2024-12-31T23:59:59Z\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/document/DOC-001/share",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "DOC-001", "share"]
+            }
+          }
+        },
+        {
+          "name": "Delete Document",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/document/DOC-001",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "DOC-001"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Document Processing",
+      "item": [
+        {
+          "name": "Process Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"processingType\": \"auto\",\n  \"options\": {\n    \"extractText\": true,\n    \"extractMetadata\": true,\n    \"validateFormat\": true,\n    \"ocrEnabled\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/document/DOC-001/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "DOC-001", "process"]
+            }
+          }
+        },
+        {
+          "name": "Extract Document Data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/document/DOC-001/extract?extractionType=full&fields=text,metadata,tables",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "DOC-001", "extract"],
+              "query": [
+                {
+                  "key": "extractionType",
+                  "value": "full"
+                },
+                {
+                  "key": "fields",
+                  "value": "text,metadata,tables"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze Document",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/document/DOC-001/analyze?type=content&depth=standard",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "DOC-001", "analyze"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "content"
+                },
+                {
+                  "key": "depth",
+                  "value": "standard"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Validate Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rules\": \"standard\",\n  \"strict\": false,\n  \"customRules\": {\n    \"requiredFields\": [\"certificateNumber\", \"expiryDate\"],\n    \"formatValidation\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/document/DOC-001/validate",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "DOC-001", "validate"]
+            }
+          }
+        },
+        {
+          "name": "Convert Document",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/document/DOC-001/convert?targetFormat=pdf&quality=high",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "DOC-001", "convert"],
+              "query": [
+                {
+                  "key": "targetFormat",
+                  "value": "pdf"
+                },
+                {
+                  "key": "quality",
+                  "value": "high"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Classify Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categories\": [\"halal_certificate\", \"supply_agreement\", \"invoice\"],\n  \"confidence\": 0.8,\n  \"autoClassify\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/document/DOC-001/classify",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "DOC-001", "classify"]
+            }
+          }
+        },
+        {
+          "name": "Search in Document",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/document/DOC-001/search?query=halal&type=text&caseSensitive=false",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "DOC-001", "search"],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "halal"
+                },
+                {
+                  "key": "type",
+                  "value": "text"
+                },
+                {
+                  "key": "caseSensitive",
+                  "value": "false"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Templates & Batch Operations",
+      "item": [
+        {
+          "name": "Get Document Templates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/document/templates/list?type=certificate&category=halal",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "templates", "list"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "certificate"
+                },
+                {
+                  "key": "category",
+                  "value": "halal"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Document Template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Halal Certificate Template\",\n  \"type\": \"certificate\",\n  \"category\": \"halal\",\n  \"description\": \"Standard halal certification template\",\n  \"fields\": [\n    \"certificateNumber\",\n    \"issueDate\",\n    \"expiryDate\",\n    \"issuer\"\n  ],\n  \"schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"certificateNumber\": {\"type\": \"string\"},\n      \"issueDate\": {\"type\": \"string\", \"format\": \"date\"},\n      \"expiryDate\": {\"type\": \"string\", \"format\": \"date\"},\n      \"issuer\": {\"type\": \"string\"}\n    },\n    \"required\": [\"certificateNumber\", \"expiryDate\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/document/template/create",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "template", "create"]
+            }
+          }
+        },
+        {
+          "name": "Batch Process Documents",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"documentIds\": [\"DOC-001\", \"DOC-002\", \"DOC-003\"],\n  \"operations\": [\"extract\", \"validate\", \"classify\"],\n  \"options\": {\n    \"priority\": \"normal\",\n    \"callbackUrl\": \"http://localhost:3000/api/batch/callback\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/document/batch/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "batch", "process"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics & Reporting",
+      "item": [
+        {
+          "name": "Get Document Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/document/analytics/usage?period=30d&metric=usage",
+              "host": ["{{baseUrl}}"],
+              "path": ["document", "analytics", "usage"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "30d"
+                },
+                {
+                  "key": "metric",
+                  "value": "usage"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Add timestamp to requests",
+          "pm.request.headers.add({key: 'X-Request-Time', value: new Date().toISOString()});",
+          "",
+          "// Log request details",
+          "console.log('Request:', pm.request.method, pm.request.url.toString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Log response time and size",
+          "console.log('Response Time:', pm.response.responseTime + 'ms');",
+          "console.log('Response Size:', pm.response.responseSize + ' bytes');",
+          "",
+          "// Validate response structure",
+          "if (pm.response.code === 200) {",
+          "    const response = pm.response.json();",
+          "    console.log('Response Status: SUCCESS');",
+          "    ",
+          "    // Validate common response fields",
+          "    if (response.success !== undefined) {",
+          "        console.log('Success Field:', response.success);",
+          "    }",
+          "    if (response.message) {",
+          "        console.log('Message:', response.message);",
+          "    }",
+          "    if (response.documentId) {",
+          "        console.log('Document ID:', response.documentId);",
+          "    }",
+          "} else {",
+          "    console.log('Response Status: ERROR');",
+          "    console.log('Error:', pm.response.json());",
+          "}"
+        ]
+      }
+    }
+  ]
+}

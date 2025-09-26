@@ -2,76 +2,121 @@
 
 @layer base {
   :root {
-    /* Updated color scheme for Halal Logistics Platform */
+    /* Framer Motion v12 Color System */
     --background: 0 0% 100%;
-    --foreground: 220 13% 26%;
-    --card: 48 100% 96%;
-    --card-foreground: 220 13% 26%;
+    --foreground: 210 11% 4%;
+    --card: 210 17% 98%;
+    --card-foreground: 210 11% 4%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 26%;
-    --primary: 32 95% 44%;
+    --popover-foreground: 210 11% 4%;
+    --primary: 210 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 244 58% 67%;
+    --secondary: 260 100% 70%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 48 100% 96%;
-    --muted-foreground: 220 13% 26%;
-    --accent: 244 58% 67%;
+    --muted: 210 17% 96%;
+    --muted-foreground: 210 17% 65%;
+    --accent: 260 100% 70%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 51%;
+    --destructive: 4 90% 58%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 91%;
-    --input: 220 13% 97%;
-    --ring: 32 95% 44%;
-    --chart-1: 32 95% 44%;
-    --chart-2: 244 58% 67%;
-    --chart-3: 0 72% 51%;
-    --chart-4: 45 93% 47%;
-    --chart-5: 220 13% 15%;
+    --border: 210 17% 91%;
+    --input: 210 17% 97%;
+    --ring: 210 100% 50%;
+    --chart-1: 210 100% 50%;
+    --chart-2: 260 100% 70%;
+    --chart-3: 4 90% 58%;
+    --chart-4: 32 100% 50%;
+    --chart-5: 210 11% 15%;
     --radius: 0.5rem;
-    --sidebar: 48 100% 96%;
-    --sidebar-foreground: 220 13% 26%;
-    --sidebar-primary: 32 95% 44%;
+    --sidebar: 210 17% 96%;
+    --sidebar-foreground: 210 11% 4%;
+    --sidebar-primary: 210 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 244 58% 67%;
+    --sidebar-accent: 260 100% 70%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 32 95% 44%;
+    --sidebar-border: 210 17% 91%;
+    --sidebar-ring: 210 100% 50%;
+
+    /* Framer v12 Design Tokens */
+    --framer-blue-50: 210 100% 97%;
+    --framer-blue-100: 210 100% 94%;
+    --framer-blue-200: 210 100% 84%;
+    --framer-blue-300: 210 100% 70%;
+    --framer-blue-400: 210 100% 58%;
+    --framer-blue-500: 210 100% 50%;
+    --framer-blue-600: 210 100% 40%;
+    --framer-blue-700: 210 100% 30%;
+    --framer-blue-800: 210 100% 20%;
+    --framer-blue-900: 210 100% 10%;
+
+    --framer-purple-50: 260 100% 97%;
+    --framer-purple-100: 260 100% 94%;
+    --framer-purple-200: 260 100% 84%;
+    --framer-purple-300: 260 100% 70%;
+    --framer-purple-400: 260 100% 58%;
+    --framer-purple-500: 260 100% 70%;
+    --framer-purple-600: 260 100% 55%;
+    --framer-purple-700: 260 100% 40%;
+    --framer-purple-800: 260 100% 25%;
+    --framer-purple-900: 260 100% 10%;
+
+    --framer-gray-50: 210 17% 98%;
+    --framer-gray-100: 210 17% 96%;
+    --framer-gray-200: 210 17% 88%;
+    --framer-gray-300: 210 17% 78%;
+    --framer-gray-400: 210 17% 64%;
+    --framer-gray-500: 210 17% 52%;
+    --framer-gray-600: 210 17% 40%;
+    --framer-gray-700: 210 17% 30%;
+    --framer-gray-800: 210 17% 20%;
+    --framer-gray-900: 210 11% 4%;
+
+    --framer-success: 122 100% 40%;
+    --framer-warning: 32 100% 50%;
+    --framer-error: 4 90% 58%;
+    --framer-info: 210 100% 50%;
   }
 
   .dark {
-    /* Updated dark mode colors for Halal platform */
-    --background: 220 13% 9%;
+    /* Dark mode colors for Framer v12 */
+    --background: 210 11% 4%;
     --foreground: 0 0% 95%;
-    --card: 220 13% 12%;
+    --card: 210 11% 8%;
     --card-foreground: 0 0% 95%;
-    --popover: 220 13% 9%;
+    --popover: 210 11% 4%;
     --popover-foreground: 0 0% 95%;
-    --primary: 32 95% 44%;
+    --primary: 210 100% 58%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 244 58% 67%;
+    --secondary: 260 100% 70%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 220 13% 15%;
-    --muted-foreground: 220 13% 65%;
-    --accent: 244 58% 67%;
+    --muted: 210 11% 15%;
+    --muted-foreground: 210 17% 65%;
+    --accent: 260 100% 70%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 51%;
+    --destructive: 4 90% 58%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 18%;
-    --input: 220 13% 18%;
-    --ring: 32 95% 44%;
-    --chart-1: 32 95% 44%;
-    --chart-2: 244 58% 67%;
-    --chart-3: 0 72% 51%;
-    --chart-4: 45 93% 47%;
-    --chart-5: 220 13% 85%;
-    --sidebar: 220 13% 12%;
+    --border: 210 11% 18%;
+    --input: 210 11% 18%;
+    --ring: 210 100% 58%;
+    --chart-1: 210 100% 58%;
+    --chart-2: 260 100% 70%;
+    --chart-3: 4 90% 58%;
+    --chart-4: 32 100% 50%;
+    --chart-5: 210 17% 85%;
+    --sidebar: 210 11% 8%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 32 95% 44%;
+    --sidebar-primary: 210 100% 58%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 244 58% 67%;
+    --sidebar-accent: 260 100% 70%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 220 13% 18%;
-    --sidebar-ring: 32 95% 44%;
+    --sidebar-border: 210 11% 18%;
+    --sidebar-ring: 210 100% 58%;
+
+    /* Dark mode Framer tokens */
+    --framer-gray-50: 210 11% 4%;
+    --framer-gray-100: 210 11% 20%;
+    --framer-gray-900: 210 17% 98%;
+    --framer-blue-500: 210 100% 58%;
   }
 }
 
@@ -89,22 +134,56 @@
   .halal-gradient {
     background: linear-gradient(
       135deg,
-      hsl(var(--primary)) 0%,
-      hsl(var(--secondary)) 100%
-    );
+    #ff7a18, /* Add your gradient colors here */
+    #af002d  /* Add your gradient colors here */
+  );
+}
+
+  /* Typography Color Hierarchy Classes */
+  .text-heading {
+    color: hsl(var(--framer-gray-900));
+  }
+  .text-body {
+    color: hsl(var(--framer-gray-700));
+  }
+  .text-muted {
+    color: hsl(var(--framer-gray-500));
+  }
+  .text-accent {
+    color: hsl(var(--framer-blue-500));
   }
 
-  .gradient-text {
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    background-image: linear-gradient(
-      to right,
-      hsl(var(--primary)),
-      hsl(var(--secondary))
-    );
+  /* Interactive States Classes */
+  .interactive-hover {
+    transition: all 0.3s ease;
+  }
+  .interactive-hover:hover {
+    background-color: hsl(var(--framer-blue-50));
+    color: hsl(var(--framer-blue-700));
+  }
+  .interactive-focus:focus {
+    outline: 2px solid hsl(var(--framer-blue-500));
+    outline-offset: 2px;
   }
 
+  /* Gradient System Classes */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--framer-blue-500)), hsl(var(--framer-purple-500)));
+  }
+  .gradient-secondary {
+    background: linear-gradient(135deg, hsl(var(--framer-purple-500)), hsl(var(--framer-blue-500)));
+  }
+  .gradient-accent {
+    background: linear-gradient(135deg, hsl(var(--framer-success)), hsl(var(--framer-warning)));
+  }
+
+  /* Animation Color Transitions */
+  .animate-color-transition {
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  }
+  .animate-glow {
+    animation: glowPulse 2s ease-in-out infinite alternate;
+  }
   /* Enhanced Neon Color Schemes - Theme Aware */
   .neon-pink {
     color: #ff006e;
@@ -365,6 +444,20 @@
       inset 0 0 15px rgba(176, 133, 245, 0.15);
   }
 
+  .border-glow-red {
+    border: 2px solid #dc2626;
+    box-shadow:
+      0 0 10px rgba(220, 38, 38, 0.5),
+      inset 0 0 10px rgba(220, 38, 38, 0.1);
+  }
+
+  .dark .border-glow-red {
+    border: 2px solid #ef4444;
+    box-shadow:
+      0 0 15px rgba(239, 68, 68, 0.6),
+      inset 0 0 15px rgba(239, 68, 68, 0.15);
+  }
+
   /* Neon Button Effects - Theme Aware */
   .neon-button {
     background: linear-gradient(45deg, #ff006e, #00ff88);
@@ -433,6 +526,44 @@
   }
 
   .dark .glassmorphic-neon {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 0 25px rgba(255, 64, 129, 0.15);
+  }
+
+  /* Glassmorphic Tabs - Theme Aware */
+  .glassmorphic-tabs {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 0 20px rgba(255, 0, 110, 0.1);
+  }
+
+  .dark .glassmorphic-tabs {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 0 25px rgba(255, 64, 129, 0.15);
+  }
+
+  /* Glassmorphic Card - Theme Aware */
+  .glassmorphic-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 0 20px rgba(255, 0, 110, 0.1);
+  }
+
+  .dark .glassmorphic-card {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -651,6 +782,23 @@
       0 0 20px rgba(255, 64, 129, 0.6),
       0 0 30px rgba(255, 64, 129, 0.4),
       0 0 40px rgba(255, 64, 129, 0.3);
+  }
+}
+
+/* Accessibility: Respect user's reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable Framer Motion animations */
+  [data-projection-id] {
+    animation: none !important;
   }
 }
 

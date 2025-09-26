@@ -135,7 +135,7 @@ export function ServicesSection() {
                   muted
                   loop
                   playsInline
-                  className="w-full h-64 md:h-80 lg:h-96 object-cover"
+                  className="w-full aspect-video object-cover"
                   poster="/placeholder.svg"
                 >
                   <source
@@ -173,16 +173,33 @@ export function ServicesSection() {
         </ScrollReveal>
 
         {/* Services Grid */}
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-16">
+        <motion.div
+          className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.1,
+              },
+            },
+          }}
+        >
           {services.map((service, index) => (
-            <ScrollReveal key={index} delay={index * 0.1}>
-              <motion.div
-                whileHover={{ y: -5 }}
-                transition={{ type: "spring", stiffness: 300 }}
+            <motion.div
+              key={index}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              whileHover={{ y: -5 }}
+            >
+              <Card
+                className={`h-full glassmorphic-card border-none overflow-hidden group soft-glow ${service.borderClass}`}
               >
-                <Card
-                  className={`h-full glassmorphic-card border-none overflow-hidden group soft-glow ${service.borderClass}`}
-                >
                   <CardHeader>
                     <div className="p-2 rounded-xl w-fit bg-muted/50 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
                       {service.icon}
@@ -211,9 +228,8 @@ export function ServicesSection() {
                   </CardContent>
                 </Card>
               </motion.div>
-            </ScrollReveal>
           ))}
-        </div>
+        </motion.div>
 
         {/* Process Section */}
         <ScrollReveal>

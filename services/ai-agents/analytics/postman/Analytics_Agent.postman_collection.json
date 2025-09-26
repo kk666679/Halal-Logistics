@@ -1,0 +1,406 @@
+{
+  "info": {
+    "name": "Analytics Agent API",
+    "description": "Comprehensive API collection for the Halal Logistics Analytics Agent",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3014/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "jwtToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"test-admin\",\n  \"password\": \"test-password-123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.access_token) {",
+                  "        pm.collectionVariables.set('jwtToken', response.access_token);",
+                  "        console.log('JWT Token saved:', response.access_token);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Health & Status",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "health"]
+            }
+          }
+        },
+        {
+          "name": "Service Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard & Overview",
+      "item": [
+        {
+          "name": "Get Dashboard Data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/dashboard?period=7d",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "dashboard"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "7d"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Performance Metrics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/performance?period=24h&metricType=all",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "performance"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "24h"
+                },
+                {
+                  "key": "metricType",
+                  "value": "all"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get KPIs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/kpi?period=30d",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "kpi"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "30d"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Predictive Analytics",
+      "item": [
+        {
+          "name": "Get Predictions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/predictions?period=7d&type=demand",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "predictions"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "7d"
+                },
+                {
+                  "key": "type",
+                  "value": "demand"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Trends Analysis",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/trends?period=30d&metric=requests",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "trends"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "30d"
+                },
+                {
+                  "key": "metric",
+                  "value": "requests"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get AI Insights",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/insights?period=7d&type=all",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "insights"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "7d"
+                },
+                {
+                  "key": "type",
+                  "value": "all"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reporting",
+      "item": [
+        {
+          "name": "Get Reports List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/reports?type=all&period=30d&format=json",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "reports"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "all"
+                },
+                {
+                  "key": "period",
+                  "value": "30d"
+                },
+                {
+                  "key": "format",
+                  "value": "json"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate Custom Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"performance\",\n  \"period\": \"7d\",\n  \"format\": \"json\",\n  \"includeCharts\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/analytics/report/generate",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "report", "generate"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Alerts & Monitoring",
+      "item": [
+        {
+          "name": "Get Active Alerts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/alerts?status=active&priority=all",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "alerts"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "priority",
+                  "value": "all"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Configure Alert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"alertType\": \"performance\",\n  \"threshold\": 80,\n  \"enabled\": true,\n  \"notificationChannels\": [\"email\", \"webhook\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/analytics/alert/configure",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "alert", "configure"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Add timestamp to requests",
+          "pm.request.headers.add({key: 'X-Request-Time', value: new Date().toISOString()});"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Log response time",
+          "console.log('Response Time:', pm.response.responseTime + 'ms');",
+          "",
+          "// Validate response structure",
+          "if (pm.response.code === 200) {",
+          "    const response = pm.response.json();",
+          "    console.log('Response Status: SUCCESS');",
+          "    console.log('Response Size:', pm.response.responseSize + ' bytes');",
+          "} else {",
+          "    console.log('Response Status: ERROR');",
+          "    console.log('Error:', pm.response.json());",
+          "}"
+        ]
+      }
+    }
+  ]
+}

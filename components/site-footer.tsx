@@ -165,7 +165,7 @@ export function SiteFooter() {
         </div>
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <p className="text-sm text-muted-foreground opacity-70">
-            © 2025 Halal Logistics & Supply Chain. All rights reserved.
+            © 2025 HalalChain. Halal Logistics & Supply Chain. All rights reserved.
           </p>
           <div className="flex gap-4">
             <Link

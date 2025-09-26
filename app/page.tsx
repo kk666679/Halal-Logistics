@@ -10,7 +10,7 @@ import { BlockchainSection } from "@/components/sections/blockchain-section";
 import { ComplianceSection } from "@/components/sections/compliance-section";
 import { PricingSection } from "@/components/sections/pricing-section";
 import { BlogSection } from "@/components/sections/blog-section";
-import { FaqSection } from "@/components/sections/faq-section";
+import { LatestInsightsSection } from "@/components/sections/faq-section";
 import { CtaSection } from "@/components/sections/cta-section";
 
 export default function HomePage() {
@@ -28,7 +28,7 @@ export default function HomePage() {
       <ComplianceSection />
       <PricingSection />
       <BlogSection />
-      <FaqSection />
+      <LatestInsightsSection />
       <CtaSection />
     </main>
   );

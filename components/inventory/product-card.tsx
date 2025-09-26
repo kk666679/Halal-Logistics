@@ -23,28 +23,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 
-interface Product {
-  id: string;
-  name: string;
-  category: string;
-  sku: string;
-  currentStock: number;
-  minStock: number;
-  maxStock: number;
-  unit: string;
-  costPerUnit: number;
-  sellingPrice: number;
-  supplier: string;
-  location: string;
-  expiryDate: string;
-  batchNumber: string;
-  halalCertified: boolean;
-  certificationExpiry: string;
-  lastUpdated: string;
-  status: "in-stock" | "low-stock" | "out-of-stock" | "expiring-soon";
-  temperature?: number;
-  humidity?: number;
-}
+import { Product } from "@/lib/types";
 
 interface ProductCardProps {
   product: Product;
@@ -88,10 +67,23 @@ export function ProductCard({ product, onEdit, onView }: ProductCardProps) {
     }
   };
 
-  const statusConfig = getStatusConfig(product.status);
+  // Calculate status based on stock levels and expiry
+  const getProductStatus = (product: Product): "in-stock" | "low-stock" | "out-of-stock" | "expiring-soon" => {
+    const daysUntilExpiry = Math.ceil(
+      (product.expiryDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    if (product.currentStock === 0) return "out-of-stock";
+    if (product.currentStock <= product.minStock) return "low-stock";
+    if (daysUntilExpiry <= 7) return "expiring-soon";
+    return "in-stock";
+  };
+
+  const productStatus = getProductStatus(product);
+  const statusConfig = getStatusConfig(productStatus);
   const stockPercentage = (product.currentStock / product.maxStock) * 100;
   const daysUntilExpiry = Math.ceil(
-    (new Date(product.expiryDate).getTime() - new Date().getTime()) /
+    (product.expiryDate.getTime() - new Date().getTime()) /
       (1000 * 60 * 60 * 24),
   );
 
@@ -216,12 +208,12 @@ export function ProductCard({ product, onEdit, onView }: ProductCardProps) {
         </div>
 
         {/* Certification Expiry */}
-        {product.halalCertified && (
+        {product.halalCertified && product.certificationExpiry && (
           <div className="p-2 rounded bg-green-500/10 border border-green-500/20">
             <div className="flex items-center justify-between text-xs">
               <span className="text-green-400">Halal Cert. Expires:</span>
               <span className="font-medium">
-                {new Date(product.certificationExpiry).toLocaleDateString()}
+                {product.certificationExpiry.toLocaleDateString()}
               </span>
             </div>
           </div>
@@ -254,7 +246,7 @@ export function ProductCard({ product, onEdit, onView }: ProductCardProps) {
 
         {/* Last Updated */}
         <div className="text-xs text-muted-foreground text-center pt-2 border-t border-muted/40">
-          Updated: {new Date(product.lastUpdated).toLocaleString()}
+          Updated: {product.updatedAt.toLocaleString()}
         </div>
       </CardContent>
     </Card>

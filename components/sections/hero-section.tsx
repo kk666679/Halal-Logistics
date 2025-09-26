@@ -28,7 +28,6 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -94,18 +93,23 @@ export function HeroSection() {
           Your browser does not support the video tag.
         </video>
         {/* Video overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-950/40 via-transparent to-indigo-950/40"></div>
+        <div
+          className="absolute inset-0 bg-gradient-to-br via-transparent"
+          style={{
+            background: `linear-gradient(to bottom right, hsl(var(--framer-blue-900) / 0.4), transparent, hsl(var(--framer-purple-900) / 0.4))`
+          }}
+        ></div>
       </div>
 
       <div className="container px-6 md:px-8 relative z-10">
-        <div className="grid gap-8 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+        <div className="grid gap-8 lg:grid-cols-[1fr_25rem] lg:gap-12 xl:grid-cols-[1fr_37.5rem]">
           <motion.div
             className="flex flex-col justify-center space-y-6"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
-            <motion.div className="space-y-4" variants={itemVariants}>
+            <motion.div className="space-y-4" variants={itemVariants} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
               <h1 className="text-4xl font-heading font-bold tracking-tighter sm:text-5xl xl:text-7xl/none">
                 <span className="gradient-text">
                   Business to Business - Business to Government
@@ -113,7 +117,9 @@ export function HeroSection() {
                 <br />
                 <span className="text-foreground">Certified Halal - Supply Chain Platform</span>
               </h1>
-              <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400 opacity-70">
+              <p
+                className="max-w-[600px] md:text-xl opacity-70 text-framer-gray-500"
+              >
                 Ensure complete Halal compliance from farm to table with our
                 blockchain-powered logistics platform, trusted by government
                 agencies worldwide. Our multi-AI agent system enhances
@@ -122,15 +128,21 @@ export function HeroSection() {
               </p>
             </motion.div>
 
-            <motion.div className="space-y-4" variants={itemVariants}>
+            <motion.div className="space-y-4" variants={itemVariants} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
               <div className="flex flex-wrap gap-2">
-                <span className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-800 dark:bg-amber-900 dark:text-amber-200">
+                <span
+                  className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-framer-warning/10 text-framer-warning"
+                >
                   Blockchain-Verified
                 </span>
-                <span className="inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
+                <span
+                  className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-framer-purple-50 text-framer-purple-800"
+                >
                   AI-Enhanced
                 </span>
-                <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+                <span
+                  className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-framer-success/10 text-framer-success"
+                >
                   Government-Certified
                 </span>
               </div>
@@ -139,12 +151,13 @@ export function HeroSection() {
             <motion.div
               className="flex flex-col gap-6 sm:flex-row sm:items-center"
               variants={itemVariants}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               <GradientButton
                 glowAmount={5}
                 className="px-6 py-2.5 text-base halal-gradient"
-                gradientFrom="from-amber-600"
-                gradientTo="to-indigo-600"
+                gradientFrom="from-framer-blue-500"
+                gradientTo="to-framer-purple-500"
                 asChild
               >
                 <Link href="#contact" className="flex items-center">
@@ -170,27 +183,38 @@ export function HeroSection() {
               </MagneticButton>
             </motion.div>
 
-            <motion.div variants={itemVariants} className="pt-4 space-y-4">
-              <p className="text-sm text-muted-foreground flex items-center">
-                <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+            <motion.div variants={itemVariants} className="pt-4 space-y-4" transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
+              <p
+                className="text-sm flex items-center text-framer-gray-400"
+              >
+                <span
+                  className="inline-block w-2 h-2 rounded-full mr-2 bg-framer-success"
+                ></span>
                 Trusted by 12+ government agencies and 500+ Halal businesses
                 worldwide
               </p>
 
               <motion.div
                 variants={itemVariants}
-                className="flex items-center gap-4 p-4 rounded-lg bg-gradient-to-r from-amber-50 to-indigo-50 dark:from-amber-950/20 dark:to-indigo-950/20 border border-amber-200 dark:border-amber-800"
+                className="flex items-center gap-4 p-4 rounded-lg border bg-gradient-to-r from-framer-blue-50 to-framer-purple-50 border-framer-blue-200"
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               >
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full bg-amber-600 flex items-center justify-center">
+                  <div
+                    className="w-12 h-12 rounded-full flex items-center justify-center bg-framer-blue-500"
+                  >
                     <Shield className="h-6 w-6 text-white" />
                   </div>
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-amber-900 dark:text-amber-100">
+                  <p
+                    className="text-sm font-medium text-framer-gray-900"
+                  >
                     Fully Certified by Malaysia International Halal Authority
                   </p>
-                  <p className="text-xs text-amber-700 dark:text-amber-300">
+                  <p
+                    className="text-xs text-framer-gray-700"
+                  >
                     Government-accredited halal certification and compliance
                   </p>
                 </div>
@@ -204,7 +228,9 @@ export function HeroSection() {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <SpotlightCard className="relative h-[450px] w-full overflow-hidden rounded-xl border glassmorphic-card p-1 blockchain-glow">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-900/20 via-transparent to-indigo-900/20 z-10"></div>
+              <div
+                className="absolute inset-0 z-10 bg-gradient-to-br from-framer-blue-900/20 via-transparent to-framer-purple-900/20"
+              ></div>
 
               {/* Content inside SpotlightCard */}
               <div className="relative z-20 h-full w-full rounded-xl overflow-hidden">
@@ -214,14 +240,16 @@ export function HeroSection() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.6 }}
-                      className="col-span-2 h-24 rounded-xl bg-amber-800/20 border border-amber-800/30 flex items-center justify-center glassmorphic-inner-card backdrop-blur-sm"
+                      className="col-span-2 h-24 rounded-xl border flex items-center justify-center glassmorphic-inner-card backdrop-blur-sm bg-framer-blue-800/20 border-framer-blue-800/30"
                       whileHover={{
                         scale: 1.03,
-                        boxShadow: "0 0 15px rgba(217, 119, 6, 0.3)",
+                        boxShadow: "0 0 15px hsl(var(--framer-blue-500) / 0.3)",
                       }}
                     >
                       <div className="flex items-center space-x-3">
-                        <Shield className="h-6 w-6 text-amber-400" />
+                        <Shield
+                          className="h-6 w-6 text-framer-blue-400"
+                        />
                         <span className="font-heading text-xl text-white tracking-tight">
                           Halal Certified
                         </span>
@@ -231,14 +259,16 @@ export function HeroSection() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.8 }}
-                      className="h-32 rounded-xl bg-indigo-800/20 border border-indigo-800/30 flex items-center justify-center glassmorphic-inner-card backdrop-blur-sm"
+                      className="h-32 rounded-xl border flex items-center justify-center glassmorphic-inner-card backdrop-blur-sm bg-framer-purple-800/20 border-framer-purple-800/30"
                       whileHover={{
                         scale: 1.03,
-                        boxShadow: "0 0 15px rgba(99, 102, 241, 0.3)",
+                        boxShadow: "0 0 15px hsl(var(--framer-purple-500) / 0.3)",
                       }}
                     >
                       <div className="flex flex-col items-center space-y-2">
-                        <Truck className="h-6 w-6 text-indigo-400" />
+                        <Truck
+                          className="h-6 w-6 text-framer-purple-400"
+                        />
                         <span className="font-heading text-white tracking-tight text-center">
                           Supply Chain
                         </span>
@@ -248,14 +278,16 @@ export function HeroSection() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 1.0 }}
-                      className="h-32 rounded-xl bg-amber-900/20 border border-amber-900/30 flex items-center justify-center glassmorphic-inner-card backdrop-blur-sm"
+                      className="h-32 rounded-xl border flex items-center justify-center glassmorphic-inner-card backdrop-blur-sm bg-framer-blue-900/20 border-framer-blue-900/30"
                       whileHover={{
                         scale: 1.03,
-                        boxShadow: "0 0 15px rgba(217, 119, 6, 0.3)",
+                        boxShadow: "0 0 15px hsl(var(--framer-blue-500) / 0.3)",
                       }}
                     >
                       <div className="flex flex-col items-center space-y-2">
-                        <FileCheck className="h-6 w-6 text-amber-400" />
+                        <FileCheck
+                          className="h-6 w-6 text-framer-blue-400"
+                        />
                         <span className="font-heading text-white tracking-tight text-center">
                           Blockchain
                         </span>

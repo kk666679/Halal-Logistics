@@ -261,3 +261,91 @@ export interface ValidationError {
   field: string;
   message: string;
 }
+
+// Blog Types
+export type BlogCategory =
+  | "Technology"
+  | "Sustainability"
+  | "Certification"
+  | "Supply Chain"
+  | "Compliance"
+  | "Innovation"
+  | "Best Practices";
+
+export type BlogStatus = "draft" | "published" | "archived";
+
+export interface BlogAuthor {
+  id: string;
+  name: string;
+  bio?: string;
+  avatar?: string;
+  company?: string;
+  role?: string;
+  isGuestContributor: boolean;
+  socialLinks?: {
+    linkedin?: string;
+    twitter?: string;
+    website?: string;
+  };
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  featuredImage?: string;
+  category: BlogCategory;
+  tags: string[];
+  author: BlogAuthor;
+  readTime: string;
+  publishedDate: Date;
+  updatedDate: Date;
+  status: BlogStatus;
+  featured: boolean;
+  viewCount: number;
+  likeCount: number;
+  shareCount: number;
+  seoTitle?: string;
+  seoDescription?: string;
+  keywords?: string[];
+}
+
+export interface BlogPostCard {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  featuredImage?: string;
+  category: BlogCategory;
+  author: BlogAuthor;
+  readTime: string;
+  publishedDate: Date;
+  featured: boolean;
+}
+
+export interface WriterInvitation {
+  id: string;
+  title: string;
+  description: string;
+  benefits: string[];
+  ctaText: string;
+  ctaLink: string;
+  image?: string;
+}
+
+export interface BlogFilters {
+  category?: BlogCategory;
+  author?: string;
+  featured?: boolean;
+  search?: string;
+}
+
+export interface BlogStats {
+  totalPosts: number;
+  totalViews: number;
+  totalAuthors: number;
+  totalGuestPosts: number;
+  categoriesCount: Record<BlogCategory, number>;
+}

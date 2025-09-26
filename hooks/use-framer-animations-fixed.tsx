@@ -13,11 +13,10 @@ import {
 } from "framer-motion";
 
 // Enhanced scroll reveal hook with framer-motion
-export function useScrollReveal(threshold = 0.1, rootMargin = "0px 0px -50px 0px") {
+export function useScrollReveal(threshold = 0.1) {
   const ref = useRef(null);
   const isInView = useInView(ref, {
     amount: threshold,
-    rootMargin,
     once: true,
   });
   const controls = useAnimation();
@@ -186,12 +185,11 @@ export function useCounterAnimation(end: number, duration = 2) {
 // Intersection observer with animation controls
 export function useIntersectionAnimation(
   variants: Variants,
-  options = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+  options = { threshold: 0.1 }
 ) {
   const ref = useRef(null);
   const isInView = useInView(ref, {
     amount: options.threshold,
-    rootMargin: options.rootMargin,
   });
   const controls = useAnimation();
 

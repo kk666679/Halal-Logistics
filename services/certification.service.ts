@@ -14,10 +14,9 @@ export class CertificationService {
    */
   async getAll(status?: CertificationStatus): Promise<Certification[]> {
     try {
-      const params = status ? { status } : undefined;
       const response = await apiClient.get<ApiResponse<Certification[]>>(
         "/certifications",
-        params,
+        status ? { params: { status } } : undefined,
       );
       return response.data;
     } catch (error: any) {

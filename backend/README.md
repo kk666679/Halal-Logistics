@@ -6,7 +6,7 @@ A comprehensive NestJS backend API for the HalalChain system, providing authenti
 
 ```mermaid
 graph TB
-    A[Client Applications] --> B[NestJS API Gateway]
+    A[Client Applications] --> B[NestJS Monolith API]
     B --> C[Authentication Module]
     B --> D[Users Module]
     B --> E[Products Module]
@@ -16,10 +16,10 @@ graph TB
     C --> H[JWT Service]
     C --> I[Passport Strategies]
 
-    E --> J[MongoDB Products]
-    F --> K[MongoDB Certifications]
-    G --> L[MongoDB Tracking]
-    D --> M[MongoDB Users]
+    E --> J[PostgreSQL Products]
+    F --> K[PostgreSQL Certifications]
+    G --> L[PostgreSQL Tracking]
+    D --> M[PostgreSQL Users]
 
     G --> N[Blockchain Service]
     F --> O[File Upload Service]
@@ -42,7 +42,7 @@ graph TB
 
 - **Framework**: NestJS 10.x
 - **Language**: TypeScript
-- **Database**: MongoDB with Mongoose ODM
+- **Database**: PostgreSQL with Prisma ORM
 - **Authentication**: JWT with Passport.js
 - **Validation**: class-validator and class-transformer
 - **Documentation**: Swagger/OpenAPI
@@ -66,7 +66,6 @@ backend/
 │   ├── users/                   # User management module
 │   │   ├── dto/
 │   │   │   └── user.dto.ts     # User DTOs
-│   │   ├── user.schema.ts      # User MongoDB schema
 │   │   ├── users.controller.ts # User endpoints
 │   │   ├── users.module.ts     # Users module
 │   │   └── users.service.ts    # User business logic
@@ -74,7 +73,6 @@ backend/
 │   ├── products/                # Product management module
 │   │   ├── dto/
 │   │   │   └── product.dto.ts  # Product DTOs
-│   │   ├── product.schema.ts   # Product MongoDB schema
 │   │   ├── products.controller.ts # Product endpoints
 │   │   ├── products.module.ts  # Products module
 │   │   └── products.service.ts # Product business logic
@@ -82,7 +80,6 @@ backend/
 │   ├── certification/           # Certification module
 │   │   ├── dto/
 │   │   │   └── certification.dto.ts # Certification DTOs
-│   │   ├── certification.schema.ts # Certification schema
 │   │   ├── certification.controller.ts # Certification endpoints
 │   │   ├── certification.module.ts # Certification module
 │   │   └── certification.service.ts # Certification logic
@@ -90,12 +87,13 @@ backend/
 │   ├── tracking/                # Tracking module
 │   │   ├── dto/
 │   │   │   └── tracking.dto.ts # Tracking DTOs
-│   │   ├── tracking.schema.ts  # Tracking schema
 │   │   ├── tracking.controller.ts # Tracking endpoints
 │   │   ├── tracking.module.ts  # Tracking module
 │   │   └── tracking.service.ts # Tracking business logic
 │   │
-│   ├── common/                  # Shared utilities (future)
+│   ├── prisma/                  # Database schema and migrations
+│   │   └── schema.prisma       # Prisma schema file
+│   │
 │   ├── app.module.ts           # Root application module
 │   └── main.ts                 # Application entry point
 │
@@ -112,8 +110,8 @@ backend/
 ### Prerequisites
 
 - Node.js 18+
-- MongoDB 5+
-- npm or yarn
+- PostgreSQL 12+
+- npm
 
 ### Setup Steps
 
@@ -134,7 +132,7 @@ backend/
 
    ```env
    # Database
-   MONGODB_URI=mongodb://localhost:27017/halalchain
+   DATABASE_URL="postgresql://username:password@localhost:5432/halalchain?schema=public"
 
    # JWT Configuration
    JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
@@ -156,14 +154,21 @@ backend/
    UPLOAD_DEST=./uploads
    ```
 
-3. **Start MongoDB**:
+3. **Set up PostgreSQL**:
 
    ```bash
    # Using Docker
-   docker run -d -p 27017:27017 --name mongodb mongo:latest
+   docker run -d -p 5432:5432 -e POSTGRES_DB=halalchain -e POSTGRES_USER=halalchain -e POSTGRES_PASSWORD=halalchain123 --name postgres postgres:12
 
    # Or using local installation
-   mongod
+   # Create database 'halalchain' with user 'halalchain' and password 'halalchain123'
+   ```
+
+4. **Generate Prisma Client and Push Schema**:
+
+   ```bash
+   npx prisma generate
+   npx prisma db push
    ```
 
 ## 🏃 Running the Application
@@ -247,23 +252,30 @@ The API will be available at `http://localhost:3001`
 | PATCH  | `/tracking/:id/status`   | Update shipment status  | ✅            |
 | POST   | `/tracking/:id/events`   | Add tracking event      | ✅            |
 
-## 🗄️ Database Models
+## 🗄️ Database Schema
+
+The database uses PostgreSQL with Prisma ORM. Key models include:
 
 ### User Model
 
 ```typescript
 {
-  _id: ObjectId,
+  id: string (CUID),
+  email: string (unique),
+  password: string (hashed),
   firstName: string,
   lastName: string,
-  email: string,
-  password: string (hashed),
-  role: 'supplier' | 'certifier' | 'auditor' | 'consumer',
+  role: 'SUPPLIER' | 'CERTIFIER' | 'AUDITOR' | 'CONSUMER',
   companyName?: string,
   phoneNumber?: string,
+  address?: string,
   isActive: boolean,
-  createdAt: Date,
-  updatedAt: Date
+  profileImage?: string,
+  certificationNumber?: string,
+  licenseNumber?: string,
+  refreshToken?: string,
+  createdAt: DateTime,
+  updatedAt: DateTime
 }
 ```
 
@@ -271,7 +283,7 @@ The API will be available at `http://localhost:3001`
 
 ```typescript
 {
-  _id: ObjectId,
+  id: string (CUID),
   name: string,
   category: ProductCategory,
   sku: string,
@@ -284,17 +296,17 @@ The API will be available at `http://localhost:3001`
   sellingPrice: number,
   supplier: string,
   location: string,
-  expiryDate: Date,
+  expiryDate: DateTime,
   batchNumber: string,
   halalCertified: boolean,
   certificationNumber?: string,
-  certificationExpiry?: Date,
+  certificationExpiry?: DateTime,
   temperature?: number,
   humidity?: number,
   isActive: boolean,
-  createdBy: ObjectId (User),
-  createdAt: Date,
-  updatedAt: Date
+  createdBy: string (User ID),
+  createdAt: DateTime,
+  updatedAt: DateTime
 }
 ```
 
@@ -302,7 +314,7 @@ The API will be available at `http://localhost:3001`
 
 ```typescript
 {
-  _id: ObjectId,
+  id: string (CUID),
   productName: string,
   productCategory: string,
   companyName: string,
@@ -315,18 +327,18 @@ The API will be available at `http://localhost:3001`
   manufacturingProcess: string,
   supplierDetails: string,
   requestedCertificationType: CertificationType,
-  expectedCompletionDate: Date,
+  expectedCompletionDate: DateTime,
   supportingDocuments: string[],
   status: CertificationStatus,
   reviewComments?: string,
-  approvedBy?: ObjectId,
-  approvedAt?: Date,
+  approvedBy?: string,
+  approvedAt?: DateTime,
   certificationNumber?: string,
-  validUntil?: Date,
-  submittedBy: ObjectId (User),
-  assignedTo?: ObjectId (User),
-  createdAt: Date,
-  updatedAt: Date
+  validUntil?: DateTime,
+  submittedBy: string (User ID),
+  assignedTo?: string (User ID),
+  createdAt: DateTime,
+  updatedAt: DateTime
 }
 ```
 
@@ -334,28 +346,22 @@ The API will be available at `http://localhost:3001`
 
 ```typescript
 {
-  _id: ObjectId,
+  id: string (CUID),
   productName: string,
   quantity: string,
   origin: string,
   destination: string,
-  estimatedDelivery: Date,
-  currentLocation: string,
+  estimatedDelivery: DateTime,
+  currentLocation?: string,
   status: TrackingStatus,
   progress: number,
   halalCertified: boolean,
-  temperature: {
-    current: number,
-    min: number,
-    max: number,
-    unit: 'C' | 'F'
-  },
+  temperature: JSON,
   carrier: string,
   blockchainVerified: boolean,
-  trackingEvents: TrackingEvent[],
-  createdBy: ObjectId (User),
-  createdAt: Date,
-  updatedAt: Date
+  createdBy: string (User ID),
+  createdAt: DateTime,
+  updatedAt: DateTime
 }
 ```
 
@@ -433,7 +439,7 @@ CMD ["npm", "run", "start:prod"]
 
 ```env
 NODE_ENV=production
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/halalchain
+DATABASE_URL="postgresql://username:password@host:5432/halalchain?schema=public"
 JWT_SECRET=your-production-jwt-secret-key
 PORT=3001
 FRONTEND_URL=https://yourdomain.com

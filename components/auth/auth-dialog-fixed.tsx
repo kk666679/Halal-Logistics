@@ -20,7 +20,6 @@ export function AuthDialog({
 }: AuthDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<"login" | "signup">(defaultMode);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignup = async (data: {
     firstName: string;
@@ -33,7 +32,6 @@ export function AuthDialog({
     companyDescription?: string;
     halalCertificationNumber?: string;
   }) => {
-    setIsLoading(true);
     try {
       // Validate passwords match
       if (data.password !== data.confirmPassword) {
@@ -61,27 +59,6 @@ export function AuthDialog({
       console.error("Signup error:", error);
       const errorMessage = error instanceof Error ? error.message : "Failed to create account";
       toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleLogin = async (data: {
-    email: string;
-    password: string;
-    role: "supplier" | "certifier" | "auditor" | "consumer";
-  }) => {
-    setIsLoading(true);
-    try {
-      await authService.login(data);
-      toast.success("Logged in successfully!");
-      setIsOpen(false);
-    } catch (error: unknown) {
-      console.error("Login error:", error);
-      const errorMessage = error instanceof Error ? error.message : "Login failed";
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -91,15 +68,12 @@ export function AuthDialog({
       <DialogContent className="sm:max-w-fit border-none bg-transparent shadow-none p-0">
         {mode === "login" ? (
           <LoginForm
-            onSubmit={handleLogin}
             onSwitchToSignup={() => setMode("signup")}
-            isLoading={isLoading}
           />
         ) : (
           <SignupForm
             onSubmit={handleSignup}
             onSwitchToLogin={() => setMode("login")}
-            isLoading={isLoading}
           />
         )}
       </DialogContent>

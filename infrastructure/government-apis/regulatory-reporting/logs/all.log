@@ -1,0 +1,15 @@
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mInitializing Scheduled Reporting Service\u001b[39m","timestamp":"2025-09-24 04:30:40:3040"}
+{"count":3,"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mLoaded schedules from database\u001b[39m","timestamp":"2025-09-24 04:30:40:3040"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mStarted scheduled report\u001b[39m","name":"Daily Halal Compliance Summary","nextRun":"2025-09-25T09:00:00.000Z","scheduleId":"SCH-001","timestamp":"2025-09-24 04:30:40:3040"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mStarted scheduled report\u001b[39m","name":"Weekly Food Safety Report","nextRun":"2025-09-29T08:00:00.000Z","scheduleId":"SCH-002","timestamp":"2025-09-24 04:30:40:3040"}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mStarted scheduled report\u001b[39m","name":"Monthly Quality Control Report","nextRun":"2025-10-01T10:00:00.000Z","scheduleId":"SCH-003","timestamp":"2025-09-24 04:30:40:3040"}
+{"count":3,"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mStarted all active schedules\u001b[39m","timestamp":"2025-09-24 04:30:40:3040"}
+{"activeSchedules":3,"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m✅ Scheduled Reporting Service initialized successfully\u001b[39m","timestamp":"2025-09-24 04:30:40:3040","totalSchedules":3}
+{"level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m✅ Scheduled reporting tasks initialized\u001b[39m","timestamp":"2025-09-24 04:30:40:3040"}
+{"environment":"development","level":"\u001b[32minfo\u001b[39m","message":"\u001b[32m🚀 Regulatory Reporting Service started successfully\u001b[39m","port":3021,"timestamp":"2025-09-24 04:30:40:3040"}
+{"ip":"::1","level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mGET /\u001b[39m","timestamp":"2025-09-24 04:30:44:3044","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mRoute not found: GET /\u001b[39m","timestamp":"2025-09-24 04:30:44:3044","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mGET /favicon.ico\u001b[39m","timestamp":"2025-09-24 04:30:47:3047","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"\u001b[33mwarn\u001b[39m","message":"\u001b[33mRoute not found: GET /favicon.ico\u001b[39m","timestamp":"2025-09-24 04:30:47:3047","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mGET /health\u001b[39m","timestamp":"2025-09-24 04:30:54:3054","userAgent":"curl/8.5.0"}
+{"ip":"::1","level":"\u001b[32minfo\u001b[39m","message":"\u001b[32mGET /api/v1/status/status\u001b[39m","timestamp":"2025-09-24 04:31:16:3116","userAgent":"curl/8.5.0"}

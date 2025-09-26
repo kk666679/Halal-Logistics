@@ -1,0 +1,55 @@
+{
+  "id": "blockchain-agent-test-env",
+  "name": "Blockchain Agent Test Environment",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3026/api/v1",
+      "description": "Base URL for the Blockchain Agent API",
+      "enabled": true
+    },
+    {
+      "key": "testAddress",
+      "value": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+      "description": "Test blockchain address for API calls",
+      "enabled": true
+    },
+    {
+      "key": "testPrivateKey",
+      "value": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+      "description": "Test private key for transaction signing",
+      "enabled": true
+    },
+    {
+      "key": "testContractAddress",
+      "value": "0x1234567890123456789012345678901234567890",
+      "description": "Test contract address for smart contract interactions",
+      "enabled": true
+    },
+    {
+      "key": "testCertificateNumber",
+      "value": "HALAL-2024-001",
+      "description": "Test certificate number for Halal certification",
+      "enabled": true
+    },
+    {
+      "key": "testProductName",
+      "value": "Premium Halal Chicken",
+      "description": "Test product name for certification",
+      "enabled": true
+    },
+    {
+      "key": "testSupplier",
+      "value": "Halal Foods Ltd",
+      "description": "Test supplier name",
+      "enabled": true
+    },
+    {
+      "key": "testIPFSHash",
+      "value": "QmYourTestIPFSHashForTestingPurposesOnly",
+      "description": "Test IPFS hash for document storage",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

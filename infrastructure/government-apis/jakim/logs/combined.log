@@ -1,0 +1,7 @@
+{"level":"info","message":"🚀 JAKIM Integration Service running on port 3018","service":"jakim-integration","timestamp":"2025-09-24T02:56:13.552Z"}
+{"level":"info","message":"📊 Status: http://localhost:3018/api/v1/status","service":"jakim-integration","timestamp":"2025-09-24T02:56:13.555Z"}
+{"level":"info","message":"🔗 JAKIM API: http://localhost:3018/api/v1/jakim","service":"jakim-integration","timestamp":"2025-09-24T02:56:13.555Z"}
+{"level":"info","message":"📋 Certificates: http://localhost:3018/api/v1/certificates","service":"jakim-integration","timestamp":"2025-09-24T02:56:13.555Z"}
+{"level":"info","message":"✅ Validation: http://localhost:3018/api/v1/validation","service":"jakim-integration","timestamp":"2025-09-24T02:56:13.555Z"}
+{"level":"info","message":"🔐 Environment: development","service":"jakim-integration","timestamp":"2025-09-24T02:56:13.556Z"}
+{"level":"info","message":"GET /api/v1/status/health - ::1","service":"jakim-integration","timestamp":"2025-09-24T02:56:32.952Z"}

@@ -1,0 +1,1121 @@
+{
+  "info": {
+    "name": "Risk Assessment Agent API",
+    "description": "Comprehensive API collection for the Halal Logistics Risk Assessment Agent",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3016/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "jwtToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"test-admin\",\n  \"password\": \"test-password-123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.access_token) {",
+                  "        pm.collectionVariables.set('jwtToken', response.access_token);",
+                  "        console.log('JWT Token saved:', response.access_token);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Health & Status",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/risk/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "health"]
+            }
+          }
+        },
+        {
+          "name": "Service Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/risk/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Assessment",
+      "item": [
+        {
+          "name": "Assess Risk",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"supply_chain\",\n  \"context\": {\n    \"supplierId\": \"SUP-001\",\n    \"productId\": \"PROD-001\",\n    \"region\": \"Southeast Asia\",\n    \"timeframe\": \"30d\"\n  },\n  \"factors\": {\n    \"quality\": 0.8,\n    \"compliance\": 0.9,\n    \"financial\": 0.7,\n    \"operational\": 0.85\n  },\n  \"parameters\": {\n    \"includeRecommendations\": true,\n    \"includeMitigation\": true,\n    \"confidenceThreshold\": 0.8\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/assess",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "assess"]
+            }
+          }
+        },
+        {
+          "name": "Get Risk Assessment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/assessment/RA-001",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "assessment", "RA-001"]
+            }
+          }
+        },
+        {
+          "name": "List Risk Assessments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/assessments?page=1&limit=10&type=supply_chain&status=completed",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "assessments"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "type",
+                  "value": "supply_chain"
+                },
+                {
+                  "key": "status",
+                  "value": "completed"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Batch Assess Risk",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessments\": [\n    {\n      \"type\": \"supply_chain\",\n      \"context\": {\n        \"supplierId\": \"SUP-001\",\n        \"productId\": \"PROD-001\"\n      }\n    },\n    {\n      \"type\": \"compliance\",\n      \"context\": {\n        \"regulation\": \"halal_standards\",\n        \"region\": \"Malaysia\"\n      }\n    }\n  ],\n  \"options\": {\n    \"parallel\": true,\n    \"includeRecommendations\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/batch/assess",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "batch", "assess"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Models",
+      "item": [
+        {
+          "name": "Get Risk Models",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/models?type=ml&status=active",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "models"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "ml"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Train Risk Model",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"modelType\": \"supply_chain_risk\",\n  \"trainingSet\": {\n    \"dataSource\": \"historical_assessments\",\n    \"timeframe\": \"1year\",\n    \"filters\": {\n      \"minRiskLevel\": \"medium\",\n      \"includeResolved\": true\n    }\n  },\n  \"parameters\": {\n    \"algorithm\": \"random_forest\",\n    \"features\": [\"quality_score\", \"compliance_rate\", \"financial_stability\"],\n    \"validationSplit\": 0.2,\n    \"epochs\": 100\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/model/train",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "model", "train"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Factors",
+      "item": [
+        {
+          "name": "Get Risk Factors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/factors?category=operational&severity=high",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "factors"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "operational"
+                },
+                {
+                  "key": "severity",
+                  "value": "high"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analyze Risk Factor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"factorId\": \"supplier_quality\",\n  \"context\": {\n    \"supplierId\": \"SUP-001\",\n    \"timeframe\": \"30d\",\n    \"includeTrends\": true\n  },\n  \"timeframe\": \"30d\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/factor/analyze",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "factor", "analyze"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Thresholds",
+      "item": [
+        {
+          "name": "Get Risk Thresholds",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/thresholds?category=supply_chain&level=high",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "thresholds"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "supply_chain"
+                },
+                {
+                  "key": "level",
+                  "value": "high"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Risk Thresholds",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"supply_chain\",\n  \"level\": \"high\",\n  \"values\": {\n    \"quality_threshold\": 0.85,\n    \"compliance_threshold\": 0.9,\n    \"financial_threshold\": 0.75,\n    \"operational_threshold\": 0.8\n  },\n  \"effectiveFrom\": \"2024-01-01T00:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/thresholds",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "thresholds"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Alerts",
+      "item": [
+        {
+          "name": "Get Risk Alerts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/alerts?status=active&priority=high",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "alerts"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "priority",
+                  "value": "high"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Acknowledge Risk Alert",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/alert/acknowledge/ALERT-001",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "alert", "acknowledge", "ALERT-001"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Reports",
+      "item": [
+        {
+          "name": "Get Risk Reports",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/reports?type=summary&period=30d",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "reports"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "summary"
+                },
+                {
+                  "key": "period",
+                  "value": "30d"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Generate Risk Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"comprehensive\",\n  \"period\": \"30d\",\n  \"format\": \"pdf\",\n  \"parameters\": {\n    \"includeCharts\": true,\n    \"includeRecommendations\": true,\n    \"includeMitigationPlans\": true,\n    \"sections\": [\"overview\", \"assessments\", \"alerts\", \"trends\", \"recommendations\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/report/generate",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "report", "generate"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Analytics",
+      "item": [
+        {
+          "name": "Get Risk Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/analytics?metric=risk_score&period=30d&groupBy=category",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "analytics"],
+              "query": [
+                {
+                  "key": "metric",
+                  "value": "risk_score"
+                },
+                {
+                  "key": "period",
+                  "value": "30d"
+                },
+                {
+                  "key": "groupBy",
+                  "value": "category"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Risk Trends",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/trends?metric=overall_risk&period=90d&interval=daily",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "trends"],
+              "query": [
+                {
+                  "key": "metric",
+                  "value": "overall_risk"
+                },
+                {
+                  "key": "period",
+                  "value": "90d"
+                },
+                {
+                  "key": "interval",
+                  "value": "daily"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Simulation",
+      "item": [
+        {
+          "name": "Simulate Risk Scenario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scenario\": \"supplier_disruption\",\n  \"parameters\": {\n    \"disruptionDuration\": \"7d\",\n    \"affectedSuppliers\": [\"SUP-001\", \"SUP-002\"],\n    \"impactLevel\": \"high\",\n    \"affectedProducts\": [\"PROD-001\", \"PROD-002\"]\n  },\n  \"timeframe\": \"30d\",\n  \"iterations\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/simulate",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "simulate"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Recommendations",
+      "item": [
+        {
+          "name": "Get Risk Recommendations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/recommendations?riskLevel=high&category=supply_chain",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "recommendations"],
+              "query": [
+                {
+                  "key": "riskLevel",
+                  "value": "high"
+                },
+                {
+                  "key": "category",
+                  "value": "supply_chain"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Apply Risk Recommendation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"autoApply\": false,\n  \"parameters\": {\n    \"priority\": \"high\",\n    \"implementationTimeframe\": \"7d\",\n    \"resourcesRequired\": [\"quality_team\", \"supply_chain_team\"]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/recommendation/apply/REC-001",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "recommendation", "apply", "REC-001"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Categories",
+      "item": [
+        {
+          "name": "Get Compliance Risks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/compliance?regulation=halal_standards&severity=high",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "compliance"],
+              "query": [
+                {
+                  "key": "regulation",
+                  "value": "halal_standards"
+                },
+                {
+                  "key": "severity",
+                  "value": "high"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Operational Risks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/operational?process=quality_control&impact=high",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "operational"],
+              "query": [
+                {
+                  "key": "process",
+                  "value": "quality_control"
+                },
+                {
+                  "key": "impact",
+                  "value": "high"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Financial Risks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/financial?type=credit_risk&exposure=high",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "financial"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "credit_risk"
+                },
+                {
+                  "key": "exposure",
+                  "value": "high"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Supply Chain Risks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/supply-chain?supplier=SUP-001&product=PROD-001",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "supply-chain"],
+              "query": [
+                {
+                  "key": "supplier",
+                  "value": "SUP-001"
+                },
+                {
+                  "key": "product",
+                  "value": "PROD-001"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Reputation Risks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/reputation?source=social_media&sentiment=negative",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "reputation"],
+              "query": [
+                {
+                  "key": "source",
+                  "value": "social_media"
+                },
+                {
+                  "key": "sentiment",
+                  "value": "negative"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Mitigation",
+      "item": [
+        {
+          "name": "Create Mitigation Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"riskId\": \"RISK-001\",\n  \"strategies\": [\n    {\n      \"type\": \"diversification\",\n      \"description\": \"Diversify supplier base\",\n      \"priority\": \"high\",\n      \"estimatedCost\": 50000,\n      \"implementationTime\": \"30d\"\n    },\n    {\n      \"type\": \"monitoring\",\n      \"description\": \"Enhanced quality monitoring\",\n      \"priority\": \"medium\",\n      \"estimatedCost\": 15000,\n      \"implementationTime\": \"14d\"\n    }\n  ],\n  \"timeline\": \"90d\",\n  \"resources\": [\"quality_team\", \"supply_chain_team\", \"external_consultant\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/mitigation/plan",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "mitigation", "plan"]
+            }
+          }
+        },
+        {
+          "name": "Get Mitigation Plans",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/mitigation/plans?status=active&riskLevel=high",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "mitigation", "plans"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "riskLevel",
+                  "value": "high"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Mitigation Plan",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"in_progress\",\n  \"progress\": 25,\n  \"notes\": \"Initial supplier assessment completed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/mitigation/plan/MP-001",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "mitigation", "plan", "MP-001"]
+            }
+          }
+        },
+        {
+          "name": "Execute Mitigation Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actions\": [\n    \"diversify_suppliers\",\n    \"enhance_monitoring\",\n    \"update_contracts\"\n  ],\n  \"parameters\": {\n    \"priority\": \"high\",\n    \"notifyStakeholders\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/mitigation/plan/MP-001/execute",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "mitigation", "plan", "MP-001", "execute"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk Dashboard & KPIs",
+      "item": [
+        {
+          "name": "Get Risk Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/dashboard?timeframe=30d&includeAlerts=true&includeMetrics=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "dashboard"],
+              "query": [
+                {
+                  "key": "timeframe",
+                  "value": "30d"
+                },
+                {
+                  "key": "includeAlerts",
+                  "value": "true"
+                },
+                {
+                  "key": "includeMetrics",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Risk KPIs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/kpi?category=overall&timeframe=30d",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "kpi"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "overall"
+                },
+                {
+                  "key": "timeframe",
+                  "value": "30d"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Set Risk KPI Target",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kpi\": \"overall_risk_score\",\n  \"target\": 0.3,\n  \"timeframe\": \"quarterly\",\n  \"description\": \"Maintain overall risk score below 0.3\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/kpi/target",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "kpi", "target"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Risk History & Data Management",
+      "item": [
+        {
+          "name": "Get Risk History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/history?entityId=SUP-001&entityType=supplier&timeframe=90d",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "history"],
+              "query": [
+                {
+                  "key": "entityId",
+                  "value": "SUP-001"
+                },
+                {
+                  "key": "entityType",
+                  "value": "supplier"
+                },
+                {
+                  "key": "timeframe",
+                  "value": "90d"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Import Risk Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": [],
+                  "description": "CSV or JSON file containing risk data"
+                },
+                {
+                  "key": "format",
+                  "value": "csv",
+                  "type": "text",
+                  "description": "File format (csv, json, xlsx)"
+                },
+                {
+                  "key": "mapping",
+                  "value": "{\n  \"risk_score\": \"column1\",\n  \"category\": \"column2\",\n  \"date\": \"column3\"\n}",
+                  "type": "text",
+                  "description": "Column mapping configuration"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/risk/import",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "import"]
+            }
+          }
+        },
+        {
+          "name": "Export Risk Data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/risk/export?format=csv&filters={\"type\":\"supply_chain\"}&fields=risk_score,category,date",
+              "host": ["{{baseUrl}}"],
+              "path": ["risk", "export"],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "csv"
+                },
+                {
+                  "key": "filters",
+                  "value": "{\"type\":\"supply_chain\"}"
+                },
+                {
+                  "key": "fields",
+                  "value": "risk_score,category,date"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Add timestamp to requests",
+          "pm.request.headers.add({key: 'X-Request-Time', value: new Date().toISOString()});",
+          "",
+          "// Log request details",
+          "console.log('Request:', pm.request.method, pm.request.url.toString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Log response time and size",
+          "console.log('Response Time:', pm.response.responseTime + 'ms');",
+          "console.log('Response Size:', pm.response.responseSize + ' bytes');",
+          "",
+          "// Validate response structure",
+          "if (pm.response.code === 200) {",
+          "    const response = pm.response.json();",
+          "    console.log('Response Status: SUCCESS');",
+          "    ",
+          "    // Validate common response fields",
+          "    if (response.success !== undefined) {",
+          "        console.log('Success Field:', response.success);",
+          "    }",
+          "    if (response.message) {",
+          "        console.log('Message:', response.message);",
+          "    }",
+          "    if (response.riskLevel) {",
+          "        console.log('Risk Level:', response.riskLevel);",
+          "    }",
+          "    if (response.assessmentId) {",
+          "        console.log('Assessment ID:', response.assessmentId);",
+          "    }",
+          "} else {",
+          "    console.log('Response Status: ERROR');",
+          "    console.log('Error:', pm.response.json());",
+          "}"
+        ]
+      }
+    }
+  ]
+}

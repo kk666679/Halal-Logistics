@@ -1,0 +1,16 @@
+2025-09-24 03:26:15 [ERROR]: Failed to initialize message broker services: Connection error:  {"service":"agent-orchestrator","name":"KafkaJSNumberOfRetriesExceeded","retriable":false,"retryCount":5,"retryTime":7668,"cause":{"name":"KafkaJSConnectionError","retriable":true,"broker":"localhost:9092","code":"ECONNREFUSED"}}
+KafkaJSNonRetriableError
+  Caused by: KafkaJSConnectionError: Connection error: 
+    at Socket.onError (/workspaces/Halal-Logistics/infrastructure/agent-communication/orchestrator/node_modules/kafkajs/src/network/connection.js:210:23)
+    at Socket.emit (node:events:519:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2025-09-24 03:31:47 [ERROR]: Failed to initialize message broker services: Connection error:  {"service":"agent-orchestrator","name":"KafkaJSNumberOfRetriesExceeded","retriable":false,"retryCount":5,"retryTime":6656,"cause":{"name":"KafkaJSConnectionError","retriable":true,"broker":"localhost:9092","code":"ECONNREFUSED"}}
+KafkaJSNonRetriableError
+  Caused by: KafkaJSConnectionError: Connection error: 
+    at Socket.onError (/workspaces/Halal-Logistics/infrastructure/agent-communication/orchestrator/node_modules/kafkajs/src/network/connection.js:210:23)
+    at Socket.emit (node:events:519:28)
+    at emitErrorNT (node:internal/streams/destroy:170:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)

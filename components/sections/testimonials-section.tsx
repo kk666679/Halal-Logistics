@@ -9,49 +9,64 @@ import { AnimatedBackground } from "@/components/ui/animated-background";
 export function TestimonialsSection() {
   const testimonials = [
     {
-      name: "Alex Johnson",
-      role: "Frontend Developer",
-      content:
-        "This component library has saved me countless hours of development time. The components are beautifully designed and easy to customize.",
-      avatar: "AJ",
+      name: "Ahmed Al-Mansoori",
+      role: "Halal Industry Consultant",
+      content: "HalalChain has revolutionized how we track and verify halal products. The blockchain transparency gives consumers unprecedented confidence in their purchases.",
+      avatar: "AM",
     },
     {
-      name: "Sarah Chen",
-      role: "UI/UX Designer",
-      content:
-        "As a designer, I appreciate the attention to detail in these components. They're not only functional but also aesthetically pleasing.",
-      avatar: "SC",
+      name: "Fatima Khan",
+      role: "Food Safety Manager",
+      content: "Implementing HalalChain across our supply chain has streamlined our certification process and reduced compliance costs by 40%. The platform is incredibly intuitive.",
+      avatar: "FK",
     },
     {
-      name: "Michael Rodriguez",
-      role: "Product Manager",
-      content:
-        "Our team's productivity has increased significantly since we started using this library. The documentation is excellent and the components are robust.",
-      avatar: "MR",
+      name: "Dr. Omar Hassan",
+      role: "Islamic Finance Expert",
+      content: "The integration of blockchain technology with halal certification is groundbreaking. HalalChain sets new standards for trust and transparency in the halal industry.",
+      avatar: "OH",
+    },
+    {
+      name: "Yasmin Abdullah",
+      role: "Retail Chain Owner",
+      content: "Our customers appreciate the QR code verification feature. They can instantly confirm the halal status of any product, which has significantly boosted sales.",
+      avatar: "YA",
+    },
+    {
+      name: "Mohammed Ibrahim",
+      role: "Supply Chain Director",
+      content: "The real-time tracking capabilities have transformed our operations. We can now monitor halal compliance at every stage with complete audit trails.",
+      avatar: "MI",
+    },
+    {
+      name: "Aisha Rahman",
+      role: "Consumer Advocate",
+      content: "As a Muslim consumer, HalalChain gives me peace of mind. I can trust that the products I buy are genuinely halal, thanks to the immutable blockchain records.",
+      avatar: "AR",
     },
   ];
 
   return (
     <section
       id="testimonials"
-      className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/30 overflow-hidden"
+      className="relative w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-green-50 to-emerald-50/30 overflow-hidden"
     >
-      <AnimatedBackground variant="waves" color="rgba(220, 38, 38, 0.05)" />
+      <AnimatedBackground variant="grid" color="rgba(16, 185, 129, 0.03)" />
 
       <div className="container px-4 md:px-6">
         <ScrollReveal>
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <AnimatedText
-                text="What Our Users Say"
+                text="Trusted by Halal Industry Leaders"
                 variant="heading"
-                className="text-3xl font-heading font-bold tracking-tighter sm:text-5xl"
+                className="text-3xl font-heading font-bold tracking-tighter sm:text-5xl bg-gradient-to-r from-green-600 to-emerald-700 bg-clip-text text-transparent"
                 animation="slide"
               />
               <AnimatedText
-                text="Hear from developers and designers who use our component library in their projects."
+                text="Discover how HalalChain is transforming halal certification and supply chain transparency for businesses and consumers worldwide."
                 variant="paragraph"
-                className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 opacity-70"
+                className="max-w-[900px] text-green-800/70 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
                 animation="fade"
                 delay={0.3}
               />
@@ -59,40 +74,42 @@ export function TestimonialsSection() {
           </div>
         </ScrollReveal>
 
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 md:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((testimonial, index) => (
             <ScrollReveal key={index} delay={index * 0.1}>
               <motion.div
                 whileHover={{ y: -5 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <Card className="h-full glassmorphic-card group">
+                <Card className="h-full bg-white/70 backdrop-blur-sm border border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 group">
                   <CardHeader>
                     <div className="flex items-center gap-4">
                       <motion.div
                         whileHover={{ scale: 1.1, rotate: 5 }}
                         transition={{ type: "spring", stiffness: 300 }}
                       >
-                        <Avatar className="glassmorphic-avatar border-2 border-transparent group-hover:border-red-500 transition-colors">
+                        <Avatar className="border-2 border-transparent group-hover:border-green-500 transition-colors duration-300 bg-green-100">
                           <AvatarImage
                             src={`/placeholder.svg?height=40&width=40&text=${testimonial.avatar}`}
                             alt={testimonial.name}
                           />
-                          <AvatarFallback>{testimonial.avatar}</AvatarFallback>
+                          <AvatarFallback className="bg-green-500 text-white">
+                            {testimonial.avatar}
+                          </AvatarFallback>
                         </Avatar>
                       </motion.div>
                       <div>
-                        <h3 className="text-lg font-medium tracking-tight group-hover:text-red-500 transition-colors">
+                        <h3 className="text-lg font-medium tracking-tight group-hover:text-green-600 transition-colors duration-300">
                           {testimonial.name}
                         </h3>
-                        <p className="text-sm text-muted-foreground opacity-70">
+                        <p className="text-sm text-green-700/70">
                           {testimonial.role}
                         </p>
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground opacity-70 group-hover:opacity-100 transition-opacity">
+                    <p className="text-green-900/80 leading-relaxed group-hover:text-green-900 transition-colors duration-300">
                       {testimonial.content}
                     </p>
                   </CardContent>
@@ -101,6 +118,15 @@ export function TestimonialsSection() {
             </ScrollReveal>
           ))}
         </div>
+
+        {/* Trust indicators */}
+        <ScrollReveal delay={0.6}>
+          <div className="text-center mt-8">
+            <p className="text-sm text-green-600/70 font-medium">
+              Trusted by 500+ halal businesses across 30 countries
+            </p>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

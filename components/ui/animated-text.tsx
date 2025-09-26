@@ -28,7 +28,7 @@ const defaultAnimations = {
   },
   bounce: {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", bounce: 0.5 } },
+    visible: { opacity: 1, y: 0 },
   },
   typewriter: {
     hidden: { opacity: 0, width: 0 },
@@ -36,14 +36,10 @@ const defaultAnimations = {
   },
   wave: {
     hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
+    visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        delay: i * 0.05,
-        duration: 0.5,
-      },
-    }),
+    },
   },
 };
 
@@ -87,6 +83,10 @@ export function AnimatedText({
             className="inline-block"
             custom={i}
             variants={defaultAnimations.wave}
+            transition={{
+              delay: i * 0.05,
+              duration: 0.5,
+            }}
           >
             {char === " " ? "\u00A0" : char}
           </motion.span>
@@ -103,7 +103,7 @@ export function AnimatedText({
           initial="hidden"
           animate={controls}
           variants={defaultAnimations.typewriter}
-          transition={{ duration: duration * 2, delay, ease: "easeInOut" }}
+          transition={{ duration: duration * 2, delay, ease: [0.22, 1, 0.36, 1] }}
           style={{ color }}
         >
           {text}
@@ -111,6 +111,13 @@ export function AnimatedText({
       </div>
     );
   }
+
+  const getTransition = () => {
+    if (animation === "bounce") {
+      return { type: "spring" as const, bounce: 0.5, duration, delay };
+    }
+    return { duration, delay };
+  };
 
   return (
     <motion.div
@@ -124,7 +131,7 @@ export function AnimatedText({
       initial="hidden"
       animate={controls}
       variants={defaultAnimations[animation]}
-      transition={{ duration, delay }}
+      transition={getTransition()}
       style={{ color }}
     >
       {text}

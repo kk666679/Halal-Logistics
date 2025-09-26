@@ -16,13 +16,13 @@ export function PricingSection() {
   const plans = [
     {
       name: "Starter",
-      description: "Perfect for small projects and individual developers.",
+      description: "Perfect for small businesses and startups.",
       price: "$49",
       duration: "one-time payment",
       features: [
-        "50+ UI Components",
-        "Responsive Design",
-        "Tailwind CSS Integration",
+        "Basic Halal Tracking API",
+        "Simple Certification Service",
+        "Supply Chain Monitoring",
         "6 Months Support",
         "Basic Documentation",
       ],
@@ -31,35 +31,35 @@ export function PricingSection() {
     },
     {
       name: "Pro",
-      description: "Ideal for professional developers and small teams.",
+      description: "Ideal for growing businesses and mid-sized teams.",
       price: "$99",
       duration: "one-time payment",
       features: [
-        "100+ UI Components",
-        "Responsive Design",
-        "Tailwind CSS Integration",
+        "Advanced Halal Analytics",
+        "Blockchain Traceability",
+        "IoT Sensor Integration",
         "12 Months Support",
         "Advanced Documentation",
-        "Source Files",
-        "Premium Components",
+        "API Access",
+        "Custom Dashboards",
       ],
       cta: "Get Pro",
       popular: true,
     },
     {
       name: "Enterprise",
-      description: "For large teams and complex projects.",
+      description: "For large organizations and complex supply chains.",
       price: "$249",
       duration: "one-time payment",
       features: [
-        "200+ UI Components",
-        "Responsive Design",
-        "Tailwind CSS Integration",
+        "Full Microservices Suite",
+        "AI-Powered Compliance",
+        "Global Certification Network",
         "Lifetime Support",
         "Advanced Documentation",
-        "Source Files",
-        "Premium Components",
-        "Custom Components",
+        "API Access",
+        "Custom Dashboards",
+        "White-label Solutions",
         "Priority Support",
       ],
       cta: "Contact Sales",
@@ -74,11 +74,11 @@ export function PricingSection() {
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <h2 className="text-3xl font-heading font-bold tracking-tighter sm:text-5xl">
-                Simple, Transparent Pricing
+                Halal Logistics Microservices Pricing
               </h2>
               <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 opacity-70">
-                Choose the plan that&apos;s right for you and start building
-                amazing user interfaces.
+                Choose the plan that&apos;s right for your business and integrate
+                halal compliance microservices into your operations.
               </p>
             </div>
           </div>

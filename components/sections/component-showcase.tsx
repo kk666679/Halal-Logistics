@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BentoGrid } from "@/components/ui/bento-grid";
+import { BentoGrid, BentoCard } from "@/components/ui/bento-grid";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { Palette, Layers, Code, Sparkles } from "lucide-react";
 import { ScrollReveal } from "@/components/scroll-reveal";
@@ -206,65 +206,61 @@ export function ComponentShowcase() {
                     transition={{ duration: 0.3 }}
                   >
                     <BentoGrid className="max-w-4xl mx-auto">
-                      <BentoGrid.Item
-                        title="Modern Design"
+                      <BentoCard
+                        name="Modern Design"
                         description="Clean and minimal design for modern web applications."
                         className="col-span-2 md:row-span-2 group"
-                        icon={
-                          <motion.div
-                            whileHover={{ rotate: 360 }}
-                            transition={{ duration: 0.8, ease: "easeInOut" }}
-                          >
-                            <Palette className="h-6 w-6" />
-                          </motion.div>
-                        }
-                      />
-                      <BentoGrid.Item
-                        title="Responsive"
+                      >
+                        <motion.div
+                          whileHover={{ rotate: 360 }}
+                          transition={{ duration: 0.8, ease: "easeInOut" }}
+                        >
+                          <Palette className="h-6 w-6" />
+                        </motion.div>
+                      </BentoCard>
+                      <BentoCard
+                        name="Responsive"
                         description="Fully responsive components that work on all devices."
                         className="group"
-                        icon={
-                          <motion.div
-                            whileHover={{ scale: 1.2 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <Layers className="h-6 w-6" />
-                          </motion.div>
-                        }
-                      />
-                      <BentoGrid.Item
-                        title="Accessible"
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.2 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <Layers className="h-6 w-6" />
+                        </motion.div>
+                      </BentoCard>
+                      <BentoCard
+                        name="Accessible"
                         description="Built with accessibility in mind for all users."
                         className="group"
-                        icon={
-                          <motion.div
-                            whileHover={{ scale: 1.2 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <Code className="h-6 w-6" />
-                          </motion.div>
-                        }
-                      />
-                      <BentoGrid.Item
-                        title="Interactive"
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.2 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <Code className="h-6 w-6" />
+                        </motion.div>
+                      </BentoCard>
+                      <BentoCard
+                        name="Interactive"
                         description="Engaging interactive elements and animations."
                         className="col-span-2 group"
-                        icon={
-                          <motion.div
-                            animate={{
-                              scale: [1, 1.2, 1],
-                              rotate: [0, 5, 0, -5, 0],
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Number.POSITIVE_INFINITY,
-                              repeatDelay: 1,
-                            }}
-                          >
-                            <Sparkles className="h-6 w-6" />
-                          </motion.div>
-                        }
-                      />
+                      >
+                        <motion.div
+                          animate={{
+                            scale: [1, 1.2, 1],
+                            rotate: [0, 5, 0, -5, 0],
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Number.POSITIVE_INFINITY,
+                            repeatDelay: 1,
+                          }}
+                        >
+                          <Sparkles className="h-6 w-6" />
+                        </motion.div>
+                      </BentoCard>
                     </BentoGrid>
                   </motion.div>
                 </TabsContent>

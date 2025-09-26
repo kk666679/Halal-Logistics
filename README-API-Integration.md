@@ -7,8 +7,8 @@ This document provides instructions for setting up and testing the API integrati
 ## Prerequisites
 
 - Node.js 18+ installed
-- MongoDB running locally or connection string configured
-- npm or yarn package manager
+- PostgreSQL running locally or connection string configured
+- npm package manager
 
 ## Backend Setup
 
@@ -25,7 +25,7 @@ Create a `.env` file in the backend directory:
 
 ```env
 # Database
-MONGODB_URI=mongodb://localhost:27017/halalchain
+DATABASE_URL="postgresql://username:password@localhost:5432/halalchain?schema=public"
 
 # JWT
 JWT_SECRET=your-super-secret-jwt-key-here
@@ -159,9 +159,10 @@ The frontend will be available at: http://localhost:3000
    - Ensure the API client is sending the Authorization header
 
 3. **Database Connection Issues**
-   - Verify MongoDB is running
-   - Check the MONGODB_URI in backend `.env`
-   - Ensure the database name is correct
+   - Verify PostgreSQL is running
+   - Check the DATABASE_URL in backend `.env`
+   - Ensure the database name and credentials are correct
+   - Run `npx prisma generate` and `npx prisma db push` to sync schema
 
 4. **API Endpoint Issues**
    - Verify the backend is running on the correct port

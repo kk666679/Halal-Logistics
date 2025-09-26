@@ -50,7 +50,7 @@ export {
   MotionPulse,
   motionVariants,
   motionTransitions,
-  type MotionComponentProps,
+  type BaseMotionProps,
   type MotionVariants,
   type MotionTransitions,
 } from "./motion-components";

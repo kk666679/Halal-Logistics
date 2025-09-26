@@ -186,3 +186,90 @@ model TrackingEvent {
 
   @@map("tracking_events")
 }
+enum BlogStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum BlogCategory {
+  TECHNOLOGY
+  SUSTAINABILITY
+  CERTIFICATION
+  SUPPLY_CHAIN
+  COMPLIANCE
+  INNOVATION
+  BEST_PRACTICES
+}
+
+model BlogAuthor {
+  id            String      @id @default(cuid())
+  name          String
+  email         String      @unique
+  bio           String?
+  company       String?
+  role          String?
+  avatar        String?
+  isGuestContributor Boolean @default(false)
+  socialLinks   Json?
+  isActive      Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  posts         BlogPost[]
+  comments      BlogComment[]
+
+  @@map("blog_authors")
+}
+
+model BlogPost {
+  id                String      @id @default(cuid())
+  title             String
+  slug              String      @unique
+  excerpt           String
+  content           String
+  featuredImage     String?
+  category          BlogCategory
+  tags              String[]
+  status            BlogStatus  @default(DRAFT)
+  featured          Boolean     @default(false)
+  viewCount         Int         @default(0)
+  likeCount         Int         @default(0)
+  shareCount        Int         @default(0)
+  readTime          String
+  seoTitle          String?
+  seoDescription    String?
+  keywords          String[]
+  publishedDate     DateTime?
+  updatedDate       DateTime    @updatedAt
+  authorId          String
+
+  // Relations
+  author            BlogAuthor      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments          BlogComment[]
+
+  @@map("blog_posts")
+}
+
+model BlogComment {
+  id        String   @id @default(cuid())
+  content   String
+  authorName String
+  authorEmail String
+  isApproved Boolean @default(false)
+  isReply   Boolean @default(false)
+  parentId  String?
+  postId    String
+  authorId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  post      BlogPost    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author    BlogAuthor? @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  parent    BlogComment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: SetNull)
+  replies   BlogComment[] @relation("CommentReplies")
+
+  @@map("blog_comments")
+}

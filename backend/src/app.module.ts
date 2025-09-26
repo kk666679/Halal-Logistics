@@ -5,6 +5,7 @@ import { UsersModule } from "./users/users.module";
 import { ProductsModule } from "./products/products.module";
 import { CertificationModule } from "./certification/certification.module";
 import { TrackingModule } from "./tracking/tracking.module";
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TrackingModule } from "./tracking/tracking.module";
     ProductsModule,
     CertificationModule,
     TrackingModule,
+    BlogModule,
   ],
   controllers: [],
   providers: [],

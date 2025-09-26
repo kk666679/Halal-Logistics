@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  regulatory-reporting:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: regulatory-reporting-service
+    restart: unless-stopped
+    ports:
+      - "3021:3021"
+    environment:
+      - NODE_ENV=production
+      - PORT=3021
+      - FRONTEND_URL=http://localhost:3000
+      - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      - API_KEY=${API_KEY:-your-api-key-for-service-communication}
+      - AUTH_ENABLED=true
+      - LOG_LEVEL=info
+      - LOG_FILE=/app/logs/regulatory-reporting.log
+      - DATABASE_URL=postgresql://regulatory_user:regulatory_pass@regulatory-db:5432/regulatory_db
+      - REDIS_URL=redis://redis:6379
+      - EMAIL_HOST=${EMAIL_HOST:-smtp.gmail.com}
+      - EMAIL_PORT=${EMAIL_PORT:-587}
+      - EMAIL_USER=${EMAIL_USER}
+      - EMAIL_PASS=${EMAIL_PASS}
+      - EMAIL_FROM=${EMAIL_FROM:-noreply@company.com}
+      - FILE_STORAGE_PATH=/app/storage/reports
+      - MAX_FILE_SIZE=10MB
+      - SCHEDULER_ENABLED=true
+      - SCHEDULER_TIMEZONE=UTC
+      - RATE_LIMIT_WINDOW=15
+      - RATE_LIMIT_MAX_REQUESTS=100
+      # Royal Malaysian Customs Integration
+      - CUSTOMS_API_BASE_URL=https://api.customs.gov.my
+      - CUSTOMS_API_KEY=${CUSTOMS_API_KEY}
+      - JAKIM_API_URL=https://api.halal.gov.my
+      - JAKIM_API_KEY=${JAKIM_API_KEY}
+      - CUSTOMS_COMPLIANCE_ENABLED=true
+    volumes:
+      - ./logs:/app/logs
+      - ./storage:/app/storage
+      - ./public:/app/public:ro
+    depends_on:
+      - regulatory-db
+      - redis
+    networks:
+      - halal-logistics-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3021/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  regulatory-db:
+    image: postgres:15-alpine
+    container_name: regulatory-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=regulatory_db
+      - POSTGRES_USER=regulatory_user
+      - POSTGRES_PASSWORD=regulatory_pass
+    volumes:
+      - regulatory_postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    ports:
+      - "5433:5432"
+    networks:
+      - halal-logistics-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U regulatory_user -d regulatory_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    container_name: regulatory-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - regulatory_redis_data:/data
+    ports:
+      - "6380:6379"
+    networks:
+      - halal-logistics-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  regulatory_postgres_data:
+    driver: local
+  regulatory_redis_data:
+    driver: local
+
+networks:
+  halal-logistics-network:
+    external: true

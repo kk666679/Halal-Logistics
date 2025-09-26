@@ -15,7 +15,7 @@ export class ProductsService {
   async getAll(category?: ProductCategory): Promise<Product[]> {
     try {
       const params = category ? { category } : undefined;
-      const response = await apiClient.get<ApiResponse<Product[]>>("/products", params);
+      const response = await apiClient.get<ApiResponse<Product[]>>("/products", { params });
       return response.data;
     } catch (error: any) {
       throw new Error(
@@ -132,7 +132,7 @@ export class ProductsService {
   async search(query: string): Promise<Product[]> {
     try {
       const response = await apiClient.get<ApiResponse<Product[]>>("/products", {
-        search: query,
+        params: { search: query },
       });
       return response.data;
     } catch (error: any) {

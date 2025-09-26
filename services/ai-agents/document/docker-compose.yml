@@ -1,0 +1,117 @@
+version: '3.8'
+
+services:
+  document-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: halal-logistics-document
+    restart: unless-stopped
+    ports:
+      - "3015:3015"
+    environment:
+      - NODE_ENV=production
+      - PORT=3015
+      - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      - KAFKA_BROKERS=${KAFKA_BROKERS:-kafka:9092}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:3011}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+      - UPLOAD_DIR=${UPLOAD_DIR:-./uploads}
+      - MAX_FILE_SIZE=${MAX_FILE_SIZE:-10mb}
+      - ALLOWED_FILE_TYPES=${ALLOWED_FILE_TYPES:-pdf,doc,docx,jpg,jpeg,png,txt}
+      - TESSERACT_LANG=${TESSERACT_LANG:-eng}
+      - PDF_PROCESSING_TIMEOUT=${PDF_PROCESSING_TIMEOUT:-300000}
+      - OCR_CONFIDENCE_THRESHOLD=${OCR_CONFIDENCE_THRESHOLD:-0.7}
+      - DOCUMENT_CLASSIFICATION_MODEL=${DOCUMENT_CLASSIFICATION_MODEL:-v1.2.0}
+      - STORAGE_TYPE=${STORAGE_TYPE:-local}
+      - AWS_S3_BUCKET=${AWS_S3_BUCKET:-}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+    depends_on:
+      - kafka
+      - redis
+    networks:
+      - halal-logistics-network
+    volumes:
+      - ./uploads:/app/uploads
+      - ./temp:/app/temp
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3015/api/v1/document/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Kafka for message broker
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: halal-logistics-kafka
+    restart: unless-stopped
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+      - KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=0
+    depends_on:
+      - zookeeper
+    networks:
+      - halal-logistics-network
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server=localhost:9092"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Zookeeper for Kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: halal-logistics-zookeeper
+    restart: unless-stopped
+    ports:
+      - "2181:2181"
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+    networks:
+      - halal-logistics-network
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Redis for caching
+  redis:
+    image: redis:7.2-alpine
+    container_name: halal-logistics-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    networks:
+      - halal-logistics-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  redis_data:
+
+networks:
+  halal-logistics-network:
+    driver: bridge

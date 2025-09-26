@@ -47,7 +47,7 @@ export function GlowingTiltCard({
   };
 
   return (
-    <motion.div
+    <div
       ref={cardRef}
       className={cn("relative overflow-hidden rounded-xl", className)}
       onMouseMove={handleMouseMove}
@@ -56,30 +56,33 @@ export function GlowingTiltCard({
         perspective: `${perspective}px`,
         transformStyle: "preserve-3d",
       }}
-      animate={{
-        rotateX: tilt.x,
-        rotateY: tilt.y,
-        scale: isHovered ? 1.03 : 1,
-        boxShadow: isHovered
-          ? "0 20px 30px rgba(0, 0, 0, 0.2)"
-          : "0 10px 20px rgba(0, 0, 0, 0.1)",
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 20,
-        duration: 0.3,
-      }}
       {...props}
     >
-      <div
-        className="pointer-events-none absolute inset-0 z-10 rounded-xl transition-opacity duration-300"
-        style={{
-          opacity: isHovered ? glareOpacity : 0,
-          background: `radial-gradient(circle at ${glarePosition.x}px ${glarePosition.y}px, rgba(255, 255, 255, ${glareOpacity}), transparent 50%)`,
+      <motion.div
+        animate={{
+          rotateX: tilt.x,
+          rotateY: tilt.y,
+          scale: isHovered ? 1.03 : 1,
+          boxShadow: isHovered
+            ? "0 20px 30px rgba(0, 0, 0, 0.2)"
+            : "0 10px 20px rgba(0, 0, 0, 0.1)",
         }}
-      />
-      {children}
-    </motion.div>
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 20,
+          duration: 0.3,
+        }}
+      >
+        <div
+          className="pointer-events-none absolute inset-0 z-10 rounded-xl transition-opacity duration-300"
+          style={{
+            opacity: isHovered ? glareOpacity : 0,
+            background: `radial-gradient(circle at ${glarePosition.x}px ${glarePosition.y}px, rgba(255, 255, 255, ${glareOpacity}), transparent 50%)`,
+          }}
+        />
+        {children}
+      </motion.div>
+    </div>
   );
 }
