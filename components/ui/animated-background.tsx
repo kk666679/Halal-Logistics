@@ -1,112 +1,142 @@
 "use client";
 
-import { useRef } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 interface AnimatedBackgroundProps {
-  className?: string;
-  variant?: "dots" | "grid" | "waves" | "gradient";
+  variant?: "waves" | "particles" | "gradient" | "grid";
   color?: string;
-  secondaryColor?: string;
-  speed?: number;
-  density?: number;
-  interactive?: boolean;
+  className?: string;
+  children?: React.ReactNode;
 }
 
 export function AnimatedBackground({
-  className,
-  variant = "dots",
-  color = "rgba(255, 255, 255, 0.03)",
-  secondaryColor = "rgba(255, 255, 255, 0.05)",
-  speed = 5,
-  density = 30,
+  variant = "waves",
+  color = "rgba(99, 102, 241, 0.05)",
+  className = "",
+  children,
 }: AnimatedBackgroundProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
-  if (variant === "gradient") {
-    return (
-      <motion.div
-        className={cn("absolute inset-0 -z-10 overflow-hidden", className)}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            background: `radial-gradient(circle at 50% 50%, ${color}, transparent 80%)`,
-          }}
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: speed * 2,
-            repeat: Number.POSITIVE_INFINITY,
-            repeatType: "reverse",
-          }}
-        />
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            background: `radial-gradient(circle at 70% 30%, ${secondaryColor}, transparent 70%)`,
-          }}
-          animate={{
-            scale: [1.1, 1, 1.1],
-            opacity: [0.4, 0.6, 0.4],
-          }}
-          transition={{
-            duration: speed * 3,
-            repeat: Number.POSITIVE_INFINITY,
-            repeatType: "reverse",
-          }}
-        />
-      </motion.div>
-    );
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className={className}>{children}</div>;
   }
 
+  const renderBackground = () => {
+    switch (variant) {
+      case "waves":
+        return (
+          <div className="absolute inset-0 overflow-hidden">
+            <motion.div
+              className="absolute inset-0"
+              style={{
+                background: `radial-gradient(circle at 20% 50%, ${color} 0%, transparent 50%),
+                            radial-gradient(circle at 80% 20%, ${color} 0%, transparent 50%),
+                            radial-gradient(circle at 40% 80%, ${color} 0%, transparent 50%)`,
+              }}
+              animate={{
+                background: [
+                  `radial-gradient(circle at 20% 50%, ${color} 0%, transparent 50%),
+                   radial-gradient(circle at 80% 20%, ${color} 0%, transparent 50%),
+                   radial-gradient(circle at 40% 80%, ${color} 0%, transparent 50%)`,
+                  `radial-gradient(circle at 30% 60%, ${color} 0%, transparent 50%),
+                   radial-gradient(circle at 70% 30%, ${color} 0%, transparent 50%),
+                   radial-gradient(circle at 50% 90%, ${color} 0%, transparent 50%)`,
+                  `radial-gradient(circle at 20% 50%, ${color} 0%, transparent 50%),
+                   radial-gradient(circle at 80% 20%, ${color} 0%, transparent 50%),
+                   radial-gradient(circle at 40% 80%, ${color} 0%, transparent 50%)`,
+                ],
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+          </div>
+        );
+      case "particles":
+        return (
+          <div className="absolute inset-0 overflow-hidden">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 rounded-full"
+                style={{
+                  backgroundColor: color.replace("0.05", "0.3"),
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  y: [0, -100, 0],
+                  opacity: [0, 1, 0],
+                }}
+                transition={{
+                  duration: Math.random() * 3 + 2,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                }}
+              />
+            ))}
+          </div>
+        );
+      case "gradient":
+        return (
+          <motion.div
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(45deg, ${color}, transparent, ${color})`,
+            }}
+            animate={{
+              background: [
+                `linear-gradient(45deg, ${color}, transparent, ${color})`,
+                `linear-gradient(135deg, ${color}, transparent, ${color})`,
+                `linear-gradient(225deg, ${color}, transparent, ${color})`,
+                `linear-gradient(315deg, ${color}, transparent, ${color})`,
+                `linear-gradient(45deg, ${color}, transparent, ${color})`,
+              ],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+        );
+      case "grid":
+        return (
+          <div className="absolute inset-0 opacity-20">
+            <motion.div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `linear-gradient(${color} 1px, transparent 1px),
+                                linear-gradient(90deg, ${color} 1px, transparent 1px)`,
+                backgroundSize: "50px 50px",
+              }}
+              animate={{
+                backgroundPosition: ["0px 0px", "50px 50px"],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div
-      ref={containerRef}
-      className={cn("absolute inset-0 -z-10 overflow-hidden", className)}
-    >
-      <svg
-        className="absolute inset-0 w-full h-full"
-        xmlns="http://www.w3.org/2000/svg"
-        width="100%"
-        height="100%"
-      >
-        <defs>
-          <pattern
-            id={`${variant}-pattern`}
-            width={variant === "dots" ? density : density * 2}
-            height={variant === "dots" ? density : density * 2}
-            patternUnits="userSpaceOnUse"
-          >
-            {variant === "dots" && (
-              <circle cx={density / 2} cy={density / 2} r="1" fill={color} />
-            )}
-            {variant === "grid" && (
-              <path
-                d={`M ${density} 0 L 0 0 0 ${density}`}
-                fill="none"
-                stroke={color}
-                strokeWidth="0.5"
-              />
-            )}
-            {variant === "waves" && (
-              <path
-                d={`M 0 ${density} Q ${density / 2} 0 ${density} ${density} T ${density * 2} ${density}`}
-                fill="none"
-                stroke={color}
-                strokeWidth="0.5"
-              />
-            )}
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill={`url(#${variant}-pattern)`} />
-      </svg>
+    <div className={`relative ${className}`}>
+      {renderBackground()}
+      <div className="relative z-10">{children}</div>
     </div>
   );
 }

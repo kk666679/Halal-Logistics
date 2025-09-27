@@ -5,12 +5,11 @@ import { Inter, Manrope } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/contexts/auth-context";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
-import { PageTransition } from "@/components/page-transition";
+import WireframeNavbar from "@/components/WireframeNavbar";
+import WireframeSidebar from "@/components/WireframeSidebar";
 
 import "@/app/globals.css";
-import { Suspense } from "react";
+import { AnimatePresence } from "framer-motion";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -59,13 +58,16 @@ export default function RootLayout({
         >
           <AuthProvider>
             <div className="relative flex min-h-screen flex-col">
-              <SiteHeader />
-              <Suspense>
-                <PageTransition>
-                  <main className="flex-1">{children}</main>
-                </PageTransition>
-              </Suspense>
-              <SiteFooter />
+              <WireframeNavbar />
+              <div className="flex flex-1">
+                <WireframeSidebar />
+                <AnimatePresence mode="wait">
+                  <main className="flex-1 p-4">{children}</main>
+                </AnimatePresence>
+              </div>
+              <footer className="border-t border-dashed border-gray-300 p-4 text-center text-gray-500">
+                Wireframe Footer
+              </footer>
             </div>
           </AuthProvider>
         </ThemeProvider>

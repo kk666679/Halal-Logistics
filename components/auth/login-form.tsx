@@ -70,23 +70,8 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
 
       await login(credentials);
 
-      // Redirect based on user role
-      switch (data.role) {
-        case "supplier":
-          router.push("/inventory");
-          break;
-        case "certifier":
-          router.push("/certification");
-          break;
-        case "auditor":
-          router.push("/tracking");
-          break;
-        case "consumer":
-          router.push("/tracking");
-          break;
-        default:
-          router.push("/");
-      }
+      // Redirect to dashboard after login
+      router.push("/dashboard");
     } catch (error: unknown) {
       setError(
         error instanceof Error

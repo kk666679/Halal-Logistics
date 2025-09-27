@@ -58,4 +58,16 @@ export class ProductsController {
   async remove(@Param("id") id: string, @Request() req: AuthenticatedRequest) {
     return this.productsService.remove(id, req.user.userId);
   }
+
+  @Get("stats")
+  @UseGuards(JwtAuthGuard)
+  async getStats(@Request() req: AuthenticatedRequest) {
+    return this.productsService.getProductStats();
+  }
+
+  @Get("low-stock")
+  @UseGuards(JwtAuthGuard)
+  async getLowStock(@Request() req: AuthenticatedRequest) {
+    return this.productsService.findLowStock();
+  }
 }

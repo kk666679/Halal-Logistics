@@ -1,140 +1,67 @@
 "use client";
 
-import { useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-type AnimatedTextProps = {
+interface AnimatedTextProps {
   text: string;
   variant?: "heading" | "paragraph";
   className?: string;
-  once?: boolean;
+  animation?: "fade" | "slide" | "typewriter";
   delay?: number;
-  duration?: number;
-  staggerChildren?: number;
-  animation?: "fade" | "slide" | "bounce" | "typewriter" | "wave";
-  color?: string;
-};
-
-const defaultAnimations = {
-  fade: {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-  },
-  slide: {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  },
-  bounce: {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  },
-  typewriter: {
-    hidden: { opacity: 0, width: 0 },
-    visible: { opacity: 1, width: "100%" },
-  },
-  wave: {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-    },
-  },
-};
+}
 
 export function AnimatedText({
   text,
-  variant = "heading",
-  className,
-  once = true,
+  variant = "paragraph",
+  className = "",
+  animation = "fade",
   delay = 0,
-  duration = 0.5,
-  staggerChildren = 0.03,
-  animation = "slide",
-  color,
 }: AnimatedTextProps) {
-  const controls = useAnimation();
-  const [ref, inView] = useInView({
-    triggerOnce: once,
-    threshold: 0.1,
-  });
+  const [displayText, setDisplayText] = useState("");
 
   useEffect(() => {
-    if (inView) {
-      controls.start("visible");
-    } else if (!once) {
-      controls.start("hidden");
+    if (animation === "typewriter") {
+      let i = 0;
+      const timer = setInterval(() => {
+        if (i < text.length) {
+          setDisplayText(text.slice(0, i + 1));
+          i++;
+        } else {
+          clearInterval(timer);
+        }
+      }, 50);
+      return () => clearInterval(timer);
+    } else {
+      setDisplayText(text);
     }
-  }, [controls, inView, once]);
+  }, [text, animation]);
 
-  if (animation === "wave") {
-    return (
-      <motion.div
-        ref={ref}
-        className={cn("inline-block", className)}
-        initial="hidden"
-        animate={controls}
-        transition={{ staggerChildren, delayChildren: delay }}
-      >
-        {text.split("").map((char, i) => (
-          <motion.span
-            key={`${char}-${i}`}
-            className="inline-block"
-            custom={i}
-            variants={defaultAnimations.wave}
-            transition={{
-              delay: i * 0.05,
-              duration: 0.5,
-            }}
-          >
-            {char === " " ? "\u00A0" : char}
-          </motion.span>
-        ))}
-      </motion.div>
-    );
-  }
-
-  if (animation === "typewriter") {
-    return (
-      <div className={cn("inline-block overflow-hidden", className)}>
-        <motion.div
-          ref={ref}
-          initial="hidden"
-          animate={controls}
-          variants={defaultAnimations.typewriter}
-          transition={{ duration: duration * 2, delay, ease: [0.22, 1, 0.36, 1] }}
-          style={{ color }}
-        >
-          {text}
-        </motion.div>
-      </div>
-    );
-  }
-
-  const getTransition = () => {
-    if (animation === "bounce") {
-      return { type: "spring" as const, bounce: 0.5, duration, delay };
-    }
-    return { duration, delay };
+  const variants = {
+    fade: {
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+    },
+    slide: {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+    },
+    typewriter: {
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+    },
   };
 
+  const MotionComponent = variant === "heading" ? motion.h1 : motion.p;
+
   return (
-    <motion.div
-      ref={ref}
-      className={cn(
-        variant === "heading"
-          ? "font-heading"
-          : "text-muted-foreground opacity-70",
-        className,
-      )}
-      initial="hidden"
-      animate={controls}
-      variants={defaultAnimations[animation]}
-      transition={getTransition()}
-      style={{ color }}
+    <MotionComponent
+      className={className}
+      initial={variants[animation].initial}
+      animate={variants[animation].animate}
+      transition={{ duration: 0.6, delay }}
     >
-      {text}
-    </motion.div>
+      {displayText}
+    </MotionComponent>
   );
 }

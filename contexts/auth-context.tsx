@@ -145,7 +145,7 @@ export function withAuth<T extends {}>(Component: React.ComponentType<T>) {
             <p className="text-muted-foreground mb-4">
               Please log in to access this page.
             </p>
-            <a href="/auth/login" className="text-primary hover:underline">
+            <a href="/sign-in" className="text-primary hover:underline">
               Go to Login
             </a>
           </div>

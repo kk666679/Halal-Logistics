@@ -1,64 +1,39 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { ReactNode } from "react";
 
 interface AnimatedGradientBorderProps {
-  children: ReactNode;
-  className?: string;
-  containerClassName?: string;
-  duration?: number;
+  colors: string[];
   borderWidth?: number;
-  colors?: string[];
-  hoverEffect?: boolean;
-  rounded?: boolean;
+  duration?: number;
+  children: ReactNode;
 }
 
 export function AnimatedGradientBorder({
+  colors,
+  borderWidth = 1,
+  duration = 4,
   children,
-  className,
-  containerClassName,
-  duration = 8,
-  borderWidth = 2,
-  colors = ["#ff0080", "#7928ca", "#ff4d4d", "#0070f3"],
-  rounded = true,
 }: AnimatedGradientBorderProps) {
   return (
-    <div
-      className={cn(
-        "relative p-[1px] overflow-hidden",
-        rounded ? "rounded-lg" : "",
-        containerClassName,
-      )}
+    <motion.div
+      className="relative rounded"
+      style={{
+        padding: `${borderWidth}px`,
+        background: `linear-gradient(45deg, ${colors.join(", ")})`,
+        backgroundSize: "400% 400%",
+      }}
+      animate={{
+        backgroundPosition: ["0% 0%", "100% 100%"],
+      }}
+      transition={{
+        duration,
+        repeat: Infinity,
+        ease: "linear",
+      }}
     >
-      <motion.div
-        className="absolute inset-0 z-0"
-        style={{
-          background: `linear-gradient(to right, ${colors.join(", ")})`,
-          backgroundSize: "300% 300%",
-        }}
-        animate={{
-          backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"],
-        }}
-        transition={{
-          duration,
-          repeat: Number.POSITIVE_INFINITY,
-          repeatType: "reverse",
-        }}
-      />
-      <div
-        className={cn(
-          "relative z-10 bg-white",
-          rounded ? "rounded-lg" : "",
-          className,
-        )}
-        style={{
-          margin: borderWidth,
-        }}
-      >
-        {children}
-      </div>
-    </div>
+      {children}
+    </motion.div>
   );
 }
