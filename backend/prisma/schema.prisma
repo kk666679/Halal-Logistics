@@ -4,8 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 enum UserRole {
@@ -13,6 +13,10 @@ enum UserRole {
   CERTIFIER
   AUDITOR
   CONSUMER
+  SHIPPER
+  CARRIER
+  DRIVER
+  ADMIN
 }
 
 enum ProductCategory {
@@ -45,12 +49,29 @@ enum TrackingStatus {
   DELAYED
 }
 
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum ShipmentStatus {
+  PENDING
+  ASSIGNED
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+  DELAYED
+}
+
 model User {
   id                  String   @id @default(cuid())
   email               String   @unique
   password            String
   firstName           String
   lastName            String
+  name                String?
   role                UserRole
   companyName         String?
   phoneNumber         String?
@@ -69,6 +90,17 @@ model User {
   assignedCertifications Certification[] @relation("CertificationAssignee")
   tracking         Tracking[]
   trackingEvents   TrackingEvent[]
+  freightBookingsAsShipper FreightBooking[] @relation("FreightBookingShipper")
+  freightBookingsAsCarrier FreightBooking[] @relation("FreightBookingCarrier")
+  freightBookingsCreated FreightBooking[] @relation("FreightBookingCreator")
+  shipmentsAsCarrier Shipment[] @relation("ShipmentCarrier")
+  shipmentsAsDriver Shipment[] @relation("ShipmentDriver")
+  warehouses       Warehouse[] @relation("WarehouseManager")
+  deliveriesAsDriver Delivery[] @relation("DeliveryDriver")
+  invoicesAsClient Invoice[] @relation("ClientInvoices")
+  notifications Notification[]
+  analytics Analytics[]
+  integrations Integration[]
 
   @@map("users")
 }
@@ -115,12 +147,12 @@ model Certification {
   contactEmail              String
   contactPhone              String
   productDescription        String
-  ingredients               String[]
+  ingredients               Json
   manufacturingProcess      String
   supplierDetails           String
   requestedCertificationType CertificationType
   expectedCompletionDate    DateTime
-  supportingDocuments       String[]          @default([])
+  supportingDocuments       Json          @default("[]")
   status                    CertificationStatus @default(PENDING)
   reviewComments            String?
   approvedBy                String?
@@ -150,7 +182,7 @@ model Tracking {
   status              TrackingStatus @default(PENDING)
   progress            Int
   halalCertified      Boolean  @default(true)
-  temperature         Json     @default("{\"current\": 0, \"min\": 0, \"max\": 0, \"unit\": \"C\"}")
+  temperature         Json?
   carrier             String
   blockchainVerified  Boolean  @default(true)
   createdBy           String
@@ -186,90 +218,275 @@ model TrackingEvent {
 
   @@map("tracking_events")
 }
-enum BlogStatus {
-  DRAFT
-  PUBLISHED
-  ARCHIVED
+
+model FreightBooking {
+  id            String   @id @default(cuid())
+  shipperId     String
+  carrierId     String?
+  origin        String
+  destination   String
+  cargoDetails  Json?
+  bookingDate   DateTime @default(now())
+  status        BookingStatus @default(PENDING)
+  estimatedCost Float?
+  actualCost    Float?
+  createdBy     String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  shipper User @relation(fields: [shipperId], references: [id], onDelete: Cascade, name: "FreightBookingShipper")
+  carrier User? @relation(fields: [carrierId], references: [id], onDelete: SetNull, name: "FreightBookingCarrier")
+  user    User  @relation(fields: [createdBy], references: [id], onDelete: Cascade, name: "FreightBookingCreator")
+  shipments Shipment[]
+
+  @@map("freight_bookings")
 }
 
-enum BlogCategory {
-  TECHNOLOGY
-  SUSTAINABILITY
-  CERTIFICATION
-  SUPPLY_CHAIN
-  COMPLIANCE
-  INNOVATION
-  BEST_PRACTICES
+model Shipment {
+  id                String   @id @default(cuid())
+  bookingId         String
+  carrierId         String?
+  driverId          String?
+  vehicleId         String?
+  currentLocation   String?
+  estimatedDelivery DateTime?
+  actualDelivery    DateTime?
+  status            ShipmentStatus @default(PENDING)
+  trackingNumber    String   @unique
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  booking FreightBooking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  carrier User?          @relation(fields: [carrierId], references: [id], onDelete: SetNull, name: "ShipmentCarrier")
+  driver  User?          @relation(fields: [driverId], references: [id], onDelete: SetNull, name: "ShipmentDriver")
+  customsDocuments CustomsDocument[]
+  deliveries Delivery[]
+  invoices Invoice[]
+
+  @@map("shipments")
 }
 
-model BlogAuthor {
-  id            String      @id @default(cuid())
+enum CustomsStatus {
+  PENDING
+  SUBMITTED
+  APPROVED
+  REJECTED
+  CLEARED
+}
+
+model CustomsDocument {
+  id            String        @id @default(cuid())
+  shipmentId    String
+  documentType  String
+  description   String?
+  documentUrl   String?
+  status        CustomsStatus @default(PENDING)
+  approvedBy    String?
+  approvedAt    DateTime?
+  notes         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  shipment      Shipment      @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+
+  @@map("customs_documents")
+}
+
+enum WarehouseStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+}
+
+model Warehouse {
+  id            String   @id @default(cuid())
   name          String
-  email         String      @unique
-  bio           String?
-  company       String?
-  role          String?
-  avatar        String?
-  isGuestContributor Boolean @default(false)
-  socialLinks   Json?
-  isActive      Boolean     @default(true)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  location      String
+  capacity      Int
+  status        WarehouseStatus @default(ACTIVE)
+  managerId     String?
+  contactInfo   Json?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   // Relations
-  posts         BlogPost[]
-  comments      BlogComment[]
+  manager       User?    @relation("WarehouseManager", fields: [managerId], references: [id], onDelete: SetNull)
+  inventory     WarehouseInventory[]
 
-  @@map("blog_authors")
+  @@map("warehouses")
 }
 
-model BlogPost {
-  id                String      @id @default(cuid())
-  title             String
-  slug              String      @unique
-  excerpt           String
-  content           String
-  featuredImage     String?
-  category          BlogCategory
-  tags              String[]
-  status            BlogStatus  @default(DRAFT)
-  featured          Boolean     @default(false)
-  viewCount         Int         @default(0)
-  likeCount         Int         @default(0)
-  shareCount        Int         @default(0)
-  readTime          String
-  seoTitle          String?
-  seoDescription    String?
-  keywords          String[]
-  publishedDate     DateTime?
-  updatedDate       DateTime    @updatedAt
-  authorId          String
+model WarehouseInventory {
+  id            String   @id @default(cuid())
+  warehouseId   String
+  productId     String
+  quantity      Int
+  minStock      Int      @default(0)
+  maxStock      Int?
+  location      String?
+  expiryDate    DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   // Relations
-  author            BlogAuthor      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  comments          BlogComment[]
+  warehouse     Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
 
-  @@map("blog_posts")
+  @@map("warehouse_inventory")
 }
 
-model BlogComment {
-  id        String   @id @default(cuid())
-  content   String
-  authorName String
-  authorEmail String
-  isApproved Boolean @default(false)
-  isReply   Boolean @default(false)
-  parentId  String?
-  postId    String
-  authorId  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum DeliveryStatus {
+  PENDING
+  ASSIGNED
+  IN_TRANSIT
+  DELIVERED
+  FAILED
+  CANCELLED
+}
+
+model Delivery {
+  id            String   @id @default(cuid())
+  shipmentId    String
+  driverId      String?
+  vehicleId     String?
+  status        DeliveryStatus @default(PENDING)
+  scheduledDate DateTime?
+  actualDate    DateTime?
+  deliveryAddress String
+  recipientName String?
+  recipientPhone String?
+  notes         String?
+  trackingNumber String  @unique
+  proofOfDelivery Json?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   // Relations
-  post      BlogPost    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  author    BlogAuthor? @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  parent    BlogComment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: SetNull)
-  replies   BlogComment[] @relation("CommentReplies")
+  shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  driver   User?    @relation("DeliveryDriver", fields: [driverId], references: [id], onDelete: SetNull)
 
-  @@map("blog_comments")
+  @@map("deliveries")
 }
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  BANK_TRANSFER
+  CASH
+  CHECK
+  PAYPAL
+  STRIPE
+}
+
+model Invoice {
+  id            String   @id @default(cuid())
+  invoiceNumber String   @unique
+  shipmentId    String
+  clientId      String
+  amount        Float
+  currency      String   @default("USD")
+  status        InvoiceStatus @default(DRAFT)
+  dueDate       DateTime
+  paidDate      DateTime?
+  paymentMethod PaymentMethod?
+  notes         String?
+  items         Json     // Array of invoice items with description, quantity, unitPrice, total
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  client   User     @relation("ClientInvoices", fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@map("invoices")
+}
+
+enum NotificationType {
+  EMAIL
+  SMS
+  PUSH
+  IN_APP
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  DELIVERED
+  READ
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  type        NotificationType
+  recipientId String
+  recipient   User     @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  title       String
+  message     String
+  status      NotificationStatus @default(PENDING)
+  sentAt      DateTime?
+  readAt      DateTime?
+  metadata    Json?    // Additional data like email template, SMS provider, etc.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("notifications")
+}
+
+enum AnalyticsType {
+  SHIPMENT
+  PRODUCT
+  USER
+  FINANCIAL
+}
+
+model Analytics {
+  id        String        @id @default(cuid())
+  type      AnalyticsType
+  data      Json
+  userId    String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  user      User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("analytics")
+}
+
+enum IntegrationType {
+  API
+  WEBHOOK
+  EMAIL
+  SMS
+}
+
+enum IntegrationStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model Integration {
+  id        String            @id @default(cuid())
+  name      String
+  type      IntegrationType
+  config    Json
+  status    IntegrationStatus @default(ACTIVE)
+  userId    String?
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  user      User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("integrations")
+}
+

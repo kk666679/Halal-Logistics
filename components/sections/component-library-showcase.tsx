@@ -73,7 +73,6 @@ export function ComponentLibraryShowcase() {
                   colors={["#dc2626", "#4b5563", "#dc2626", "#4b5563"]}
                   borderWidth={1}
                   duration={8}
-                  containerClassName="rounded-full"
                 >
                   <TabsList className="glassmorphic-tabs border-0">
                     <TabsTrigger value="cards">Cards</TabsTrigger>
@@ -277,7 +276,7 @@ export function ComponentLibraryShowcase() {
                               </MagneticButton>
                             </StaggerItem>
                             <StaggerItem>
-                              <GradientButton borderWidth={2}>
+                              <GradientButton>
                                 Outline Gradient
                               </GradientButton>
                             </StaggerItem>

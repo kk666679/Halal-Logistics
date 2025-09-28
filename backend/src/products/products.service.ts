@@ -13,12 +13,12 @@ export class ProductsService {
 
   async create(
     createProductDto: CreateProductDto,
-    userId: string,
+    userId?: string,
   ): Promise<Product> {
     const product = await this.prisma.product.create({
       data: {
         ...createProductDto,
-        createdBy: userId,
+        createdBy: userId || "default-user",
       },
     });
     return product;

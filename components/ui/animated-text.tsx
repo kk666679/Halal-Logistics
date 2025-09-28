@@ -1,67 +1,84 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import { cn } from "@/lib/utils";
 
 interface AnimatedTextProps {
   text: string;
-  variant?: "heading" | "paragraph";
+  variant?: "heading" | "paragraph" | "subtitle";
   className?: string;
-  animation?: "fade" | "slide" | "typewriter";
+  animation?: "fade" | "slide" | "typewriter" | "scale";
   delay?: number;
+  duration?: number;
+  once?: boolean;
 }
 
 export function AnimatedText({
   text,
   variant = "paragraph",
-  className = "",
+  className,
   animation = "fade",
   delay = 0,
+  duration = 0.6,
+  once = true,
 }: AnimatedTextProps) {
-  const [displayText, setDisplayText] = useState("");
+  const [ref, inView] = useInView({ triggerOnce: once });
 
-  useEffect(() => {
-    if (animation === "typewriter") {
-      let i = 0;
-      const timer = setInterval(() => {
-        if (i < text.length) {
-          setDisplayText(text.slice(0, i + 1));
-          i++;
-        } else {
-          clearInterval(timer);
-        }
-      }, 50);
-      return () => clearInterval(timer);
-    } else {
-      setDisplayText(text);
+  const getVariants = () => {
+    switch (animation) {
+      case "slide":
+        return {
+          hidden: { opacity: 0, y: 20 },
+          visible: { opacity: 1, y: 0 },
+        };
+      case "scale":
+        return {
+          hidden: { opacity: 0, scale: 0.8 },
+          visible: { opacity: 1, scale: 1 },
+        };
+      case "typewriter":
+        return {
+          hidden: { width: 0 },
+          visible: { width: "100%" },
+        };
+      default:
+        return {
+          hidden: { opacity: 0 },
+          visible: { opacity: 1 },
+        };
     }
-  }, [text, animation]);
-
-  const variants = {
-    fade: {
-      initial: { opacity: 0 },
-      animate: { opacity: 1 },
-    },
-    slide: {
-      initial: { opacity: 0, y: 20 },
-      animate: { opacity: 1, y: 0 },
-    },
-    typewriter: {
-      initial: { opacity: 0 },
-      animate: { opacity: 1 },
-    },
   };
 
-  const MotionComponent = variant === "heading" ? motion.h1 : motion.p;
+  const baseClass = cn(
+    "font-body",
+    {
+      "text-4xl font-bold": variant === "heading",
+      "text-lg font-semibold": variant === "subtitle",
+      "text-base": variant === "paragraph",
+    },
+    className
+  );
 
   return (
-    <MotionComponent
-      className={className}
-      initial={variants[animation].initial}
-      animate={variants[animation].animate}
-      transition={{ duration: 0.6, delay }}
+    <motion.div
+      ref={ref}
+      className={baseClass}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      variants={getVariants()}
+      transition={{ duration, delay, ease: "easeOut" }}
     >
-      {displayText}
-    </MotionComponent>
+      {animation === "typewriter" ? (
+        <motion.div
+          className="overflow-hidden whitespace-nowrap"
+          variants={getVariants()}
+        >
+          <span>{text}</span>
+        </motion.div>
+      ) : (
+        text
+      )}
+    </motion.div>
   );
 }

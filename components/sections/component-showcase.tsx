@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BentoGrid, BentoCard } from "@/components/ui/bento-grid";
-import { TiltCard } from "@/components/ui/tilt-card";
+import { GlowingTiltCard } from "@/components/ui/glowing-tilt-card";
 import { Palette, Layers, Code, Sparkles } from "lucide-react";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { AnimatedText } from "@/components/ui/animated-text";
@@ -49,7 +49,6 @@ export function ComponentShowcase() {
                   colors={["#dc2626", "#4b5563", "#dc2626", "#4b5563"]}
                   borderWidth={1}
                   duration={8}
-                  containerClassName="rounded-full"
                 >
                   <TabsList className="glassmorphic-tabs border-0">
                     <TabsTrigger value="buttons">Buttons</TabsTrigger>
@@ -168,32 +167,32 @@ export function ComponentShowcase() {
                     transition={{ duration: 0.3 }}
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                   >
-                    <TiltCard className="p-6 border rounded-lg glassmorphic-card group">
+                    <GlowingTiltCard className="p-6 border rounded-lg glassmorphic-card group">
                       <h3 className="text-lg font-medium mb-2 tracking-tight group-hover:text-red-500 transition-colors">
                         3D Tilt Card
                       </h3>
                       <p className="text-muted-foreground opacity-70 group-hover:opacity-100 transition-opacity">
                         Interactive card with 3D tilt effect on hover.
                       </p>
-                    </TiltCard>
+                    </GlowingTiltCard>
 
-                    <TiltCard className="p-6 border rounded-lg glassmorphic-card bg-gradient-to-br from-red-900/20 to-gray-900/20 group">
+                    <GlowingTiltCard className="p-6 border rounded-lg glassmorphic-card bg-gradient-to-br from-red-900/20 to-gray-900/20 group">
                       <h3 className="text-lg font-medium mb-2 tracking-tight group-hover:text-red-500 transition-colors">
                         Gradient Card
                       </h3>
                       <p className="text-muted-foreground opacity-70 group-hover:opacity-100 transition-opacity">
                         Card with gradient background and tilt effect.
                       </p>
-                    </TiltCard>
+                    </GlowingTiltCard>
 
-                    <TiltCard className="p-6 border rounded-lg glassmorphic-card bg-muted/50 group">
+                    <GlowingTiltCard className="p-6 border rounded-lg glassmorphic-card bg-muted/50 group">
                       <h3 className="text-lg font-medium mb-2 tracking-tight group-hover:text-red-500 transition-colors">
                         Muted Card
                       </h3>
                       <p className="text-muted-foreground opacity-70 group-hover:opacity-100 transition-opacity">
                         Subtle background with interactive tilt effect.
                       </p>
-                    </TiltCard>
+                    </GlowingTiltCard>
                   </motion.div>
                 </TabsContent>
 

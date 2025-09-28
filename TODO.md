@@ -1,11 +1,36 @@
-# TODO: Align Routes & Connect with UI/UX
+# Halal-Logistics Health Check TODO
 
-## Steps to Complete
+## Critical Issues (Blockers)
+- [ ] Fix ESLint configuration error in backend (TypeError: Cannot read properties of undefined (reading 'allowShortCircuit'))
+- [ ] Fix test failures: IntersectionObserver not defined in jsdom
+- [ ] Fix missing services in AI agent tests (RiskReportingService, MessageBrokerService)
+- [ ] Resolve build issues (currently running, may fail due to lint errors)
 
-- [x] Edit WireframeSidebar.tsx to replace placeholders with functional next/link components for /dashboard, /products, /tracking, /certification, /ai-agent, /profile, and handle logout.
-- [x] Create app/dashboard/page.tsx with dashboard content using existing components.
-- [x] Create app/products/page.tsx with products/inventory content using inventory components.
-- [x] Create app/profile/page.tsx with user profile content using auth components.
-- [x] Check and update auth-context.tsx to redirect to /dashboard after login.
-- [x] Run the app to test navigation and UX flows (login → dashboard → products, etc.). - App running on localhost:3000, navigation working, pages serving 200.
-- [ ] Integrate API services in pages for dynamic data fetching.
+## High Priority Issues
+- [ ] Check and create missing .env file with required variables
+- [ ] Audit dependencies: identify unused packages in package.json files
+- [ ] Run npm audit for security vulnerabilities
+- [ ] Verify Prisma schema consistency (PostgreSQL vs SQLite mismatch)
+- [ ] Check for broken or missing module imports across codebase
+
+## Medium Priority Issues
+- [ ] Fix TypeScript linting errors (any types, missing dependencies in hooks)
+- [ ] Identify and remove unused components/files
+- [ ] Check API routes alignment with database schema
+- [ ] Validate configuration files (.env, docker, CI/CD)
+
+## Low Priority Issues (Optimizations)
+- [ ] Improve code consistency and style
+- [ ] Add missing test coverage
+- [ ] Optimize bundle size by removing unused deps
+- [ ] Update outdated packages
+
+## Testing & Build Reliability
+- [ ] Ensure all tests pass
+- [ ] Verify build scripts work without errors
+- [ ] Check deployment configurations
+
+## Documentation & Maintenance
+- [ ] Update README with setup instructions
+- [ ] Document environment variables
+- [ ] Add health check scripts

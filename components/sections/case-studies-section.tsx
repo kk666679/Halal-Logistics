@@ -130,7 +130,7 @@ export function CaseStudiesSection() {
       id="case-studies"
       className="relative w-full py-12 md:py-24 lg:py-32 bg-muted/30 overflow-hidden"
     >
-      <AnimatedBackground variant="dots" color="rgba(34, 197, 94, 0.05)" />
+      <AnimatedBackground variant="grid" color="rgba(34, 197, 94, 0.05)" />
 
       <div className="container px-6 md:px-8">
         <ScrollReveal>

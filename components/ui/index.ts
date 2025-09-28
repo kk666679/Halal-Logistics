@@ -13,46 +13,23 @@ export * from "./form";
 export * from "./dialog";
 export * from "./avatar";
 export * from "./bento-grid";
-export * from "./tilt-card";
 export * from "./motion-components";
 
 // Export motion components with convenient aliases
 export {
   MotionDiv,
   MotionSection,
-  MotionArticle,
-  MotionAside,
-  MotionHeader,
-  MotionFooter,
-  MotionNav,
-  MotionMain,
   MotionH1,
   MotionH2,
   MotionH3,
-  MotionH4,
-  MotionH5,
-  MotionH6,
   MotionP,
   MotionSpan,
   MotionButton,
-  MotionA,
   MotionImg,
   MotionUl,
-  MotionOl,
   MotionLi,
-  MotionCard,
-  MotionModal,
-  MotionDrawer,
   MotionStaggerContainer,
   MotionStaggerItem,
-  MotionPage,
-  MotionSpinner,
-  MotionPulse,
-  motionVariants,
-  motionTransitions,
-  type BaseMotionProps,
-  type MotionVariants,
-  type MotionTransitions,
 } from "./motion-components";
 
 // Export animation utilities

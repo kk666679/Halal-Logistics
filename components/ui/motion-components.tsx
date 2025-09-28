@@ -13,3 +13,7 @@ export const MotionButton = motion.button;
 export const MotionImg = motion.img;
 export const MotionUl = motion.ul;
 export const MotionLi = motion.li;
+
+// Stagger animation components
+export const MotionStaggerContainer = motion.div;
+export const MotionStaggerItem = motion.div;

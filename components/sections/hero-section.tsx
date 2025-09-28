@@ -6,7 +6,6 @@ import { ArrowRight, Shield } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { MagneticButton } from "@/components/ui/magnetic-button";
-import { AnimatedBackground } from "@/components/ui/animated-background";
 import { GradientButton } from "@/components/ui-library/buttons/gradient-button";
 
 // Animation variants
@@ -67,12 +66,6 @@ export function HeroSection() {
       id="home"
       className="relative w-full py-12 md:py-24 lg:py-32 xl:py-48 overflow-hidden"
     >
-      <AnimatedBackground
-        variant="gradient"
-        color="rgba(217, 119, 6, 0.08)"
-        secondaryColor="rgba(99, 102, 241, 0.08)"
-      />
-
       {/* Full-width video background */}
       <div className="absolute inset-0 z-0">
         {!videoError ? (

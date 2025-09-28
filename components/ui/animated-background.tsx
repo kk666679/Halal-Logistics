@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 interface AnimatedBackgroundProps {
-  variant?: "waves" | "particles" | "gradient" | "grid";
+  variant?: "waves" | "particles" | "gradient" | "grid" | "dots";
   color?: string;
   className?: string;
   children?: React.ReactNode;
@@ -119,6 +119,26 @@ export function AnimatedBackground({
               }}
               animate={{
                 backgroundPosition: ["0px 0px", "50px 50px"],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+          </div>
+        );
+      case "dots":
+        return (
+          <div className="absolute inset-0 opacity-20">
+            <motion.div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `radial-gradient(circle, ${color} 1px, transparent 1px)`,
+                backgroundSize: "20px 20px",
+              }}
+              animate={{
+                backgroundPosition: ["0px 0px", "20px 20px"],
               }}
               transition={{
                 duration: 20,

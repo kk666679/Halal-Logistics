@@ -1,11 +1,11 @@
 import { apiClient } from "@/lib/api";
+import { AxiosError } from "axios";
 import {
   Product,
   CreateProductData,
   UpdateProductData,
   ProductStats,
   ProductCategory,
-  ApiResponse,
 } from "@/lib/types";
 
 export class ProductsService {
@@ -15,11 +15,13 @@ export class ProductsService {
   async getAll(category?: ProductCategory): Promise<Product[]> {
     try {
       const params = category ? { category } : undefined;
-      const response = await apiClient.get<ApiResponse<Product[]>>("/products", { params });
-      return response.data;
+      const response = await apiClient.get<Product[]>("/products", { params });
+      // Log the response to debug structure
+      // console.log("ProductsService.getAll response:", response);
+      return response;
     } catch (error: any) {
       throw new Error(
-        error.response?.data?.message || "Failed to fetch products",
+        error?.response?.data?.message || error?.message || "Failed to fetch products",
       );
     }
   }
@@ -29,8 +31,8 @@ export class ProductsService {
    */
   async getById(id: string): Promise<Product> {
     try {
-      const response = await apiClient.get<ApiResponse<Product>>(`/products/${id}`);
-      return response.data;
+      const response = await apiClient.get<Product>(`/products/${id}`);
+      return response;
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Failed to fetch product",
@@ -43,8 +45,8 @@ export class ProductsService {
    */
   async create(productData: CreateProductData): Promise<Product> {
     try {
-      const response = await apiClient.post<ApiResponse<Product>>("/products", productData);
-      return response.data;
+      const response = await apiClient.post<Product>("/products", productData);
+      return response;
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Failed to create product",
@@ -57,11 +59,11 @@ export class ProductsService {
    */
   async update(id: string, updateData: UpdateProductData): Promise<Product> {
     try {
-      const response = await apiClient.patch<ApiResponse<Product>>(
+      const response = await apiClient.patch<Product>(
         `/products/${id}`,
         updateData,
       );
-      return response.data;
+      return response;
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Failed to update product",
@@ -74,10 +76,10 @@ export class ProductsService {
    */
   async updateStock(id: string, stock: number): Promise<Product> {
     try {
-      const response = await apiClient.patch<ApiResponse<Product>>(`/products/${id}/stock`, {
+      const response = await apiClient.patch<Product>(`/products/${id}/stock`, {
         stock,
       });
-      return response.data;
+      return response;
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Failed to update stock",
@@ -103,8 +105,8 @@ export class ProductsService {
    */
   async getLowStock(): Promise<Product[]> {
     try {
-      const response = await apiClient.get<ApiResponse<Product[]>>("/products/low-stock");
-      return response.data;
+      const response = await apiClient.get<Product[]>("/products/low-stock");
+      return response;
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Failed to fetch low stock products",
@@ -117,8 +119,8 @@ export class ProductsService {
    */
   async getStats(): Promise<ProductStats> {
     try {
-      const response = await apiClient.get<ApiResponse<ProductStats>>("/products/stats");
-      return response.data;
+      const response = await apiClient.get<ProductStats>("/products/stats");
+      return response;
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Failed to fetch product stats",
@@ -131,10 +133,10 @@ export class ProductsService {
    */
   async search(query: string): Promise<Product[]> {
     try {
-      const response = await apiClient.get<ApiResponse<Product[]>>("/products", {
+      const response = await apiClient.get<Product[]>("/products", {
         params: { search: query },
       });
-      return response.data;
+      return response;
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Failed to search products",

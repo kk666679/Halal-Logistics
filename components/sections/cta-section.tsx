@@ -22,7 +22,7 @@ export function CtaSection() {
                 text="End-to-end Halal Logistics Platform"
                 variant="heading"
                 className="text-3xl font-heading font-bold tracking-tighter sm:text-5xl gradient-text"
-                animation="wave"
+                animation="slide"
               />
               <AnimatedText
                 text="Designed for integrity, transparency, and compliance with global halal standards."
