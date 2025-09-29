@@ -15,8 +15,6 @@
 ![Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen.svg)
 ![Contributors](https://img.shields.io/badge/contributors-10+-blue.svg)
 ![Last Commit](https://img.shields.io/badge/last%20commit-1%20day%20ago-green.svg)
-![Issues](https://img.shields.io/github/issues/your-org/halal-logistics-platform)
-![PRs](https://img.shields.io/github/issues-pr/your-org/halal-logistics-platform)
 
 A **comprehensive monolithic platform** for managing Halal logistics operations, including certification workflows, shipment tracking, inventory management, and user management with role-based access control.
 
