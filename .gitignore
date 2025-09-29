@@ -49,3 +49,4 @@ next-env.d.ts
 infrastructure/
 services/
 .vercel
+microservices/

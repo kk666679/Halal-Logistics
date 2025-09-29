@@ -1,36 +1,54 @@
-# Halal-Logistics Health Check TODO
+# GLFS Microservices Implementation TODO
 
-## Critical Issues (Blockers)
-- [ ] Fix ESLint configuration error in backend (TypeError: Cannot read properties of undefined (reading 'allowShortCircuit'))
-- [ ] Fix test failures: IntersectionObserver not defined in jsdom
-- [ ] Fix missing services in AI agent tests (RiskReportingService, MessageBrokerService)
-- [ ] Resolve build issues (currently running, may fail due to lint errors)
+## Phase 1: Infrastructure Setup ✅
+- [x] Create microservices/ directory structure
+- [x] Set up freight-booking service with HTTP API and Kafka integration
+- [x] Configure Prisma schema for freight-booking
+- [x] Set up API Gateway project
+  - [x] Create microservices/api-gateway/ with NestJS structure (package.json, main.ts, app.module.ts, gateway config)
+  - [x] Configure proxy routes for /products to inventory-service, /quotes to freight-booking
+- [x] Update docker-compose.yml for all services
+  - [x] Create root docker-compose.yml with api-gateway, inventory-service, freight-booking, postgres, kafka, zookeeper
+- [x] Configure Kafka topics for inter-service communication
+  - [x] Add Kafka init for topics: product-events, inventory-updates, quote-events, booking-events
 
-## High Priority Issues
-- [ ] Check and create missing .env file with required variables
-- [ ] Audit dependencies: identify unused packages in package.json files
-- [ ] Run npm audit for security vulnerabilities
-- [ ] Verify Prisma schema consistency (PostgreSQL vs SQLite mismatch)
-- [ ] Check for broken or missing module imports across codebase
+## Detailed Steps for Phase 1 & 2 (Inventory Service)
+- [x] 1. Update inventory-service/prisma/schema.prisma (enhance Product model)
+- [x] 2. Create inventory-service/src/products/dto/*.dto.ts (CreateProductDto, UpdateProductDto)
+- [x] 3. Create inventory-service/src/products/products.service.ts (full CRUD from backend)
+- [x] 4. Create inventory-service/src/products/products.controller.ts (REST endpoints)
+- [x] 5. Update inventory-service/src/products/products.module.ts (import PrismaModule, DTOs)
+- [x] 6. Update inventory-service/src/app.module.ts (import ProductsModule)
+- [x] 7. Ensure inventory-service/package.json deps (@nestjs/prisma, etc.)
+- [x] 8. Comment out ProductsModule in backend/src/app.module.ts
+- [x] 9. Prisma migrate & generate in inventory-service
+- [x] 10. Test inventory-service endpoints
+- [ ] 11. Set up API Gateway (as above)
+- [ ] 12. Create & test docker-compose.yml
+- [ ] 13. Configure Kafka topics
 
-## Medium Priority Issues
-- [ ] Fix TypeScript linting errors (any types, missing dependencies in hooks)
-- [ ] Identify and remove unused components/files
-- [ ] Check API routes alignment with database schema
-- [ ] Validate configuration files (.env, docker, CI/CD)
+## Phase 2: Core Services Extraction
+- [x] Freight Booking & Quotation Service (from booking/products modules)
+- [x] Inventory & Products Management Service (from products module)
+- [x] Freight Order Management Service (from products/shipment modules)
+- [x] Cargo Tracking Service (from tracking module)
+- [ ] Billing Service (from billing module)
+- [ ] Analytics Service (from analytics module)
 
-## Low Priority Issues (Optimizations)
-- [ ] Improve code consistency and style
-- [ ] Add missing test coverage
-- [ ] Optimize bundle size by removing unused deps
-- [ ] Update outdated packages
+## Phase 3: New Services Implementation
+- [ ] Carrier Scheduling Service (new)
+- [ ] Rate Management Service (from products/billing)
+- [ ] Customs Clearance Service (from customs/certification)
+- [ ] Multimodal Routing Service (from warehouse/delivery)
 
-## Testing & Build Reliability
-- [ ] Ensure all tests pass
-- [ ] Verify build scripts work without errors
-- [ ] Check deployment configurations
+## Phase 4: Integration & Testing
+- [ ] Update frontend services for microservices endpoints
+- [ ] Implement inter-service messaging (Kafka)
+- [ ] Test critical-path endpoints with curl
+- [ ] Update deployment documentation
 
-## Documentation & Maintenance
-- [ ] Update README with setup instructions
-- [ ] Document environment variables
-- [ ] Add health check scripts
+## Phase 5: Optimization
+- [ ] Split database schemas per service
+- [ ] Add monitoring and health checks
+- [ ] Implement service discovery
+- [ ] Performance testing and optimization

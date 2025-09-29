@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { AuthModule } from "./auth/auth.module";
 import { UsersModule } from "./users/users.module";
-import { ProductsModule } from "./products/products.module";
+// import { ProductsModule } from "./products/products.module"; // Temporarily commented out for microservice extraction
 import { CertificationModule } from "./certification/certification.module";
 import { TrackingModule } from "./tracking/tracking.module";
 import { BookingModule } from './booking/booking.module';
@@ -23,7 +23,7 @@ import { IntegrationModule } from './integration/integration.module';
     }),
     AuthModule,
     UsersModule,
-    ProductsModule,
+    // ProductsModule, // Temporarily commented out for microservice extraction
     CertificationModule,
     TrackingModule,
     BookingModule,
