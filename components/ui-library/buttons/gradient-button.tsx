@@ -12,6 +12,7 @@ interface GradientButtonProps extends ButtonProps {
   gradientHoverTo?: string;
   glowAmount?: number;
   borderWidth?: number;
+  asChild?: boolean;
 }
 
 export function GradientButton({
@@ -23,9 +24,10 @@ export function GradientButton({
   gradientHoverTo,
   glowAmount = 0,
   borderWidth,
+  asChild,
   ...props
 }: GradientButtonProps) {
-  const Comp = props.asChild ? Slot : "button";
+  const Comp = asChild ? Slot : "button";
 
   const buttonClass = cn(
     borderWidth
@@ -39,7 +41,7 @@ export function GradientButton({
     boxShadow: glowAmount > 0 ? `0 0 ${glowAmount * 4}px currentColor` : undefined,
   };
 
-  if (props.asChild) {
+  if (asChild) {
     return (
       <motion.div
         whileHover={{ scale: 1.02 }}

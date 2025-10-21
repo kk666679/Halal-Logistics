@@ -6,7 +6,7 @@ import { AnimatedText } from "@/components/ui/animated-text";
 export function AIAgentSection() {
   return (
     <section id="ai-agent" className="py-16 bg-gray-50 dark:bg-gray-900/50">
-      <div className="container mx-auto px-4">
+      <div className="container px-4 md:px-6 lg:px-8">
         <ScrollReveal>
           <div className="text-center mb-16">
             <AnimatedText

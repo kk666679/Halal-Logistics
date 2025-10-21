@@ -132,7 +132,7 @@ export function CaseStudiesSection() {
     >
       <AnimatedBackground variant="grid" color="rgba(34, 197, 94, 0.05)" />
 
-      <div className="container px-6 md:px-8">
+      <div className="container px-4 md:px-6 lg:px-8">
         <ScrollReveal>
           <div className="flex flex-col items-center justify-center space-y-6 text-center mb-12">
             <div className="space-y-4">
@@ -338,7 +338,7 @@ export function CaseStudiesSection() {
                     gradientTo="to-blue-600"
                     asChild
                   >
-                    <a href="#contact">Start Your Success Story</a>
+                    <a href="/contact">Start Your Success Story</a>
                   </GradientButton>
                   <GradientButton
                     glowAmount={5}
@@ -348,7 +348,7 @@ export function CaseStudiesSection() {
                     gradientTo="to-blue-600"
                     asChild
                   >
-                    <a href="#demo">
+                    <a href="/case-studies">
                       View More Case Studies
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </a>

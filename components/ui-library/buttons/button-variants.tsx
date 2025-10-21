@@ -19,16 +19,16 @@ const PrimaryButton = React.forwardRef<HTMLButtonElement, ButtonVariantProps>(
       {...props}
     >
       {isLoading ? (
-        <>
+        <span className="flex items-center">
           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
           {loadingText || "Loading..."}
-        </>
+        </span>
       ) : (
-        <>
+        <span className="flex items-center">
           {leftIcon && <span className="mr-2">{leftIcon}</span>}
           {children}
           {rightIcon && <span className="ml-2">{rightIcon}</span>}
-        </>
+        </span>
       )}
     </Button>
   )
@@ -45,16 +45,16 @@ const SecondaryButton = React.forwardRef<HTMLButtonElement, ButtonVariantProps>(
       {...props}
     >
       {isLoading ? (
-        <>
+        <span className="flex items-center">
           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
           {loadingText || "Loading..."}
-        </>
+        </span>
       ) : (
-        <>
+        <span className="flex items-center">
           {leftIcon && <span className="mr-2">{leftIcon}</span>}
           {children}
           {rightIcon && <span className="ml-2">{rightIcon}</span>}
-        </>
+        </span>
       )}
     </Button>
   )
@@ -71,16 +71,16 @@ const OutlineButton = React.forwardRef<HTMLButtonElement, ButtonVariantProps>(
       {...props}
     >
       {isLoading ? (
-        <>
+        <span className="flex items-center">
           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
           {loadingText || "Loading..."}
-        </>
+        </span>
       ) : (
-        <>
+        <span className="flex items-center">
           {leftIcon && <span className="mr-2">{leftIcon}</span>}
           {children}
           {rightIcon && <span className="ml-2">{rightIcon}</span>}
-        </>
+        </span>
       )}
     </Button>
   )

@@ -124,7 +124,7 @@ export function ServicesSection() {
     >
       <AnimatedBackground variant="dots" color="rgba(217, 119, 6, 0.05)" />
 
-      <div className="container px-6 md:px-8">
+      <div className="container px-4 md:px-6 lg:px-8">
         <ScrollReveal>
           <div className="flex flex-col items-center justify-center space-y-6 text-center mb-12">
             {/* Video Hero Section */}
@@ -298,7 +298,7 @@ export function ServicesSection() {
                     gradientTo="to-indigo-600"
                     asChild
                   >
-                    <a href="#contact">Get Started Today</a>
+                    <a href="/contact">Get Started Today</a>
                   </GradientButton>
                   <GradientButton
                     glowAmount={5}
@@ -308,7 +308,7 @@ export function ServicesSection() {
                     gradientTo="to-indigo-600"
                     asChild
                   >
-                    <a href="#demo">Request Demo</a>
+                    <a href="/contact">Request Demo</a>
                   </GradientButton>
                 </div>
               </CardContent>

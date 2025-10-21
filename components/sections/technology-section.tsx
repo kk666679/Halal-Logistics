@@ -155,7 +155,7 @@ export function TechnologySection() {
     >
       <AnimatedBackground variant="waves" color="rgba(99, 102, 241, 0.05)" />
 
-      <div className="container px-6 md:px-8">
+      <div className="container px-4 md:px-6 lg:px-8">
         <ScrollReveal>
           <div className="flex flex-col items-center justify-center space-y-6 text-center mb-12">
             <div className="space-y-4">

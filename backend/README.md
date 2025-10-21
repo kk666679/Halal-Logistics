@@ -45,7 +45,7 @@ graph TB
 - **Database**: PostgreSQL with Prisma ORM
 - **Authentication**: JWT with Passport.js
 - **Validation**: class-validator and class-transformer
-- **Documentation**: Swagger/OpenAPI
+- **Documentation**: Postman
 - **File Upload**: Multer (configurable)
 
 ## 📁 Project Structure

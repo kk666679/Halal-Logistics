@@ -66,7 +66,7 @@ export default function ContactPage() {
     {
       icon: <Mail className="h-6 w-6" />,
       title: "Email",
-      details: ["hello@halalchain.com", "support@halalchain.com"],
+      details: ["salam@halallogistics.xyz", "support@halallogistics.xyz"],
       description: "Send us an email anytime",
     },
     {

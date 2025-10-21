@@ -43,7 +43,7 @@ export function SiteHeader() {
           : "bg-transparent",
       )}
     >
-      <div className="container px-4 md:px-6 flex h-16 items-center justify-between">
+      <div className="container px-4 md:px-6 lg:px-8 flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center space-x-2 z-10">
           <Icons.logo className="h-6 w-6" />
           <span className="font-heading text-xl tracking-tight">
@@ -164,12 +164,12 @@ export function SiteHeader() {
               <div className="mt-auto p-4 border-t border-border">
                 <div className="grid grid-cols-2 gap-3">
                   <Button variant="outline" className="w-full" asChild>
-                    <Link href="#login" onClick={closeMobileMenu}>
+                    <Link href="/sign-in" onClick={closeMobileMenu}>
                       Sign in
                     </Link>
                   </Button>
                   <Button className="w-full neumorphic-button-primary" asChild>
-                    <Link href="#register" onClick={closeMobileMenu}>
+                    <Link href="/get-started" onClick={closeMobileMenu}>
                       Get Started
                     </Link>
                   </Button>

@@ -4,7 +4,7 @@
 
 The Halal Logistics Platform API provides comprehensive endpoints for managing halal supply chain operations, including authentication, product management, certification workflows, and shipment tracking.
 
-**Base URL**: `http://localhost:3001/api` (development) | `https://api.halallogistics.com/api` (production)
+**Base URL**: `http://localhost:3001/api` (development) | `https://api.halallogistics.xyz/api` (production)
 
 ## Authentication
 

@@ -31,7 +31,7 @@ export function FaqSection() {
 
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-background to-muted/30">
-      <div className="container px-4 md:px-6 max-w-4xl mx-auto">
+      <div className="container px-4 md:px-6 lg:px-8 max-w-4xl mx-auto">
         <ScrollReveal>
           <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
             <div className="space-y-2">

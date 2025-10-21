@@ -109,7 +109,7 @@ export function HeroSection() {
         ></div>
       </div>
 
-      <div className="container px-6 md:px-8 relative z-10">
+      <div className="container px-4 md:px-6 lg:px-8 relative z-10">
         <motion.div
           className="flex flex-col justify-center space-y-6"
           variants={containerVariants}
@@ -167,7 +167,7 @@ export function HeroSection() {
               gradientTo="to-framer-purple-500"
               asChild
             >
-              <Link href="#contact" className="flex items-center">
+              <Link href="/contact" className="flex items-center">
                 Request Government Demo
                 <motion.span
                   className="ml-2 inline-block"
@@ -184,7 +184,7 @@ export function HeroSection() {
             </GradientButton>
 
             <MagneticButton className="neumorphic-button">
-              <Link href="#compliance" className="px-6 py-2.5 block">
+              <Link href="/services" className="px-6 py-2.5 block">
                 View Compliance Features
               </Link>
             </MagneticButton>

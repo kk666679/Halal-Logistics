@@ -14,7 +14,7 @@ export function CtaSection() {
       id="cta"
       className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-red-950/30 to-gray-950/30"
     >
-      <div className="container px-6 md:px-8">
+      <div className="container px-4 md:px-6 lg:px-8">
         <ScrollReveal>
           <div className="flex flex-col items-center justify-center space-y-6 text-center">
             <div className="space-y-4">
@@ -46,7 +46,7 @@ export function CtaSection() {
                 gradientTo="to-indigo-600"
                 asChild
               >
-                <Link href="#contact" className="flex items-center">
+                <Link href="/contact" className="flex items-center">
                   Request Demo
                   <MotionSpan
                     className="ml-2 inline-block"
@@ -72,7 +72,7 @@ export function CtaSection() {
                   className="bg-white w-full h-full border-0 px-8 py-3"
                   asChild
                 >
-                  <Link href="#services">Explore Solutions</Link>
+                  <Link href="/services">Explore Solutions</Link>
                 </OutlineButton>
               </AnimatedGradientBorder>
             </MotionDiv>
