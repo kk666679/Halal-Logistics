@@ -1,17 +1,90 @@
 import Link from 'next/link'
+import { auth } from '@clerk/nextjs/server'
+import { currentUser } from '@clerk/nextjs/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Package, Truck, Shield, Bot, User, BarChart3 } from 'lucide-react'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Package, Truck, Shield, Bot, User, BarChart3, Settings, LogOut, Bell } from 'lucide-react'
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  await auth.protect();
+
+  const user = await currentUser();
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-heading font-bold tracking-tight">Dashboard</h1>
-        <Button variant="outline">
-          <BarChart3 className="h-4 w-4 mr-2" />
-          View Reports
-        </Button>
+        <div className="flex items-center space-x-4">
+          <Avatar className="h-12 w-12">
+            <AvatarImage src={user?.imageUrl} alt={user?.firstName || 'User'} />
+            <AvatarFallback>
+              {user?.firstName?.charAt(0)?.toUpperCase() || 'U'}
+              {user?.lastName?.charAt(0)?.toUpperCase() || ''}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <h1 className="text-3xl font-heading font-bold tracking-tight">
+              Welcome back, {user?.firstName || 'User'}!
+            </h1>
+            <p className="text-muted-foreground">
+              {user?.primaryEmailAddress?.emailAddress}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Button variant="outline" size="sm">
+            <Bell className="h-4 w-4 mr-2" />
+            Notifications
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Settings className="h-4 w-4 mr-2" />
+                Settings
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <User className="mr-2 h-4 w-4" />
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Settings className="mr-2 h-4 w-4" />
+                Preferences
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <BarChart3 className="mr-2 h-4 w-4" />
+                Analytics
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <LogOut className="mr-2 h-4 w-4" />
+                Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+
+      <div className="flex items-center space-x-4">
+        <Badge variant="secondary">Premium User</Badge>
+        <Badge variant="outline">Halal Certified</Badge>
+        <Separator orientation="vertical" className="h-6" />
+        <span className="text-sm text-muted-foreground">
+          Last login: {new Date().toLocaleDateString()}
+        </span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
