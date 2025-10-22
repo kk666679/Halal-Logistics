@@ -4,8 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("STORAGE_PRISMA_DATABASE_URL")
 }
 
 enum UserRole {
@@ -159,6 +159,9 @@ model Certification {
   approvedAt                DateTime?
   certificationNumber       String?
   validUntil                DateTime?
+  blockchainTxHash          String?
+  ipfsDocumentHash          String?
+  ociDocumentUrl            String?
   submittedBy               String
   assignedTo                String?
   createdAt                 DateTime          @default(now())
@@ -167,6 +170,7 @@ model Certification {
   // Relations
   submitter User @relation(fields: [submittedBy], references: [id], onDelete: Cascade, name: "CertificationSubmitter")
   assignee  User? @relation(fields: [assignedTo], references: [id], onDelete: SetNull, name: "CertificationAssignee")
+  blockchainTransactions BlockchainTransaction[]
 
   @@map("certifications")
 }
@@ -185,6 +189,9 @@ model Tracking {
   temperature         Json?
   carrier             String
   blockchainVerified  Boolean  @default(true)
+  blockchainTxHash    String?
+  ipfsHash            String?
+  ociStorageUrl       String?
   createdBy           String
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -192,6 +199,7 @@ model Tracking {
   // Relations
   creator TrackingEvent[]
   user    User           @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  blockchainTransactions BlockchainTransaction[]
 
   @@map("tracking")
 }
@@ -205,6 +213,7 @@ model TrackingEvent {
   humidity      Float?
   description   String
   blockchainHash String?
+  ipfsEventHash String?
   verifiedBy    String?
   coordinates   Json?
   trackingId    String
@@ -490,3 +499,76 @@ model Integration {
   @@map("integrations")
 }
 
+enum BlockchainNetworkType {
+  HYPERLEDGER_FABRIC
+  ETHEREUM
+  POLYGON
+  BSC
+}
+
+enum IpfsPinStatus {
+  PINNED
+  UNPINNED
+  PINNING
+  FAILED
+}
+
+model BlockchainTransaction {
+  id            String   @id @default(cuid())
+  networkType   BlockchainNetworkType
+  transactionHash String @unique
+  blockNumber   String?
+  contractAddress String?
+  methodName    String?
+  params        Json?
+  status        String   @default("pending")
+  gasUsed       String?
+  gasPrice      String?
+  fromAddress   String?
+  toAddress     String?
+  value         String?
+  data          Json?
+  certificationId String?
+  trackingId    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  certification Certification? @relation(fields: [certificationId], references: [id], onDelete: SetNull)
+  tracking      Tracking?      @relation(fields: [trackingId], references: [id], onDelete: SetNull)
+
+  @@map("blockchain_transactions")
+}
+
+model IpfsContent {
+  id            String   @id @default(cuid())
+  hash          String   @unique
+  name          String?
+  size          Int?
+  contentType   String?
+  pinStatus     IpfsPinStatus @default(PINNED)
+  metadata      Json?
+  relatedEntity String? // e.g., "certification:123", "tracking:456"
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("ipfs_content")
+}
+
+model OciResource {
+  id            String   @id @default(cuid())
+  resourceType  String   // e.g., "object-storage", "function", "database"
+  resourceId    String   @unique
+  compartmentId String?
+  region        String?
+  namespace     String?
+  bucketName    String?
+  objectName    String?
+  url           String?
+  metadata      Json?
+  status        String   @default("active")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("oci_resources")
+}

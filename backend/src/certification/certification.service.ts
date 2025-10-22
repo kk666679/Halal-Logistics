@@ -4,6 +4,8 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
+import { BlockchainService } from "../blockchain/blockchain.service";
+import { IpfsService } from "../ipfs/ipfs.service";
 import {
   Certification,
   CertificationStatus,
@@ -16,19 +18,44 @@ import {
 
 @Injectable()
 export class CertificationService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private blockchainService: BlockchainService,
+    private ipfsService: IpfsService,
+  ) {}
 
   async create(
     createCertificationDto: CreateCertificationDto,
     userId: string,
   ): Promise<Certification> {
+    // Store certification documents on IPFS if provided
+    let ipfsHash: string | undefined;
+    if (createCertificationDto.documents) {
+      try {
+        ipfsHash = await this.ipfsService.uploadFile(createCertificationDto.documents);
+      } catch (error) {
+        console.error('Failed to upload documents to IPFS:', error);
+        // Continue without IPFS hash - don't fail the certification creation
+      }
+    }
+
     const certification = await this.prisma.certification.create({
       data: {
         ...createCertificationDto,
         submittedBy: userId,
         status: CertificationStatus.PENDING,
+        ipfsDocumentHash: ipfsHash,
       },
     });
+
+    // Record certification creation on blockchain
+    try {
+      await this.blockchainService.recordCertificationCreation(certification.id, userId);
+    } catch (error) {
+      console.error('Failed to record certification on blockchain:', error);
+      // Continue - blockchain recording failure shouldn't prevent certification creation
+    }
+
     return certification;
   }
 
@@ -50,6 +77,12 @@ export class CertificationService {
             firstName: true,
             lastName: true,
             email: true,
+          },
+        },
+        blockchainTransactions: {
+          select: {
+            transactionHash: true,
+            createdAt: true,
           },
         },
       },
@@ -82,6 +115,12 @@ export class CertificationService {
             email: true,
           },
         },
+        blockchainTransactions: {
+          select: {
+            transactionHash: true,
+            createdAt: true,
+          },
+        },
       },
     });
 
@@ -110,6 +149,12 @@ export class CertificationService {
             email: true,
           },
         },
+        blockchainTransactions: {
+          select: {
+            transactionHash: true,
+            createdAt: true,
+          },
+        },
       },
     });
 
@@ -131,6 +176,12 @@ export class CertificationService {
             email: true,
           },
         },
+        blockchainTransactions: {
+          select: {
+            transactionHash: true,
+            createdAt: true,
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',
@@ -147,6 +198,12 @@ export class CertificationService {
             firstName: true,
             lastName: true,
             email: true,
+          },
+        },
+        blockchainTransactions: {
+          select: {
+            transactionHash: true,
+            createdAt: true,
           },
         },
       },
@@ -172,6 +229,12 @@ export class CertificationService {
             firstName: true,
             lastName: true,
             email: true,
+          },
+        },
+        blockchainTransactions: {
+          select: {
+            transactionHash: true,
+            createdAt: true,
           },
         },
       },
@@ -225,11 +288,25 @@ export class CertificationService {
             email: true,
           },
         },
+        blockchainTransactions: {
+          select: {
+            transactionHash: true,
+            createdAt: true,
+          },
+        },
       },
     });
 
     if (!certification) {
       throw new NotFoundException("Certification application not found");
+    }
+
+    // Record status change on blockchain
+    try {
+      await this.blockchainService.recordCertificationStatusChange(id, status, assignedTo);
+    } catch (error) {
+      console.error('Failed to record status change on blockchain:', error);
+      // Continue - blockchain recording failure shouldn't prevent status update
     }
 
     return certification;
@@ -260,11 +337,25 @@ export class CertificationService {
             email: true,
           },
         },
+        blockchainTransactions: {
+          select: {
+            transactionHash: true,
+            createdAt: true,
+          },
+        },
       },
     });
 
     if (!certification) {
       throw new NotFoundException("Certification application not found");
+    }
+
+    // Record assignment on blockchain
+    try {
+      await this.blockchainService.recordCertificationAssignment(id, reviewerId);
+    } catch (error) {
+      console.error('Failed to record assignment on blockchain:', error);
+      // Continue - blockchain recording failure shouldn't prevent assignment
     }
 
     return certification;
@@ -278,6 +369,18 @@ export class CertificationService {
     const whereClause: { id: string; submittedBy?: string } = { id };
     if (userId) {
       whereClause.submittedBy = userId;
+    }
+
+    // Handle IPFS upload for updated documents
+    let ipfsHash: string | undefined;
+    if (updateCertificationDto.documents) {
+      try {
+        ipfsHash = await this.ipfsService.uploadFile(updateCertificationDto.documents);
+        // Update the DTO to include the IPFS hash
+        updateCertificationDto.ipfsDocumentHash = ipfsHash;
+      } catch (error) {
+        console.error('Failed to upload updated documents to IPFS:', error);
+      }
     }
 
     const certification = await this.prisma.certification.update({
@@ -296,6 +399,12 @@ export class CertificationService {
             firstName: true,
             lastName: true,
             email: true,
+          },
+        },
+        blockchainTransactions: {
+          select: {
+            transactionHash: true,
+            createdAt: true,
           },
         },
       },
@@ -331,6 +440,12 @@ export class CertificationService {
             email: true,
           },
         },
+        blockchainTransactions: {
+          select: {
+            transactionHash: true,
+            createdAt: true,
+          },
+        },
       },
     });
 
@@ -364,5 +479,28 @@ export class CertificationService {
     });
 
     return { total, byStatus, byType, pendingReview };
+  }
+
+  // Enhanced blockchain and IPFS integration methods
+  async getCertificationBlockchainHistory(certificationId: string): Promise<any[]> {
+    return this.blockchainService.getCertificationHistory(certificationId);
+  }
+
+  async getCertificationDocumentFromIPFS(ipfsHash: string): Promise<Buffer> {
+    return this.ipfsService.getFile(ipfsHash);
+  }
+
+  async verifyCertificationOnBlockchain(certificationId: string): Promise<boolean> {
+    return this.blockchainService.verifyCertification(certificationId);
+  }
+
+  // Subscribe to blockchain events for real-time updates
+  onBlockchainEvent(event: string, listener: (...args: any[]) => void) {
+    this.blockchainService.on(event, listener);
+  }
+
+  // Unsubscribe from blockchain events
+  offBlockchainEvent(event: string, listener: (...args: any[]) => void) {
+    this.blockchainService.off(event, listener);
   }
 }

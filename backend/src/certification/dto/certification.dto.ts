@@ -64,6 +64,9 @@ export class CreateCertificationDto {
   @IsArray()
   @IsString({ each: true })
   supportingDocuments?: string[];
+
+  @IsOptional()
+  documents?: Buffer;
 }
 
 export class UpdateCertificationDto {
@@ -132,6 +135,12 @@ export class UpdateCertificationDto {
   @IsArray()
   @IsString({ each: true })
   supportingDocuments?: string[];
+
+  @IsOptional()
+  documents?: Buffer;
+
+  @IsOptional()
+  ipfsDocumentHash?: string;
 }
 
 export class UpdateCertificationStatusDto {

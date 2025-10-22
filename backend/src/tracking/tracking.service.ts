@@ -4,6 +4,8 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
+import { BlockchainService } from "../blockchain/blockchain.service";
+import { IpfsService } from "../ipfs/ipfs.service";
 import {
   Tracking,
   TrackingStatus,
@@ -16,7 +18,11 @@ import {
 
 @Injectable()
 export class TrackingService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private blockchainService: BlockchainService,
+    private ipfsService: IpfsService,
+  ) {}
 
   async create(
     createTrackingDto: CreateTrackingDto,
@@ -30,6 +36,21 @@ export class TrackingService {
         progress: 0,
       },
     });
+
+    // Record shipment creation on blockchain
+    try {
+      await this.blockchainService.submitShipmentTracking({
+        id: tracking.id,
+        productName: createTrackingDto.productName,
+        origin: createTrackingDto.origin,
+        destination: createTrackingDto.destination,
+        carrier: createTrackingDto.carrier,
+        userId,
+      });
+    } catch (error) {
+      console.error('Failed to record shipment on blockchain:', error);
+    }
+
     return tracking;
   }
 
@@ -229,6 +250,13 @@ export class TrackingService {
       throw new NotFoundException("Tracking record not found");
     }
 
+    // Record status change on blockchain
+    try {
+      await this.blockchainService.updateShipmentStatus(id, status, tracking.currentLocation || '');
+    } catch (error) {
+      console.error('Failed to update shipment status on blockchain:', error);
+    }
+
     return tracking;
   }
 
@@ -316,5 +344,28 @@ export class TrackingService {
     });
 
     return { total, byStatus, inTransit, delivered, delayed };
+  }
+
+  // Enhanced blockchain and IPFS integration methods
+  async getShipmentBlockchainHistory(shipmentId: string): Promise<any[]> {
+    return this.blockchainService.getTransactionHistory(shipmentId);
+  }
+
+  async verifyShipmentOnBlockchain(shipmentId: string): Promise<any> {
+    return this.blockchainService.queryShipment(shipmentId);
+  }
+
+  async getShipmentDocumentFromIPFS(ipfsHash: string): Promise<Buffer> {
+    return this.ipfsService.getFile(ipfsHash);
+  }
+
+  // Subscribe to blockchain events for real-time updates
+  onBlockchainEvent(event: string, listener: (...args: any[]) => void) {
+    this.blockchainService.on(event, listener);
+  }
+
+  // Unsubscribe from blockchain events
+  offBlockchainEvent(event: string, listener: (...args: any[]) => void) {
+    this.blockchainService.off(event, listener);
   }
 }

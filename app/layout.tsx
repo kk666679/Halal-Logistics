@@ -4,6 +4,7 @@ import { Inter, Manrope } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ClerkProvider } from '@clerk/nextjs';
 import { AuthProvider } from "@/contexts/auth-context";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -43,27 +44,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "min-h-screen bg-white font-sans antialiased font-light",
-          fontSans.variable,
-          fontHeading.variable,
-        )}
-      >
-        <ThemeProvider
-          defaultTheme="dark"
-          storageKey="halal-logistics-theme"
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={cn(
+            "min-h-screen bg-white font-sans antialiased font-light",
+            fontSans.variable,
+            fontHeading.variable,
+          )}
         >
-          <AuthProvider>
-            <div className="relative flex min-h-screen flex-col">
-              <SiteHeader />
-              <main className="flex-1">{children}</main>
-              <SiteFooter />
-            </div>
-          </AuthProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+          <ThemeProvider
+            defaultTheme="dark"
+            storageKey="halal-logistics-theme"
+          >
+            <AuthProvider>
+              <div className="relative flex min-h-screen flex-col">
+                <SiteHeader />
+                <main className="flex-1">{children}</main>
+                <SiteFooter />
+              </div>
+            </AuthProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
