@@ -1,25 +1,27 @@
 {
   "version": 2,
-  "builds": [
+  "regions": ["iad1"],
+  "headers": [
     {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
     }
   ],
   "env": {
-    "NODE_ENV": "production"
-  },
-  "build": {
-    "env": {
-      "NODE_ENV": "production"
-    }
-  },
-  "regions": ["iad1"],
-  "outputDirectory": ".next"
+    "NEXT_PUBLIC_APP_NAME": "Halal Logistics",
+    "NEXT_PUBLIC_APP_VERSION": "1.0.0"
+  }
 }
