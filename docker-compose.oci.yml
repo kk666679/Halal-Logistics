@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # Frontend
+  frontend:
+    build: ./apps/frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=${OCI_API_GATEWAY_URL}
+    depends_on:
+      - api-gateway
+
+  # API Gateway
+  api-gateway:
+    build: ./apps/api-gateway
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=${OCI_REDIS_URL}
+      - OCI_TENANCY_ID=${OCI_TENANCY_ID}
+      - OCI_USER_ID=${OCI_USER_ID}
+      - OCI_FINGERPRINT=${OCI_FINGERPRINT}
+      - OCI_PRIVATE_KEY_PATH=${OCI_PRIVATE_KEY_PATH}
+      - OCI_REGION=${OCI_REGION}
+    depends_on:
+      - auth-service
+
+  # Auth Service
+  auth-service:
+    build: ./apps/auth-service
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${OCI_AUTONOMOUS_DB_URL}
+      - REDIS_URL=${OCI_REDIS_URL}
+      - JWT_SECRET=${JWT_SECRET}
+
+  # Certification Service
+  certification-service:
+    build: ./apps/certification-service
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${OCI_AUTONOMOUS_DB_URL}
+      - REDIS_URL=${OCI_REDIS_URL}
+      - OCI_OBJECT_STORAGE_URL=${OCI_OBJECT_STORAGE_URL}
+
+  # OCI Integration Service
+  oci-integration:
+    build: ./apps/oci-integration
+    environment:
+      - NODE_ENV=production
+      - OCI_TENANCY_ID=${OCI_TENANCY_ID}
+      - OCI_USER_ID=${OCI_USER_ID}
+      - OCI_FINGERPRINT=${OCI_FINGERPRINT}
+      - OCI_PRIVATE_KEY_PATH=${OCI_PRIVATE_KEY_PATH}
+      - OCI_REGION=${OCI_REGION}
