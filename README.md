@@ -15,8 +15,11 @@
 ![Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen.svg)
 ![Contributors](https://img.shields.io/badge/contributors-10+-blue.svg)
 ![Last Commit](https://img.shields.io/badge/last%20commit-1%20day%20ago-green.svg)
+![Issues](https://img.shields.io/github/issues/your-org/halal-logistics-platform)
+![PRs](https://img.shields.io/github/issues-pr/your-org/halal-logistics-platform)
+![Discord](https://img.shields.io/discord/1234567890?label=discord)
 
-A **comprehensive monolithic platform** for managing Halal logistics operations, including certification workflows, shipment tracking, inventory management, and user management with role-based access control.
+A **comprehensive microservices-based platform** for managing Halal logistics operations, including certification workflows, shipment tracking, inventory management, compliance auditing, and cross-border trade facilitation.
 
 ---
 
@@ -37,47 +40,78 @@ A **comprehensive monolithic platform** for managing Halal logistics operations,
 
 ```mermaid
 flowchart TD
-  subgraph Frontend [Frontend Layer]
+  subgraph FrontendLayer [Frontend Layer]
     NextJS[Next.js 15 App\nTailwind CSS + shadcn/ui]
-    Auth[Authentication System\nJWT + Role-based Access]
+    Mobile[React Native App\nCross-platform]
+    AdminPanel[Admin Dashboard\nAdvanced Analytics]
   end
 
-  subgraph Backend [Backend Layer]
-    API[NestJS Monolith API\nPort 3001]
-    AuthModule[Auth Module\nUser Management]
-    ProductModule[Product Module\nInventory Management]
-    CertModule[Certification Module\nHalal Certification]
-    TrackingModule[Tracking Module\nShipment Tracking]
+  subgraph APIGateway [API Gateway Layer]
+    Gateway[NestJS API Gateway\nAuth + Rate Limiting]
+    BFF1[Backend for Frontend\nWeb]
+    BFF2[Backend for Frontend\nMobile]
   end
 
-  subgraph Database [Database Layer]
-    Postgres[(PostgreSQL\nPrisma ORM)]
-    Redis[(Redis\nCaching & Sessions)]
+  subgraph Microservices [Microservices Layer]
+    Auth[Auth Service\nJWT + RBAC]
+    Cert[Certification Service]
+    Ship[Shipment Service]
+    Inv[Inventory Service]
+    Audit[Audit Service]
+    Finance[Finance Service]
+    Risk[Risk Management]
+    AI[AI Service]
+    Blockchain[Blockchain Service]
   end
 
-  subgraph External [External Services]
-    Blockchain[Blockchain Integration\nOptional]
-    FileStorage[File Storage\nDocument Management]
+  subgraph Infrastructure [Infrastructure Layer]
+    Redis[Redis Cache + Pub/Sub]
+    Postgres[PostgreSQL Neon]
+    Blob[Blob Storage]
+    Kafka[Kafka Streaming]
+    K8s[Kubernetes]
+    OCI[Oracle Cloud Infrastructure]
   end
 
-  NextJS --> API
-  Auth --> API
+  NextJS --> BFF1
+  Mobile --> BFF2
+  AdminPanel --> Gateway
+  BFF1 --> Gateway
+  BFF2 --> Gateway
 
-  API --> AuthModule
-  API --> ProductModule
-  API --> CertModule
-  API --> TrackingModule
+  Gateway --> Auth
+  Gateway --> Cert
+  Gateway --> Ship
+  Gateway --> Inv
+  Gateway --> Audit
+  Gateway --> Finance
+  Gateway --> Risk
+  Gateway --> AI
+  Gateway --> Blockchain
 
-  AuthModule --> Postgres
-  ProductModule --> Postgres
-  CertModule --> Postgres
-  TrackingModule --> Postgres
+  Auth -.-> Redis
+  Cert -.-> Redis
+  Ship -.-> Redis
+  Inv -.-> Redis
 
-  AuthModule -.-> Redis
-  API -.-> Redis
+  Auth --> Postgres
+  Cert --> Postgres
+  Ship --> Postgres
+  Inv --> Postgres
+  Audit --> Postgres
 
-  CertModule -.-> FileStorage
-  CertModule -.-> Blockchain
+  Cert --> Blob
+  Audit --> Blob
+
+  Cert --> Kafka
+  Ship --> Kafka
+  Risk --> Kafka
+
+  Postgres -.-> OCI
+  Redis -.-> OCI
+  Blob -.-> OCI
+  Kafka -.-> OCI
+  K8s -.-> OCI
 ```
 
 ---
@@ -88,38 +122,32 @@ flowchart TD
 graph TD
   A[halal-logistics-platform/]
 
-  subgraph frontend [Frontend - Next.js]
-    FE[app/ - Pages & Components]
-    COMP[components/ - UI Components]
-    LIB[lib/ - Utilities & Config]
-    PUB[public/ - Static Assets]
-    CONT[contexts/ - React Contexts]
-    SERV[services/ - API Services]
+  subgraph apps
+    AG[api-gateway]
+    AU[auth-service]
+    CE[certification-service]
+    SH[shipment-service]
+    IN[inventory-service]
+    AU2[audit-service]
+    FI[finance-service]
+    AI[ai-service]
+    BC[blockchain-service]
+    OCI[oci-integration]
+    FE[frontend]
   end
 
-  subgraph backend [Backend - NestJS]
-    SRC[src/ - Source Code]
-    PRIS[prisma/ - Database Schema]
-    MOD[Modules: auth, users, products, certification, tracking]
+  subgraph packages
+    SHD[shared]
+    PRO[proto]
   end
 
-  subgraph config [Configuration]
-    ENV[.env files]
-    PKG[package.json]
-    TS[tsconfig.json]
-    ESL[eslint config]
-  end
-
-  subgraph docs [Documentation]
-    READ[README.md]
-    API[README-API-Integration.md]
-    BACK[backend/README.md]
-  end
-
-  A --> frontend
-  A --> backend
-  A --> config
-  A --> docs
+  A --> apps
+  A --> packages
+  A --> CFG[docker-compose.yml]
+  A --> CFG2[docker-compose.prod.yml]
+  A --> CFG3[docker-compose.oci.yml]
+  A --> PKG[package.json]
+  A --> DOC[README.md]
 ```
 
 ---
@@ -146,62 +174,52 @@ graph TD
 ### Setup
 
 ```bash
-# Clone the repository
+# Clone
 git clone https://github.com/your-org/halal-logistics-platform.git
 cd halal-logistics-platform
 
-# Install frontend dependencies
-npm install
+# Copy environment templates
+cp .env.example .env
+cp apps/auth-service/.env.example apps/auth-service/.env
+...
 
-# Install backend dependencies
-cd backend
-npm install
-cd ..
+# Start all services
+docker-compose up -d
 
-# Set up environment variables
-cp .env.example .env  # Update with your database URL and other configs
-
-# Set up the database
-cd backend
-npx prisma generate
-npx prisma db push
-cd ..
-
-# Start the backend server
-cd backend
-npm run start:dev
-# Backend will be available at http://localhost:3001
-
-# In a new terminal, start the frontend
-npm run dev
-# Frontend will be available at http://localhost:3000
+# Run migrations
+docker-compose exec auth-service npm run db:migrate
+...
 ```
 
 ### Access
 
 ![Frontend](https://img.shields.io/badge/Frontend-Localhost:3000-000000?logo=next.js)
-![Backend API](https://img.shields.io/badge/Backend_API-Localhost:3001-67A4AC?logo=node.js)
-![Database](https://img.shields.io/badge/Database-PostgreSQL-336791?logo=postgresql)
+![API](https://img.shields.io/badge/API_Localhost:3000/api-67A4AC?logo=node.js)
+![Docs](https://img.shields.io/badge/Docs-Localhost:3000/api/docs-6E5494?logo=swagger)
+![Admin](https://img.shields.io/badge/Admin-Localhost:3000/admin-FF6B6B?logo=react)
+![OCI Console](https://img.shields.io/badge/OCI_Console-Cloud_Console-F80000?logo=oracle)
 
 - Frontend → [http://localhost:3000](http://localhost:3000)
-- Backend API → [http://localhost:3001](http://localhost:3001)
-- API Documentation → Available via Swagger at backend endpoints
+- API Gateway → [http://localhost:3000/api](http://localhost:3000/api)
+- API Docs (Swagger) → [http://localhost:3000/api/docs](http://localhost:3000/api/docs)
+- Admin Dashboard → [http://localhost:3000/admin](http://localhost:3000/admin)
 
 ---
 
 ## 📦 Tech Stack
 
-![Tech](https://skillicons.dev/icons?i=nodejs,nextjs,nestjs,ts,tailwind,prisma,postgres,redis,docker,jest)
+![Tech](https://skillicons.dev/icons?i=nodejs,nextjs,nestjs,ts,tailwind,prisma,postgres,redis,docker,aws,gcp,azure,kafka,kubernetes,react,graphql,jest,oracle)
 
-- **Frontend**: Next.js 15, React 18, TypeScript, Tailwind CSS, shadcn/ui
-- **Backend**: NestJS 10, Node.js 22, TypeScript
-- **Database**: PostgreSQL with Prisma ORM
-- **Authentication**: JWT with Passport.js
-- **Validation**: class-validator, class-transformer
-- **Caching**: Redis (optional)
-- **File Storage**: Local file system (configurable)
-- **Development**: ESLint, Prettier
-- **Testing**: Jest
+- **Frontend**: Next.js 15, React 19, Tailwind, shadcn/ui
+- **Backend**: NestJS, Node.js 22
+- **Database**: PostgreSQL (Neon/OCI Autonomous)
+- **ORM**: Prisma
+- **Caching**: Redis
+- **Messaging**: Kafka, Redis Pub/Sub
+- **Storage**: S3/Azure/OCI Object Storage
+- **Blockchain**: Ethereum/Hyperledger
+- **AI/ML**: TensorFlow\.js
+- **Infra**: Docker, Kubernetes, OCI
 
 ---
 
@@ -209,23 +227,18 @@ npm run dev
 
 ![Contributions](https://img.shields.io/badge/Contributions-Welcome-brightgreen)
 ![PRs](https://img.shields.io/badge/PRs-Welcome-brightgreen)
+![Good First Issue](https://img.shields.io/github/issues/your-org/halal-logistics-platform/good%20first%20issue)
+![Help Wanted](https://img.shields.io/github/issues/your-org/halal-logistics-platform/help%20wanted)
+![OCI Contributions](https://img.shields.io/badge/Contributions-OCI_Integration-F80000?logo=oracle)
 
-We welcome contributions! Here's how you can help:
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md).
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Run tests (`npm test` in backend, `npm run build` in frontend)
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
+1. Fork the repo
+2. Create feature branch
+3. Commit & push
+4. Open a PR
 
-### Development Guidelines
-
-- Follow TypeScript best practices
-- Add tests for new features
-- Update documentation as needed
-- Ensure all tests pass before submitting PR
+Special call for **OCI integration contributors** 🚀
 
 ---
 
@@ -240,13 +253,32 @@ This project is licensed under the **MIT License**.
 ## 📞 Support
 
 ![GitHub Issues](https://img.shields.io/badge/Support-GitHub_Issues-181717?logo=github)
+![Email](https://img.shields.io/badge/Email-support%40halallogistics.com-EA4335?logo=gmail)
+![Docs](https://img.shields.io/badge/Docs-docs.halallogistics.com-6E5494?logo=readthedocs)
+![Discord](https://img.shields.io/discord/1234567890?label=discord&logo=discord)
+![Twitter](https://img.shields.io/twitter/follow/halallogistics?style=social&logo=twitter)
+![OCI Forum](https://img.shields.io/badge/Support-OCI_Forum-F80000?logo=oracle)
 
 For support and questions:
 
 - Open an issue on GitHub
-- Check the API documentation available at backend endpoints
-- Review the setup instructions in this README
+- Email: [support@halallogistics.xyz](mailto:support@halallogistics.xyz)
+- Documentation: docs.halallogistics.com
+- Discord: Join our community
+- Twitter: @halallogistics_halalchain
+- OCI Forum: Oracle Cloud Infrastructure Forum
 
 ---
 
-Built with ❤️ for logistics and supply chain management
+- For the **Halal Logistics** industry
+
+![Halal](https://img.shields.io/badge/Halal-Certified-green)
+![Quality](https://img.shields.io/badge/Quality-Assured-blue)
+![Compliance](https://img.shields.io/badge/Compliance-100%25-brightgreen)
+![Transparency](https://img.shields.io/badge/Transparency-Blockchain-3C3C3D)
+![OCI Ready](https://img.shields.io/badge/Deployment-OCI_Ready-F80000?logo=oracle)
+
+**Halal Certified • Quality • Compliance • Transparency • OCI Ready**
+
+![Twitter Follow](https://img.shields.io/twitter/follow/halallogistics_halalchain?style=social)
+
