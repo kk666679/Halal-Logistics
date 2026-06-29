@@ -429,17 +429,17 @@ Special call for **OCI integration contributors** 🚀
 
 ## 📜 License
 
-![MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![STRICT-PROPRIETARY](https://img.shields.io/badge/License-STRICT-PROPRIETARY-yellow.svg)
 
-This project is licensed under the **MIT License**.
+This project is licensed under the **STRICT-PROPRIETARY License**.
 
 ---
 
 ## 📞 Support
 
 ![GitHub Issues](https://img.shields.io/badge/Support-GitHub_Issues-181717?logo=github)
-![Email](https://img.shields.io/badge/Email-support%40halallogistics.com-EA4335?logo=gmail)
-![Docs](https://img.shields.io/badge/Docs-docs.halallogistics.com-6E5494?logo=readthedocs)
+![Email](https://img.shields.io/badge/Email-support%40halalchain.xyz-EA4335?logo=gmail)
+![Docs](https://img.shields.io/badge/Docs-docs.halalchain.xyz-6E5494?logo=readthedocs)
 ![Discord](https://img.shields.io/discord/1234567890?label=discord&logo=discord)
 ![Twitter](https://img.shields.io/twitter/follow/halallogistics?style=social&logo=twitter)
 ![OCI Forum](https://img.shields.io/badge/Support-OCI_Forum-F80000?logo=oracle)
@@ -447,7 +447,7 @@ This project is licensed under the **MIT License**.
 For support and questions:
 
 - Open an issue on GitHub
-- Email: [support@halallogistics.xyz](mailto:support@halallogistics.xyz)
+- Email: [support@halalchain.xyz](mailto:support@halalchain.xyz)
 - Documentation: docs.halallogistics.com
 - Discord: Join our community
 - Twitter: @halallogistics_halalchain
