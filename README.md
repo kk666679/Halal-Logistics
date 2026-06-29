@@ -223,6 +223,191 @@ docker-compose exec auth-service npm run db:migrate
 
 ---
 
+
+## Multi-Agent
+
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#7c3aed', 'primaryTextColor': '#fff', 'lineColor': '#6b7280', 'secondaryColor': '#f3f4f6', 'tertiaryColor': '#ecfdf5'}}}%%
+
+graph TD
+
+    %% ================================================================
+    %% IDENTITY & ACCESS
+    %% ================================================================
+    USER["👤 User\n(Auth + Role)"]
+    VENDOR["🏪 Vendor\n(Seller Profile)"]
+    CUSTOMER["🛒 Customer\n(Buyer Profile)"]
+
+    %% ================================================================
+    %% PRODUCT CATALOG
+    %% ================================================================
+    PRODUCT["📦 Product\n(Listing)"]
+    CATEGORY["🗂️ Category\n(Taxonomy)"]
+    VARIANT["🔀 ProductVariant\n(SKU/Option)"]
+
+    %% ================================================================
+    %% ORDER MANAGEMENT
+    %% ================================================================
+    CART["🧺 Cart\n(localStorage + DB)"]
+    ORDER["📋 Order\n(per Vendor)"]
+    LINE["📄 OrderLineItem"]
+    PAYMENT["💳 Payment\n(Stripe)"]
+    SHIPMENT["📬 Shipment\n(Tracking)"]
+    RETURN["↩️ ProductReturn\n(RMA)"]
+
+    %% ================================================================
+    %% FINANCE
+    %% ================================================================
+    COMMISSION["💰 CommissionRule\n(Tiered Fees)"]
+    PAYOUT["💵 Payout\n(Vendor Earnings)"]
+
+    %% ================================================================
+    %% HALAL-SPECIFIC — Risk & Compliance
+    %% ================================================================
+    CERT["🌙 HalalCertification\n(Halal / Organic / etc.)"]
+    AMANAH["⭐ AmanahScore\n(0–100 Trust)"]
+
+    %% ================================================================
+    %% SUPPLY CHAIN
+    %% ================================================================
+    WAREHOUSE["🏭 Warehouse\n(Inventory)"]
+
+    %% ================================================================
+    %% AI & INTELLIGENCE
+    %% ================================================================
+    EMBEDDING["🔢 ProductEmbedding\n(384-dim vector)"]
+    AIREC["🤖 AiRecommendation\n(Personalised)"]
+    AIANALYSIS["🧠 AiAnalysis\n(Price / SEO)"]
+
+    %% ================================================================
+    %% OPENCLAW AGENTS
+    %% ================================================================
+    ORCHESTRATOR["🎯 Orchestrator\n(Router)"]
+    HALAL_AGENT["🌙 halal-compliance\nagent"]
+    AMANAH_AGENT["⭐ amanah-score\nagent"]
+    MOD_AGENT["🛡️ product-moderation\nagent"]
+    ONBOARD_AGENT["📋 vendor-onboarding\nagent"]
+    ORDER_AGENT["📦 order-fulfillment\nagent"]
+    DISPUTE_AGENT["⚖️ dispute-resolution\nagent"]
+    COMM_AGENT["💰 commission-agent"]
+    ANALYTICS_AGENT["📊 analytics-agent"]
+
+    %% ================================================================
+    %% AGENT WORKFLOWS
+    %% ================================================================
+    WF_HALAL["🔄 halal_product_submission\nworkflow"]
+    WF_ONBOARD["🔄 vendor_onboarding_full\nworkflow"]
+    WF_PAYOUT["🔄 monthly_vendor_payout\nworkflow"]
+    WF_ORDER["🔄 secure_order_fulfillment\nworkflow"]
+
+    %% ================================================================
+    %% REVIEWS
+    %% ================================================================
+    REVIEW["⭐ Review\n(1–5 Rating)"]
+
+    %% ================================================================
+    %% RELATIONSHIPS
+    %% ================================================================
+
+    %% Identity
+    USER -->|"IS_VENDOR"| VENDOR
+    USER -->|"IS_CUSTOMER"| CUSTOMER
+
+    %% Commerce core
+    VENDOR -->|"SELLS"| PRODUCT
+    VENDOR -->|"FULFILS"| ORDER
+    CUSTOMER -->|"PLACES"| ORDER
+    CUSTOMER -->|"OWNS"| CART
+    CART -->|"HOLDS"| PRODUCT
+    ORDER -->|"CONTAINS"| LINE
+    LINE -->|"REFERENCES"| PRODUCT
+    ORDER -->|"SETTLED_BY"| PAYMENT
+    ORDER -->|"SHIPPED_VIA"| SHIPMENT
+    ORDER -->|"INITIATES"| RETURN
+
+    %% Product structure
+    PRODUCT -->|"BELONGS_TO"| CATEGORY
+    CATEGORY -->|"PARENT_OF"| CATEGORY
+    PRODUCT -->|"HAS_VARIANT"| VARIANT
+
+    %% Finance
+    VENDOR -->|"GOVERNED_BY"| COMMISSION
+    VENDOR -->|"RECEIVES"| PAYOUT
+
+    %% Supply chain
+    PRODUCT -->|"STOCKED_AT"| WAREHOUSE
+
+    %% Halal compliance (highlighted path)
+    VENDOR -->|"HOLDS 🌙"| CERT
+    PRODUCT -->|"CERTIFIED_BY 🌙"| CERT
+    VENDOR -->|"RATED_BY ⭐"| AMANAH
+    CERT -->|"CONTRIBUTES_TO +40pts"| AMANAH
+    REVIEW -->|"INFLUENCES +30pts"| AMANAH
+
+    %% Reviews
+    CUSTOMER -->|"WRITES"| REVIEW
+    PRODUCT -->|"RECEIVES"| REVIEW
+
+    %% AI layer
+    PRODUCT -->|"ANALYSED_BY"| AIANALYSIS
+    PRODUCT -->|"VECTORISED_AS"| EMBEDDING
+    CUSTOMER -->|"RECEIVES"| AIREC
+    PRODUCT -->|"FEATURED_IN"| AIREC
+
+    %% Agent → workflows
+    ORCHESTRATOR -->|"ROUTES_TO"| WF_HALAL
+    ORCHESTRATOR -->|"ROUTES_TO"| WF_ONBOARD
+    ORCHESTRATOR -->|"ROUTES_TO"| WF_PAYOUT
+    ORCHESTRATOR -->|"ROUTES_TO"| WF_ORDER
+
+    %% halal_product_submission workflow steps
+    WF_HALAL -->|"step 1"| HALAL_AGENT
+    WF_HALAL -->|"step 2"| MOD_AGENT
+    WF_HALAL -->|"step 3"| AMANAH_AGENT
+
+    %% vendor_onboarding_full workflow steps
+    WF_ONBOARD -->|"step 1"| HALAL_AGENT
+    WF_ONBOARD -->|"step 2"| ONBOARD_AGENT
+    WF_ONBOARD -->|"step 3"| AMANAH_AGENT
+
+    %% monthly_vendor_payout workflow steps
+    WF_PAYOUT -->|"step 1"| ANALYTICS_AGENT
+    WF_PAYOUT -->|"step 2"| COMM_AGENT
+
+    %% secure_order_fulfillment workflow steps
+    WF_ORDER -->|"step 1"| ORDER_AGENT
+    WF_ORDER -->|"step 2"| DISPUTE_AGENT
+
+    %% Agent → domain entities
+    HALAL_AGENT -->|"VERIFIES"| CERT
+    AMANAH_AGENT -->|"COMPUTES"| AMANAH
+    MOD_AGENT -->|"MODERATES"| PRODUCT
+    ONBOARD_AGENT -->|"ONBOARDS"| VENDOR
+    ORDER_AGENT -->|"FULFILS"| ORDER
+    COMM_AGENT -->|"PROCESSES"| PAYOUT
+
+    %% ================================================================
+    %% STYLING
+    %% ================================================================
+    classDef core       fill:#7c3aed,color:#fff,stroke:#5b21b6,stroke-width:2px
+    classDef halal      fill:#059669,color:#fff,stroke:#047857,stroke-width:2px
+    classDef agent      fill:#1d4ed8,color:#fff,stroke:#1e40af,stroke-width:2px
+    classDef workflow   fill:#d97706,color:#fff,stroke:#b45309,stroke-width:2px
+    classDef finance    fill:#0e7490,color:#fff,stroke:#0c6179,stroke-width:2px
+    classDef ai         fill:#6d28d9,color:#fff,stroke:#5b21b6,stroke-width:1px
+    classDef transient  fill:#f3f4f6,color:#374151,stroke:#9ca3af,stroke-width:1px
+
+    class USER,VENDOR,CUSTOMER,PRODUCT,ORDER core
+    class CERT,AMANAH halal
+    class ORCHESTRATOR,HALAL_AGENT,AMANAH_AGENT,MOD_AGENT,ONBOARD_AGENT,ORDER_AGENT,DISPUTE_AGENT,COMM_AGENT,ANALYTICS_AGENT agent
+    class WF_HALAL,WF_ONBOARD,WF_PAYOUT,WF_ORDER workflow
+    class PAYMENT,COMMISSION,PAYOUT finance
+    class EMBEDDING,AIREC,AIANALYSIS ai
+    class CART,LINE,VARIANT,RETURN,REVIEW,WAREHOUSE,SHIPMENT transient
+```
+
+
 ## 🤝 Contributing
 
 ![Contributions](https://img.shields.io/badge/Contributions-Welcome-brightgreen)
