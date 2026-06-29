@@ -429,7 +429,7 @@ Special call for **OCI integration contributors** 🚀
 
 ## 📜 License
 
-![STRICT-PROPRIETARY](https://img.shields.io/badge/License-STRICT-PROPRIETARY-yellow.svg)
+![PROPRIETARY](https://img.shields.io/badge/License-PROPRIETARY-yellow.svg)
 
 This project is licensed under the **STRICT-PROPRIETARY License**.
 
